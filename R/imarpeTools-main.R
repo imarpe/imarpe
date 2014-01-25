@@ -1,0 +1,1 @@
+# To define generic classes and methods for the package
