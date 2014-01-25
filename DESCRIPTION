@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2013-12-16
 Author: Wencheng Lau
 Maintainer: Wencheng Lau <llau@imarpe.gob.pe>
-Description: Tools for common tasks
+Description: Tools for common tasks in fisheries
 License: GLP-2
 Depends: sp, rgdal, mapdata
 LazyData: true

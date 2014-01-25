@@ -1,11 +1,15 @@
 #################
+# Private
+#################
+deprecated.R
+imarpeTools.txt
+
+#################
 # Rstudio
 #################
 .Rproj.user
 .Rhistory
 .RData
-
-deprecated.R
 
 #################
 ## Eclipse
