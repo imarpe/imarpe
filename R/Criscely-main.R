@@ -1,5 +1,5 @@
 #Archivo de Criscely! :D
-# Aqui las funciones de Criscely, para evitar problemas por ahora
+# Aqui las funciones de Criscely
 
 .getSpeciesComposition.bitacoras = function(object, ...) {
   
