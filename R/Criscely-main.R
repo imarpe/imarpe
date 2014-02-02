@@ -45,17 +45,12 @@
                  "tambo de mora", "pisco", "quilca", "la planchada", "mollendo", 
                  "ilo", "morrosama")
   ordenCol = basePuerto[sort(match(puerto, basePuerto), decreasing = FALSE)]
-<<<<<<< HEAD
+
   tabla = tabla[match(ordenCol, puerto), ]
   rownames(tabla) = puerto
   
   return(tabla)
-=======
-  tablaOrdenada = tabla[match(ordenCol, puerto), ]
-  rownames(tablaOrdenada) = puerto
-  
-  return(tablaOrdenada)
->>>>>>> 4a965a06c387f7c0a30f2a4346c66812933ce9bd
+
 }
 
 
