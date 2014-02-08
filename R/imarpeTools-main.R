@@ -8,4 +8,3 @@ getData = function(file, type, ...) {
   )
   return(output)
 }
-
