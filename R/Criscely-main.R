@@ -120,3 +120,78 @@
   
 }
 
+
+.getSumPorts.landings = function (object, ...) {
+  
+  datos = object$data
+  ports = datos[,c(4:length(colnames(datos)))]
+  
+  tabla = data.frame(datos[, c(1:3)], apply(ports, 1, sum))
+  colnames(tabla) = c("year", "month", "day", "Ports")
+  
+  return(tabla)
+} 
+
+
+.getPorts.landings = function (object, ...) {
+  
+  require(Hmisc)
+  
+  datos = object$data
+  
+  ports = datos[,c(4:length(colnames(datos)))]
+  namesPorts = names(ports)
+  
+  tabla = data.frame(apply(ports,2,sum), row.names=NULL)
+  colnames(tabla) = "Landings"
+  rownames(tabla) = capitalize(namesPorts) 
+  
+  return(tabla)
+}
+
+
+.getMonth.landings = function (object, ...) {
+  
+  datos = object$data
+  
+  ports = datos[,c(4:length(colnames(datos)))]
+  months = unique(datos$month)
+  years = unique(datos$year)
+  
+  datos = data.frame(datos[, c(1:3)], apply(ports, 1, sum))
+  colnames(datos) = c("year", "month", "day", "Ports")
+  
+  tabla = tapply(datos$Ports, list(datos$month, datos$year),
+                 sum, na.remove=FALSE)
+  
+  monthsTable = row.names(tabla)
+  sortMonth = sort(match(monthsTable, months), decreasing=FALSE)
+  order = months[sortMonth]
+  
+  tabla = data.frame(tabla[order, ])
+  rownames(tabla) = months
+  colnames(tabla) = years
+  
+  return(tabla)  
+}
+
+
+.getYear.landing = function (object, ...) {
+  
+  datos = object$data
+  
+  ports = datos[,c(4:length(colnames(datos)))]
+  
+  datos = data.frame(datos[, c(1:3)], apply(ports, 1, sum))
+  colnames(datos) = c("year", "month", "day", "Ports")
+  
+  years = unique(datos$year)
+  
+  tabla = tapply(datos$Ports, list(datos$year), sum, na.remove=FALSE)
+  tabla = data.frame(tabla)
+  colnames(tabla) = "Landings"
+  rownames(tabla) = years
+  
+  return(tabla)
+}
+
