@@ -4,6 +4,7 @@ getData = function(file, type, ...) {
   
   output = switch(type,
                   bitacoras = .getBitacorasData(file=file, ...),
+                  landings = .getLandingsData(file=file, ...),
                   read.csv(file=file, ...)
   )
   return(output)
