@@ -62,10 +62,10 @@ print.summary.bitacoras = function(x, ...) {
   print(x$observer)
   
   cat("\nNumber of sets by latitudinal degree:\n\n")
-  print(x$set)
+  print(t(x$set))
   
   cat("\nDepth by latitudinal degree:\n\n")
-  print(x$depth)
+  print(t(x$depth))
   
   return(invisible(x))
 }
@@ -74,7 +74,8 @@ plot.bitacoras = function(x, type, ...) {
   
   switch(type,
          effort = .plotEffort.bitacoras(x=x, ...),
-         deph = .plotDeph.bitacoras(object=x, ...))
+         depth = .plotDepth.bitacoras(object=x, ...),
+         error("Plot type not defined."))
   
   return(invisible())
 }

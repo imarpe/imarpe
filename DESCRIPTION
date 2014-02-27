@@ -1,11 +1,12 @@
 Package: imarpeTools
 Type: Package
-Title: Tools for habitual tasks
-Version: 1.0
-Date: 2013-12-16
-Author: Wencheng Lau
-Maintainer: Wencheng Lau <llau@imarpe.gob.pe>
-Description: Tools for common tasks in fisheries
-License: GLP-2
-Depends: 
-LazyData: true
+Title: Tools for graphics and summary reports for IMARPE
+Version: 0.1
+Date: 2014-02-27
+Author: IMARPE
+Maintainer: IMARPE <imarpe@imarpe.gob.pe>
+Description: Tools for graphics and summary reports for IMARPE
+License: TBD
+Depends: Hmisc 
+LazyData: TRUE
+ByteCompile: TRUE

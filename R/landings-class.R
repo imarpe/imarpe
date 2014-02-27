@@ -54,14 +54,14 @@ print.summary.landings = function(x, ...) {
   cat("Number of years of data:", x$info$years, "\n", sep="")
   cat("Ports:", x$info$ports, "\n", sep="")
   
-  cat("\nDaily landing:\n\n")
-  print(x$sumPorts)
+#   cat("\nDaily landing:\n\n")
+#   print(x$sumPorts)
   
-  cat("\nLandings by ports:\n\n")
-  print(x$ports)
+  cat("\nLandings by ports (non-zero only):\n\n")
+  print(x$ports[x$ports$Landings>0, ,drop=FALSE])
   
   cat("\nMonthly landing:\n\n")
-  print(x$months)
+  print(t(x$months))
   
   cat("\nAnnual landing:\n\n")
   print(x$years)

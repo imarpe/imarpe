@@ -61,7 +61,7 @@
   par(mar=c(4.1, 4.1, 4.1, 4.1), xpd=TRUE)
   
   barplot(duracionViaje, main = "Esfuerzo", xlab = "Puertos", 
-          ylab = "Duración de viaje promedio", col = "red",
+          ylab = "Duraci?n de viaje promedio", col = "red",
           names.arg = rownames(datos), beside = FALSE, xlim = NULL,
           ylim = c(0, ceiling(1.3*max(duracionViaje))))
   
@@ -73,7 +73,7 @@
                           length.out = ceiling(max(lineRange)) + 1),
        labels = seq(0, ceiling(max(lineRange))))
   mtext(side = 4, line = 3, "Cala")
-  legend("topleft", legend= c("Duración de viaje promedio", "N° de calas promedio"),
+  legend("topleft", legend= c("Duraci?n de viaje promedio", "N? de calas promedio"),
          col = c("red", "blue"), pch = 15, bty = "n", cex=0.85)
   box()
   
@@ -99,7 +99,7 @@
                  "ilo", "morrosama")
   ordenCol = basePuerto[sort(match(puerto, basePuerto), decreasing = FALSE)]
   tabla = data.frame(tabla[match(ordenCol, puerto), ])
-  colnames(tabla) = "N° de observadores"
+  colnames(tabla) = "N? de observadores"
   rownames(tabla) = ordenCol
   
   return(tabla)
@@ -120,7 +120,7 @@
   
   #Para la tabla de numero de calas
   tabla = data.frame(numeroCalas)
-  colnames(tabla) = "N° de calas"
+  colnames(tabla) = "N? de calas"
   rownames(tabla) =  gradoLatitudinal
   
   return(tabla)
@@ -154,7 +154,7 @@
 }
 
 
-.plotDeph.bitacoras = function (object, ...) {
+.plotDepth.bitacoras = function (object, ...) {
   
   datos = object$data
   datos = datos[, c("latGf", "tope.sup", "tope.inf")]
@@ -171,7 +171,10 @@
       ylim = rev(ylim)
   
   boxplot(valores~lat, datos, outline = FALSE, xlab = "Latitud sur",
-          ylab = "Profundidad", ylim = ylim, col = "red", main = "Profundidad")
+          ylab = "Profundidad", ylim = ylim, col = "red", main = "Profundidad", axes=FALSE)
+  axis(2, at=axTicks(2), label=axTicks(2), las=2)
+  axis(1, at=axTicks(1), label=coord2text(-axTicks(1),"lat"))
+  box()
   
   return(invisible())
   
