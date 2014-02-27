@@ -70,9 +70,9 @@ print.summary.bitacoras = function(x, ...) {
   return(invisible(x))
 }
 
-plot.bitacoras = function(x, topic, ...) {
+plot.bitacoras = function(x, type, ...) {
   
-  switch(topic,
+  switch(type,
          effort = .plotEffort.bitacoras(x=x, ...),
          deph = .plotDeph.bitacoras(object=x, ...))
   
