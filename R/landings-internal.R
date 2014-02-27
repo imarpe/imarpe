@@ -27,12 +27,18 @@
   return(tabla)
 }
 
-.plotDays.landings = function (x, ...) {
+.trimData.landings = function(x, start, end) {
+  # to be done by Criscely.
+  return(x)
+}
+  
+.plotDays.landings = function (x, start=NULL, end=NULL, ...) {
   datos = .getSumPorts.landings(x)
+  datos = trimData.landings(datos, start=start, end=end)
   days = paste0(datos$day,"-",capitalize(datos$month))
-  daysToPlot = c(1,7,15,21) #dias que serán ploteados
-  daysToPlot = which(datos$day %in% daysToPlot) #posición de los dias que será ploteados
-  daysToPlot = days[daysToPlot] #formato de los dias que serán ploteados
+  daysToPlot = c(1,7,15,21) #dias que ser?n ploteados
+  daysToPlot = which(datos$day %in% daysToPlot) #posici?n de los dias que ser? ploteados
+  daysToPlot = days[daysToPlot] #formato de los dias que ser?n ploteados
   
   days[! days %in% daysToPlot] = NA
   
