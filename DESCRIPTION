@@ -1,12 +1,12 @@
-Package: imarpeTools
+Package: imarpe
 Type: Package
 Title: Tools for graphics and summary reports for IMARPE
 Version: 0.1
-Date: 2014-02-27
+Date: 2014-03-12
 Author: IMARPE
 Maintainer: IMARPE <imarpe@imarpe.gob.pe>
 Description: Tools for graphics and summary reports for IMARPE
 License: TBD
-Depends: Hmisc 
+Depends: Hmisc, lattice 
 LazyData: TRUE
 ByteCompile: TRUE
