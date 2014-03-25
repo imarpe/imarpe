@@ -7,7 +7,7 @@
   namesPorts = names(ports)
   
   info = list(file=file, records=nrow(out), 
-              months = length(unique(out$month)),
+              months = length(rle(out$month)$values),
               years  = length(unique(out$year)),
               ports  = length(namesPorts))
   
@@ -17,14 +17,13 @@
   
 }
 
-
 print.landings = function(x, ...) {
   
   cat("Landings data from", sQuote(x$info$file), "\n", sep="")
   cat("Number of records:", x$info$records, "\n", sep="")
   cat("Number of months of data:", x$info$months, "\n", sep="")
   cat("Number of years of data:", x$info$years, "\n", sep="")
-  cat("Ports:", x$info$ports, "\n", sep="")
+  cat("Number of ports:", x$info$ports, "\n", sep="")
   
   return(invisible())
   

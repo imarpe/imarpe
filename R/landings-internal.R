@@ -28,13 +28,36 @@
 }
 
 .trimData.landings = function(x, start, end) {
-  # to be done by Criscely.
-  return(x)
+  datos = x
+  months = datos$month
+  monthsPosition = unique(months)
+  dataDate = paste(datos$year,"-",match(months, monthsPosition), "-",datos$day,sep="")
+  data = data.frame(dataDate, datos$Ports)
+  
+  data$date = as.Date(as.character(data$dataDate), format="%Y-%m-%d")
+  data = subset(data, data$date >= as.Date(start) & data$date <= as.Date(end))
+  
+  dataDate = strptime(data$date, format="%Y-%m-%d")
+  years = format(dataDate, "%Y")
+  months = as.numeric(format(dataDate, "%m"))
+  days = format(dataDate, "%d")
+  
+  monthsName =NULL
+  for(i in 1:length(months)) {
+    monthsNumber = monthsPosition[months[i]]
+    monthsName = c(monthsName, monthsNumber)
+  }
+  months = monthsName
+  
+  tabla = data.frame(years, months, days, data$datos.Ports)
+  names(tabla) = c("year", "month", "day", "Ports")
+  
+  return(tabla)
 }
   
 .plotDays.landings = function (x, start=NULL, end=NULL, ...) {
   datos = .getSumPorts.landings(x)
-  datos = trimData.landings(datos, start=start, end=end)
+  datos = .trimData.landings(datos, start=start, end=end)
   days = paste0(datos$day,"-",capitalize(datos$month))
   daysToPlot = c(1,7,15,21) #dias que ser?n ploteados
   daysToPlot = which(datos$day %in% daysToPlot) #posici?n de los dias que ser? ploteados
@@ -90,14 +113,14 @@
   monthPlot = monthPlot[!is.na(monthPlot)]
   namesMonthPlot = capitalize(rep(rownames(datos), length.out = length(monthPlot) ))
   
-  barplot(monthPlot, main="Monthly Landing",
+  barplot(monthPlot, main="",
           xlab="Months", ylab="Landings (t)", col="blue", names.arg=FALSE,
           ylim=c(0, max(monthPlot)*1.2), cex.names=0.7, axes=FALSE)
   axis(1, at=seq(0.7, by=1.2, length.out=length(monthPlot)), labels=namesMonthPlot,
-       las=1, cex.axis=0.7, line=0)
+       las=1, cex.axis=0.8, line=0)
   axis(1, at=seq(0.7,by=1.2, length.out=length(monthPlot)),
-       labels=rep(years,each=12)[1:length(monthPlot)], las=1, cex.axis=0.7, line=1, tick=FALSE)
-  axis(2, las=2, cex.axis=0.7)
+       labels=rep(years,each=12)[1:length(monthPlot)], las=1, cex.axis=0.8, line=1, tick=FALSE)
+  axis(2, las=2, cex.axis=0.8)
   box()
   
   return(invisible())
@@ -127,14 +150,12 @@
   
   datos = .getYear.landing(x)
   years = as.numeric(rownames(datos))
-  barplot(datos$Landings, main="Annual Landings", xlab="Years",
+  barplot(datos$Landings, main="", xlab="Years",
           ylab="Landings (t)", col="blue", names.arg=FALSE,
           ylim=c(0,max(datos)*1.2), cex.names=0.7, axes=FALSE)
   axis(1, at=seq(0.7, by=1.2, length.out=length(years)), labels=years, las=1,
-       cex.axis=0.7)
-  axis(2, las=2, cex.axis=0.7)
+       cex.axis=0.8)
+  axis(2, las=2, cex.axis=0.8)
   box()
   
   return(invisible())
-  
-}
