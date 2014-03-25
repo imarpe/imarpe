@@ -54,7 +54,7 @@
   
   return(tabla)
 }
-  
+
 .plotDays.landings = function (x, start=NULL, end=NULL, ...) {
   datos = .getSumPorts.landings(x)
   datos = .trimData.landings(datos, start=start, end=end)
@@ -132,7 +132,7 @@
   datos = object$data
   
   ports = datos[,c(4:length(colnames(datos)))]
-    
+  
   datos = data.frame(datos[, c(1:3)], apply(ports, 1, sum))
   colnames(datos) = c("year", "month", "day", "Ports")
   
