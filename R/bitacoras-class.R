@@ -8,10 +8,17 @@
   if(!all(check)) stop("File does not seem to by of type 'bitacoras'.")
   
   ports = unique(out$puerto.salida)
-    
-  info = list(file=file, records=nrow(out), 
+  
+  date = out$dia.salida
+  date = date[date != "" & !is.na(date)]
+  dataDate = strptime(date, format="%d-%m-%Y %H:%M")
+  years = as.numeric(format(dataDate, "%Y"))
+  
+  info = list(file=file,
+              records=length(unique(out$dia.salida)), 
               observers=length(unique(out$observador)),
-              ports = length(ports[!is.na(ports)]))
+              ports = length(ports[!is.na(ports)]),
+              years = unique(years))
   output = list(data=out, info=info)
   class(output) = c("bitacoras")
   return(output)
@@ -23,7 +30,8 @@ print.bitacoras = function(x, ...) {
   cat("Bitacoras data from ", sQuote(x$info$file), "\n", sep="")
   cat("Number of records: ", x$info$records, "\n", sep="")
   cat("Number of observers: ", x$info$observers,"\n", sep="")
-  cat("Ports: ", x$info$ports,"\n", sep="")
+  cat("Number of ports: ", x$info$ports,"\n", sep="")
+  cat("Years: ", x$info$years, "\n", sep="")
   
   return(invisible())
   
@@ -51,6 +59,7 @@ print.summary.bitacoras = function(x, ...) {
   cat("Number of records: ", x$info$records, "\n", sep="")
   cat("Number of observers: ", x$info$observers,"\n", sep="")
   cat("Ports: ", x$info$ports,"\n", sep="")
+  cat("Years: ", x$info$years, "\n", sep="")
   
   cat("\nSpecies composition:\n\n")
   print(x$composition)
