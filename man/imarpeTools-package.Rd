@@ -1,40 +1,33 @@
-\name{imarpeTools-package}
-\alias{imarpeTools-package}
-\alias{imarpeTools}
+\name{imarpe-package}
+\alias{imarpe-package}
+\alias{imarpe}
 \docType{package}
 \title{
-What the package does (short line)
-~~ package title ~~
+imarpe: automatización de gráficas, tablas y reportes del Instituto del Mar del Perú.
 }
 \description{
-More about what it does (maybe more than one line)
-~~ A concise (1-5 lines) description of the package ~~
+Este paquete proporciona herramientas para la elaboración de gráficas y tablas que se realizan de manera rutinaria en los informes producidos por el Instituto del Mar del Perú (IMARPE). El paquete está diseñado para trabajar con funciones genéricas (e.g. \code{plot}, \code{summary}, \code{print}) sin importar el tipo de datos utilizado, facilitando su uso y permitiendo su utilización incluso con conocimientos mínimos de \code{R}. 
 }
 \details{
 \tabular{ll}{
-Package: \tab imarpeTools\cr
+Package: \tab imarpe\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2013-12-16\cr
-License: \tab What license is it under?\cr
+Version: \tab 0.1\cr
+Date: \tab 2014-03-11\cr
+License: \tab TBD\cr
 }
-~~ An overview of how to use the package, including the most important functions ~~
+
 }
 \author{
-Who wrote it
+Criscely Luján Paredes, Ricardo Oliveros-Ramos
 
-Maintainer: Who to complain to <yourfault@somewhere.net>
-~~ The author and/or maintainer of the package ~~
+Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 }
 \references{
-~~ Literature or other references for background information ~~
+Luján-Paredes C, Oliveros-Ramos R. 2014. Introducción al paquete \code{imarpe} para la automatización de gráficos, tablas y reportes usando \code{R}.
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation ~~
-~~ directory ~~
-\keyword{ package }
+\keyword{ figuras, tablas, reportes, imarpe, R. }
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
 ~~ simple examples of the most important functions ~~
