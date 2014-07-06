@@ -59,9 +59,9 @@
   datos = .getSumPorts.landings(x)
   datos = .trimData.landings(datos, start=start, end=end)
   days = paste0(datos$day,"-",capitalize(datos$month))
-  daysToPlot = c(1,7,15,21) #dias que ser?n ploteados
-  daysToPlot = which(datos$day %in% daysToPlot) #posici?n de los dias que ser? ploteados
-  daysToPlot = days[daysToPlot] #formato de los dias que ser?n ploteados
+  daysToPlot = c(1,7,15,21) #dias que seran ploteados
+  daysToPlot = which(datos$day %in% daysToPlot) #posicion de los dias que seran ploteados
+  daysToPlot = days[daysToPlot] #formato de los dias que seran ploteados
   
   days[! days %in% daysToPlot] = NA
   
