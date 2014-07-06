@@ -3,10 +3,10 @@
 \alias{imarpe}
 \docType{package}
 \title{
-imarpe: automatización de gráficas, tablas y reportes del Instituto del Mar del Perú.
+imarpe: automatizaci?n de gr?ficas, tablas y reportes del Instituto del Mar del Per?.
 }
 \description{
-Este paquete proporciona herramientas para la elaboración de gráficas y tablas que se realizan de manera rutinaria en los informes producidos por el Instituto del Mar del Perú (IMARPE). El paquete está diseñado para trabajar con funciones genéricas (e.g. \code{plot}, \code{summary}, \code{print}) sin importar el tipo de datos utilizado, facilitando su uso y permitiendo su utilización incluso con conocimientos mínimos de \code{R}. 
+Este paquete proporciona herramientas para la elaboraci?n de gr?ficas y tablas que se realizan de manera rutinaria en los informes producidos por el Instituto del Mar del Per? (IMARPE). El paquete est? dise?ado para trabajar con funciones gen?ricas (e.g. \code{plot}, \code{summary}, \code{print}) sin importar el tipo de datos utilizado, facilitando su uso y permitiendo su utilizaci?n incluso con conocimientos m?nimos de \code{R}. 
 }
 \details{
 \tabular{ll}{
@@ -19,12 +19,12 @@ License: \tab TBD\cr
 
 }
 \author{
-Criscely Luján Paredes, Ricardo Oliveros-Ramos
+Criscely Luj?n Paredes, Ricardo Oliveros-Ramos
 
 Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 }
 \references{
-Luján-Paredes C, Oliveros-Ramos R. 2014. Introducción al paquete \code{imarpe} para la automatización de gráficos, tablas y reportes usando \code{R}.
+Luj?n-Paredes C, Oliveros-Ramos R. 2014. Introducci?n al paquete \code{imarpe} para la automatizaci?n de gr?ficos, tablas y reportes usando \code{R}.
 }
 \keyword{ figuras, tablas, reportes, imarpe, R. }
 \seealso{
