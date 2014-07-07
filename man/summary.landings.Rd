@@ -2,32 +2,32 @@
 \alias{summary.landings}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Class summary.landings
+Create a Summary.landings Object
 %%  ~~function to do ... ~~
 }
 \description{
-Creates a new class called "summary.landings".
+Creates a new object of class \dQuote{summary.landings}. This class has summary information about a \dQuote{landings} object, which includes the metadata, captures by specie, number of ports by day, landings by port, landings by month and landings by year.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-summary.landings(object, ...)
+\method{summary}{landings}(object)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{object}{An object of class "landings".
+  \item{object}{An object of class \dQuote{landings}.
 %%     ~~Describe \code{object} here~~
 }
-  \item{\dots}{Further arguments
+%  \item{\dots}{Further arguments
 %%     ~~Describe \code{\dots} here~~
-}
+%}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-Returns an object from class "summary.landings" containing the following features:
-\item{info}{General overview of the landings database (number of records, months, years and ports).}
-\item{sumPorts}{Dataframe containing the complete dataset of interest.}
+Returns an object of class \dQuote{summary.landings} containing the following features:
+\item{info}{General overview, metadata, of the landings database (number of records, months, years and ports).}
+\item{sumPorts}{Dataframe containing the number of ports by day.}
 \item{ports}{Dataframe indicating the number of landings by port.}
 \item{months}{Dataframe indicating the number of landings by month.}
 \item{years}{Dataframe indicating the number of landings by year.}
@@ -53,9 +53,19 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+\code{\link{getData}}, \code{\link{plot.landings}}, \code{\link{print.landings}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
+## Reading a database of the class 'landings'.
+data = getData("desembarques_data3.csv", type="landings")
+
+## Verifying the class of data
+class(data)
+
+## S3 method for class 'landings'
+SummaryLandings = summary(data)
+
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
 %##--	or do  help(data=index)  for the standard data sets.

@@ -62,7 +62,7 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 }
 \examples{
 ## Loading the data
-data <- getData("desembarques_data3.csv", type="landings")
+data = getData("desembarques_data3.csv", type="landings")
 
 ## Plotting by month
 plot(data,time="month")

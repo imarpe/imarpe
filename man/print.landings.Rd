@@ -2,28 +2,28 @@
 \alias{print.landings}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Print Landings General Description
+Print General Description of Landings Objects
 }
 \description{
-Prints the main features of the landings database such as the number of records, months, years and ports, and returns them invisibly (via \code{\link{invisible}}).
+Prints the main features of the \dQuote{landings} database such as the number of records, months, years and ports, and returns them invisibly (via \code{\link{invisible}}).
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-print.landings(x, ...)
+\method{print}{landings}(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{An object of the class landings.
+  \item{x}{An object of the class \dQuote{landings}.
 %%     ~~Describe \code{x} here~~
 }
-  \item{\dots}{Further arguments
+%  \item{\dots}{Further arguments
 %%     ~~Describe \code{\dots} here~~
+%}
 }
-}
-\details{
+\details{It is not useful to print all the content of large databases as \dQuote{landings} objects. For this reason, this function is useful to print only metadata of \dQuote{landings} objects.
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{None (invisible NULL).
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -45,14 +45,18 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+\code{\link{getData}}, \code{\link{plot.landings}}, \code{\link{summary.landings}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Loading the data
-data <- getData("desembarques_data3.csv", type="landings")
+## Loading the database of the class 'landings'.
+data = getData("desembarques_data3.csv", type="landings")
 
-## Printing
-print.landings(data)
+## Verifying the class of data
+class(data)
+
+\method{print}{landings}(data)
+
 
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
