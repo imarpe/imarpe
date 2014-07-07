@@ -51,7 +51,7 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-After reading a database with \code{\link{getData}} function, you can use other functions to summary or plot the obtained data usinf functions like \code{\link{plot.bitacoras}}, \code{\link{plot.landings}}, \code{\link{summary.bitacoras}}, \code{\link{summary.landings}}.
+After reading a database with \code{\link{getData}} function, you can use other functions to summary or plot the obtained data using functions like \code{\link{plot.bitacoras}}, \code{\link{plot.landings}}, \code{\link{summary.bitacoras}}, \code{\link{summary.landings}}.
 }
 \examples{
 # Reading a database of the 'landings' class.
