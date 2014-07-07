@@ -2,31 +2,31 @@
 \alias{summary.bitacoras}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Class summary.bitacoras
+Create a Summary.bitacoras Object
 %%  ~~function to do ... ~~
 }
 \description{
-Creates a new class called "summary.bitacoras".
+Creates a new object of class \dQuote{summary.bitacoras}. This class has summary information about a \dQuote{bitacoras} object, which includes  the metadata, captures by specie, travel duration and number of coves, observers by port, coves by latitude and depth by latitude.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-summary.bitacoras(object, ...)
+\method{summary}{bitacoras}(object)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{object}{An object of class "bitacoras".
+  \item{object}{An object of class \dQuote{bitacoras}.
 %%     ~~Describe \code{object} here~~
 }
-  \item{\dots}{Further arguments
+%  \item{\dots}{Further arguments
 %%     ~~Describe \code{\dots} here~~
-}
+%}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-Returns an object from class "summary.bitacoras" containing the following features:
-\item{info}{General overview of the bitacoras database (number of records, observers, ports and the unique years).}
+Returns an object of class \dQuote{summary.bitacoras} containing the following features:
+\item{info}{General overview, metadata, of the \dQuote{bitacoras} database (number of records, observers, ports and involved years).}
 \item{composition}{Dataframe indicating the number of captures by fish species.}
 \item{effort}{Dataframe indicating the travel duration and the number of coves by port.}
 \item{observer}{Dataframe indicating the number of observers by port.}
@@ -53,9 +53,18 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+\code{\link{getData}}, \code{\link{plot.bitacoras}}, \code{\link{print.bitacoras}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
-%\examples{
+\examples{
+## Reading a database of the class 'bitacoras'.
+data = getData("matrizPBP.csv", type="bitacoras")
+
+## Verifying the class of data
+class(data)
+
+## S3 method for class 'bitacoras'
+SummaryBitacoras = summary(data)
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
 %##--	or do  help(data=index)  for the standard data sets.
@@ -72,7 +81,7 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 %    output$depth = .getDepth.bitacoras(object)
 %    class(output) = "summary.bitacoras"
 %    return(output)
-%  }
+  }
 %}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
