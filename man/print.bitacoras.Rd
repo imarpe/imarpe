@@ -2,29 +2,29 @@
 \alias{print.bitacoras}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Print Bitacoras General Description
+Print General Description of Bitacoras Objects
 %%  ~~function to do ... ~~
 }
 \description{
-Prints the main features of the bitacoras database such as the number of records, observers, ports and the unique years, and returns them invisibly (via \code{\link{invisible}}).
+Prints the main features of the bitacoras database such as file name, number of records, observers, ports and covered years, and returns them invisibly (via \code{\link{invisible}}).
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-print.bitacoras(x, ...)
+\method{print}{bitacoras}(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{An object of the class bitacoras.
 %%     ~~Describe \code{x} here~~
 }
-  \item{\dots}{Further arguments
+%  \item{\dots}{Further arguments accepted by \code{\link{print}}
 %%     ~~Describe \code{\dots} here~~
+%}
 }
-}
-\details{
+\details{It is not useful to print all the content of large databases as \dQuote{bitacoras} object. For this reason, this function is useful to print only metadata of \dQuote{bitacoras} object.
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{None (invisible NULL).
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -46,14 +46,17 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+\code{\link{getData}}, \code{\link{plot.bitacoras}}, \code{\link{summary.bitacoras}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Loading the data
+## Reading a database of the class 'bitacoras'.
 data <- getData("matrizPBP.csv", type="bitacoras")
 
-## Printing
-print.bitacoras(data)
+## Verifying the class of data
+class(data)
+
+\method{print}{bitacoras}(data)
 
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,

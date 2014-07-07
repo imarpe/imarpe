@@ -54,14 +54,20 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 After reading a database with \code{\link{getData}} function, you can use other functions to summary or plot the obtained data using functions like \code{\link{plot.bitacoras}}, \code{\link{plot.landings}}, \code{\link{summary.bitacoras}}, \code{\link{summary.landings}}.
 }
 \examples{
-# Reading a database of the 'landings' class.
+## Reading a database of the 'landings' class.
 data = getData("desembarques_data3.csv", type="landings")
+## Verifying the class of data
+class(data)
 
-# Reading a database of the 'bitacoras' class with encoding of windows computer.
+## Reading a database of the 'bitacoras' class with encoding of windows computer.
 data = getData("matrizPBP.csv", type="bitacoras",fileEncoding="iso-8859-1")
+## Verifying the class of data
+class(data)
 
-# Reading a database without an specific class.
+## Reading a database without an specific class.
 data = getData("matrizPBP.csv")
+## Verifying the class of data
+class(data)
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
 %##--	or do  help(data=index)  for the standard data sets.
