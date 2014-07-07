@@ -6,7 +6,7 @@ Print General Description of Bitacoras Objects
 %%  ~~function to do ... ~~
 }
 \description{
-Prints the main features of the bitacoras database such as file name, number of records, observers, ports and covered years, and returns them invisibly (via \code{\link{invisible}}).
+Prints the main features of the \dQuote{bitacoras} database such as file name, number of records, observers, ports and covered years, and returns them invisibly (via \code{\link{invisible}}).
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -14,7 +14,7 @@ Prints the main features of the bitacoras database such as file name, number of 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{An object of the class bitacoras.
+  \item{x}{An object of the class \dQuote{bitacoras}.
 %%     ~~Describe \code{x} here~~
 }
 %  \item{\dots}{Further arguments accepted by \code{\link{print}}
