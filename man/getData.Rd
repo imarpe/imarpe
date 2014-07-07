@@ -5,26 +5,26 @@
 \title{Data Input
 %%  ~~function to do ... ~~
 }
-\description{Reads a file and creates a data frame from it with observations corresponding to lines and variables to fields in the file, and a list containing the main features of the data frame.   
+\description{Reads a file and creates a database of the desired type, which includes a data frame and a list containing the main features of the data frame. The included data frame object has observations corresponding to rows and variables to columns.   
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-getData(file, type, ...)
+getData(file, type, \dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{file}{The name of the file from which the data is read.
+  \item{file}{The name of the file from which the data is read. Each row of the table appears as one line of the file. If it does not contain an absolute path, the file name is relative to the current working directory, \code{\link{getwd()}}.
 %%     ~~Describe \code{file} here~~
 }
-  \item{type}{Type of the database to be read.  
+  \item{type}{Type of the database to be read. The following types are accepted: \dQuote{bitacoras},\dQuote{landings}. 
 %%     ~~Describe \code{type} here~~
 }
-  \item{\dots}{Further arguments.
+  \item{\dots}{Further arguments allowed by \code{\link{read.csv()}} function.
 %%     ~~Describe \code{\dots} here~~
 }
 }
 \details{
-This function is the principal main of reading data into R for the \pkg{imarpe} package.
+This function is the principal function of reading data into R for the \pkg{imarpe} package.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
@@ -42,18 +42,25 @@ This function is the principal main of reading data into R for the \pkg{imarpe} 
 \author{
 %%  ~~who you are~~
 }
-\note{
+\note{If type is not explicitly defined, the function will be equivalence to use \code{\link{read.csv()}}
 %%  ~~further notes~~
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+ ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-data <- getData("desembarques_data3.csv", type="landings")
+# Reading a database of the 'landings' class.
+data = getData("desembarques_data3.csv", type="landings")
 
+# Reading a database of the 'bitacoras' class with encoding of windows computer.
+data = getData("matrizPBP.csv", type="bitacoras",fileEncoding="iso-8859-1")
+
+# Reading a database without an specific class.
+data = getData("matrizPBP.csv")
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
 %##--	or do  help(data=index)  for the standard data sets.
