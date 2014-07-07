@@ -6,26 +6,25 @@ Plot a bitacoras object.
 %%  ~~function to do ... ~~
 }
 \description{
-Plot method for objects of class "bitacoras".
+The \code{plot} method for objects of class \dQuote{bitacoras}.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-plot.bitacoras(x, type, ...)
+\method{plot}{bitacoras}(x, type, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{Object of class "bitacoras".
 %%     ~~Describe \code{x} here~~
 }
-  \item{type}{
-Graphic to plot. Possible types are:
+  \item{type}{ Type of graph to plot. Possible types are:
   \itemize{
-  \item "effort" for plotting a barplot of average travel time with a line of average coves.
-  \item "depth" for plotting a boxplot of depths by a range of latitudes.
+  \item \dQuote{effort} for plotting a barplot of average travel time with a line of average coves.
+  \item \dQuote{depth} for plotting a boxplot of depths by a range of latitudes.
   }
 %%     ~~Describe \code{type} here~~
 }
-  \item{\dots}{Other graphical parameters.
+  \item{\dots}{Other graphical parameters accepted by \code{\link{plot()}}.
 %%     ~~Describe \code{\dots} here~~
 }
 }
@@ -62,13 +61,13 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Loading the data
+# Loading the data
 data <- getData("matrizPBP.csv", type="bitacoras")
 
-## Plotting by effort
+# Plotting by effort
 plot(data,type="effort")
 
-## Plotting by depth
+# Plotting by depth
 plot(data,type="depth")
 
 %##---- Should be DIRECTLY executable !! ----
