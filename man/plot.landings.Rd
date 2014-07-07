@@ -2,24 +2,24 @@
 \alias{plot.landings}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Plot a landing object
+Plot a landings object
 %%  ~~function to do ... ~~
 }
 \description{
-Plot method for objects of class "landings".
+Plot method for objects of class \dQuote{landings}.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-plot.landings(x, y = NULL, time = NULL, ...)
+\method{method}{landings}(x, time = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{Object of class 'landings'.
+  \item{x}{Object of class "landings".
 %%     ~~Describe \code{x} here~~
 }
-  \item{y}{
+%  \item{y}{
 %%     ~~Describe \code{y} here~~
-}
+%}
   \item{time}{
 Required period of time. Possible types are
   \itemize{
@@ -29,7 +29,7 @@ Required period of time. Possible types are
   }
 %%     ~~Describe \code{time} here~~
 }
-  \item{\dots}{Other graphical parameters
+  \item{\dots}{Other graphical parameters accepted by \code{\link{plot()}}.
 %%     ~~Describe \code{\dots} here~~
 }
 }
