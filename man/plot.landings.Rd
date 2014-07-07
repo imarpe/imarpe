@@ -2,7 +2,7 @@
 \alias{plot.landings}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Plot a landings object
+Plot a Landings Object
 %%  ~~function to do ... ~~
 }
 \description{
@@ -10,7 +10,7 @@ Plot method for objects of class \dQuote{landings}.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{method}{landings}(x, time = NULL, ...)
+\method{plot}{landings}(x, time = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
