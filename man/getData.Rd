@@ -44,7 +44,7 @@ Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Ro
 
 Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 }
-\note{If type is not explicitly defined, the function will be equivalence to use \code{\link{read.csv()}}
+\note{If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv()}}
 %%  ~~further notes~~
 }
 
