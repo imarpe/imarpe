@@ -37,10 +37,12 @@ This function is the principal function of reading data into R for the \pkg{imar
 %% ...
 }
 \references{
-%% ~put references to the literature/web site here ~
+Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
 }
 \author{
-%%  ~~who you are~~
+Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Romero Romero.
+
+Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 }
 \note{If type is not explicitly defined, the function will be equivalence to use \code{\link{read.csv()}}
 %%  ~~further notes~~
@@ -49,8 +51,7 @@ This function is the principal function of reading data into R for the \pkg{imar
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-
- ~~objects to See Also as \code{\link{help}}, ~~~
+After reading a database with \code{\link{getData}} function, you can use other functions to summary or plot the obtained data usinf functions like \code{\link{plot.bitacoras}}, \code{\link{plot.landings}}, \code{\link{summary.bitacoras}}, \code{\link{summary.landings}}.
 }
 \examples{
 # Reading a database of the 'landings' class.
