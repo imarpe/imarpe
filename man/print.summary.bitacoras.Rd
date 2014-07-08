@@ -23,12 +23,12 @@ Prints summary information about a \dQuote{bitacoras} object, which includes  th
 }
 \details{
   \tabular{ll}{
-    \code{info} \tab General overview of the bitacoras database (number of records, observers, ports and the unique years). \cr
-    \code{composition} \tab Dataframe indicating the number of captures by fish species.\cr
-    \code{effort} \tab Dataframe indicating the travel duration and the number of coves by port.\cr
-    \code{observer} \tab Dataframe indicating the number of observers by port.\cr
-    \code{set} \tab Dataframe indicating the number of coves by latitude.\cr
-    \code{depth} \tab Dataframe indicating the upper limit, lower limit and average depth by latitude.
+    \code{info} \tab General overview of the bitacoras database (number of records, observers, ports and involved years). \cr
+    \code{Species composition} \tab Table indicating the number and percentage of captures by fish species.\cr
+    \code{Sampling effort} \tab Table indicating the travel duration and the average number of coves by port.\cr
+    \code{Number of observers} \tab Table indicating the number of observers by port.\cr
+    \code{Number of sets by latitude} \tab Table indicating the number of coves by latitude.\cr
+    \code{Depth by latitude} \tab Table indicating the upper limit, lower limit and average depth by latitude.
   }
   
 }
