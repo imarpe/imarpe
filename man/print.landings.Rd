@@ -36,7 +36,7 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 \author{
 Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Romero Romero.
 
-Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
+Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
 \note{
 %%  ~~further notes~~
@@ -56,7 +56,7 @@ data = getData("desembarques_data3.csv", type="landings")
 class(data)
 
 \method{print}{landings}(data)
-
+}
 
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,

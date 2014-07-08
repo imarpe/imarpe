@@ -44,7 +44,7 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 \author{
 Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Romero Romero.
 
-Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
+Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
 \note{
 %%  ~~further notes~~
@@ -65,7 +65,7 @@ class(data)
 
 ## S3 method for class 'landings'
 SummaryLandings = summary(data)
-
+}
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
 %##--	or do  help(data=index)  for the standard data sets.
