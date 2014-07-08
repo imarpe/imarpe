@@ -2,40 +2,38 @@
 \alias{print.summary.bitacoras}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-print.summary.bitacoras
+Print General Description of Summary.bitacoras Objects
 %%  ~~function to do ... ~~
 }
 \description{
-Shows a summary for objects of class "bitacoras".
+Prints summary information about a \dQuote{bitacoras} object, which includes  the metadata, captures by specie, travel duration and number of coves, observers by port, coves by latitude and depth by latitude.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-print.summary.bitacoras(x, ...)
+\method{print}{summary.bitacoras}(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{An object of class "bitacoras".
+  \item{x}{An object of class \dQuote{summary.bitacoras}.
 %%     ~~Describe \code{x} here~~
 }
-  \item{\dots}{Further arguments
+%  \item{\dots}{Further arguments
 %%     ~~Describe \code{\dots} here~~
-}
+%}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  \tabular{ll}{
+    \code{info} \tab General overview of the bitacoras database (number of records, observers, ports and the unique years). \cr
+    \code{composition} \tab Dataframe indicating the number of captures by fish species.\cr
+    \code{effort} \tab Dataframe indicating the travel duration and the number of coves by port.\cr
+    \code{observer} \tab Dataframe indicating the number of observers by port.\cr
+    \code{set} \tab Dataframe indicating the number of coves by latitude.\cr
+    \code{depth} \tab Dataframe indicating the upper limit, lower limit and average depth by latitude.
+  }
+  
 }
 \value{
-\item{info}{General overview of the bitacoras database (number of records, observers, ports and the unique years).}
-\item{composition}{Dataframe indicating the number of captures by fish species.}
-\item{effort}{Dataframe indicating the travel duration and the number of coves by port.}
-\item{observer}{Dataframe indicating the number of observers by port.}
-\item{set}{Dataframe indicating the number of coves by latitude.}
-\item{depth}{Dataframe indicating the upper limit, lower limit and average depth by latitude.}
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+None (invisible NULL).
 }
 \references{
 Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
@@ -52,10 +50,10 @@ Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+\code{\link{getData}}, \code{\link{summary.bitacoras}}, \code{\link{print.bitacoras}, \code{\link{plot.bitacoras}
+}}}
 \examples{
-## Loading the data
+## Reading a database of the 'bitacoras' class 
 data <- getData("matrizPBP.csv", type="bitacoras")
 
 ## Printing the summary
