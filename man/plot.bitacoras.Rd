@@ -2,11 +2,11 @@
 \alias{plot.bitacoras}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Plot a bitacoras object.
+Plot a Bitacoras Object
 %%  ~~function to do ... ~~
 }
 \description{
-The \code{plot} method for objects of class \dQuote{bitacoras}.
+The \code{plot} method for objects of class \dQuote{bitacoras}. This function plots two kind of graphs, which are defined by \dQuote{type} argument.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -19,8 +19,8 @@ The \code{plot} method for objects of class \dQuote{bitacoras}.
 }
   \item{type}{ Type of graph to plot. Possible types are:
   \itemize{
-  \item \dQuote{effort} for plotting a barplot of average travel time with a line of average coves.
-  \item \dQuote{depth} for plotting a boxplot of depths by a range of latitudes.
+  \item \dQuote{effort} for plotting a barplot of average travel time with a line of average coves by port.
+  \item \dQuote{depth} for plotting a boxplot of depths by ranges of latitudes.
   }
 %%     ~~Describe \code{type} here~~
 }
@@ -29,9 +29,11 @@ The \code{plot} method for objects of class \dQuote{bitacoras}.
 }
 }
 \details{
+In \dQuote{effort} graph, plotted statistics like travel time, number of coves are average data of the gathered profiles by port.
+
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{None (invisible NULL).
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -58,16 +60,17 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+\code{\link{getData}}, \code{\link{print.bitacoras}}, \code{\link{summary.bitacoras}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-# Loading the data
-data <- getData("matrizPBP.csv", type="bitacoras")
+## Loading the data
+data = getData("matrizPBP.csv", type="bitacoras")
 
-# Plotting by effort
+## Plotting by effort
 plot(data,type="effort")
 
-# Plotting by depth
+## Plotting by depth
 plot(data,type="depth")
 
 %##---- Should be DIRECTLY executable !! ----
