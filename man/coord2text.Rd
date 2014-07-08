@@ -1,42 +1,38 @@
 \name{coord2text}
 \alias{coord2text}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-%%  ~~function to do ... ~~
+\title{Convert Latitude and Longitude Coordinates to Character
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Converts latitude and longitude coordinates, which are \dQuote{numeric} vectors or matrices, to character vectors. Mainly, it adds cardinal directions depending of the sign of the coordinates values and the kind of coordinate (Latitude or Longitude).
 }
 \usage{
 coord2text(coord, type)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{coord}{
-%%     ~~Describe \code{coord} here~~
+  \item{coord}{ It is \dQuote{numeric} single value, vector or matrix that contain coordinates values.
 }
-  \item{type}{
-%%     ~~Describe \code{type} here~~
+  \item{type}{Kind of coordinate to be converted. Possible values are c(\dQuote{lat},\dQuote{lon}).
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+\itemize{
+\item In \dQuote{lat} coordinate, negative values represent north (\strong{N}) direction and positive values represent south (\strong{S}) direction.
+\item In \dQuote{lon} coordinate, negative values represent west (\strong{W}) direction and positive values represent east (\strong{E}) direction.
+}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A vector character of the input coordinates.
 }
 \references{
-%% ~put references to the literature/web site here ~
+Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
 }
 \author{
-%%  ~~who you are~~
+Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Romero Romero.
+
+Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
-\note{
-%%  ~~further notes~~
+\note{The function accepts any numeric value as input, but you should take into consideration that \dQuote(lat) coordinate goes from -90 to 90, while \dQuote(lon) coordinate goes from -180 to 180.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -45,20 +41,16 @@ coord2text(coord, type)
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+## Defining a vector of latitude coordinate
+Coord = c(-6,-8,-10,-15,-16,-17)
 
-## The function is currently defined as
-function (coord, type) 
-{
-    if (!is.character(type)) 
-        type = deparse(substitute(type))
-    out = sapply(coord, FUN = .coord2text, type = type)
-    return(out)
-  }
+## Converting to text
+CoordText = coord2text(Coord,'lat')
+
+## Printing CoordText
+CoordText
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+%\keyword{ ~kwd1 }
+%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

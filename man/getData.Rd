@@ -42,7 +42,7 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 \author{
 Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Romero Romero.
 
-Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
+Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
 \note{If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv()}}
 %%  ~~further notes~~
@@ -68,19 +68,7 @@ class(data)
 data = getData("matrizPBP.csv")
 ## Verifying the class of data
 class(data)
-%##---- Should be DIRECTLY executable !! ----
-%##-- ==>  Define data, use random,
-%##--	or do  help(data=index)  for the standard data sets.
-
-%## The function is currently defined as
-%function (file, type, ...) 
-%{
-%    output = switch(type, bitacoras = .getBitacorasData(file = file, 
-%        ...), landings = .getLandingsData(file = file, ...), 
-%        read.csv(file = file, ...))
-%    return(output)
-%  }
-%}
+}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 %\keyword{ ~kwd1 }
