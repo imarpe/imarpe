@@ -12,7 +12,7 @@
   
   porcentaje = 100*datos/sum(datos, na.rm=TRUE)
   
-  #Para la tabla de profundidad
+  # For the table of composition
   tabla = data.frame(datos, porcentaje)
   tabla = rbind(tabla, colSums(tabla, na.rm=TRUE))
   colnames(tabla) = c("Capturas", "Porcentaje")
@@ -47,7 +47,7 @@
   return(tabla)
 }
 
-
+# It needs to be completed automated
 .plotEffort.bitacoras = function (x=x, ...) {
   
   datos = .getEffort.bitacoras(x)
@@ -69,12 +69,12 @@
         xlab = NA, xlim = NULL, ylab = NULL, yaxs = "i", xaxs = "i",
         ylim = c(0, ceiling(1.3*max(as.numeric(duracionViaje)))) )
   
-  axis(side = 4, at = seq(0, ceiling(1.3*max(as.numeric(duracionViaje))),
-                          length.out = ceiling(max(lineRange)) + 1),
+  axis(side = 4, at = seq(0, ceiling(max(lineRange)),
+                          length.out = ceiling(max(lineRange)) + 1)*35/ceiling(max(lineRange)),
        labels = seq(0, ceiling(max(lineRange))))
   mtext(side = 4, line = 3, "Cala")
   legend("topleft", legend= c("Duraci\u{F3}n de viaje promedio", "N\u{B0} de calas promedio"),
-         col = c("red", "blue"), pch = 15, bty = "n", cex=0.85)
+         col = c("black", "dark blue"), pch = c(22,46),pt.bg='red',lty=c(0,1),lwd = c(1,2.5), bty = "n", pt.cex=c(3,0.85),cex=0.85)
   box()
   
   return(invisible())
@@ -106,7 +106,7 @@
   
 }
 
-
+# Getting number of coves by latitude
 .getNumberSet.bitacoras = function(object) {
   
   datos = object$data
@@ -136,14 +136,14 @@
   
   grado = unique(datos$latGf)
   grado = grado[order(grado, decreasing=FALSE)]
-  constante = 1.8288 #constante de conversion
+  constante = 1.8288 #constante de conversion: 6 feets = 1.8288 meters
   
   topeSuperior = constante*aggregate(datos$tope.sup, by=list(datos$latGf), FUN=mean,
                                      na.rm=TRUE)
   topeInferior = constante*aggregate(datos$tope.inf, by=list(datos$latGf), FUN=mean,
                                      na.rm=TRUE)
   
-  #Para la tabla de numero de calas
+  # For the table of Depth
   tabla = data.frame(topeSuperior$x, topeInferior$x)
   tabla = cbind(tabla, rowMeans(tabla))
   colnames(tabla) = c("Tope superior", "Tope inferior", "Promedio")
@@ -162,7 +162,7 @@
   
   datosLatitudes = datos[order(datos$latGf), ]
   mean = apply(datosLatitudes[,c(2,3)], 1, mean)
-  constante = 1.8288
+  constante = 1.8288 #constante de conversion: 6 feets = 1.8288 meters
   datos = data.frame(lat=datosLatitudes[,1], valores = mean*constante)
   
   ylim = c(0, max(datos$valores))
@@ -173,9 +173,9 @@
   boxplot(valores~lat, datos, outline = FALSE, xlab = "Latitud",
           ylab = "Profundidad", ylim = ylim, col = "red", main = "", axes=FALSE)
   axis(2, at=axTicks(2), label=axTicks(2), las=2)
-  axis(1, at=axTicks(1), label=coord2text(-unique(datos$lat),"lat"))
+  axis(1, at=axTicks(1), label=coord2text(-unique(datos$lat),"lat"))#need to be generalized
   box()
-  
+
   return(invisible())
   
 }

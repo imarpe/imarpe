@@ -45,8 +45,8 @@ summary.bitacoras = function(object, ...) {
   output$composition = .getSpeciesComposition.bitacoras(object)
   output$effort      = .getEffort.bitacoras(object) 
   output$observer    = .getNumberObserver.bitacoras(object)
-  output$set         = .getNumberSet.bitacoras(object)
-  output$depth       = .getDepth.bitacoras(object) 
+  output$set         = .getNumberSet.bitacoras(object)#number of coves by latitude
+  output$depth       = .getDepth.bitacoras(object)#depth by latitude
   
   class(output) = "summary.bitacoras"
   return(output)
