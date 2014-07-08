@@ -44,7 +44,7 @@ In \dQuote{effort} graph, plotted statistics like travel time, number of coves a
 \author{
 Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Romero Romero.
 
-Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
+Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
 
 \references{
@@ -72,7 +72,7 @@ plot(data,type="effort")
 
 ## Plotting by depth
 plot(data,type="depth")
-
+}
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
 %##--	or do  help(data=index)  for the standard data sets.
