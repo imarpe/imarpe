@@ -29,7 +29,7 @@ Required period of time. Possible types are
   }
 %%     ~~Describe \code{time} here~~
 }
-  \item{\dots}{Other graphical parameters accepted by \code{\link{plot()}}.
+  \item{\dots}{Other graphical parameters accepted by \code{\link{plot}}.
 %%     ~~Describe \code{\dots} here~~
 }
 }
