@@ -13,13 +13,13 @@ getData(file, type, \dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{file}{The name of the file from which the data is read. Each row of the table appears as one line of the file. If it does not contain an absolute path, the file name is relative to the current working directory, \code{\link{getwd()}}.
+  \item{file}{The name of the file from which the data is read. Each row of the table appears as one line of the file. If it does not contain an absolute path, the file name is relative to the current working directory, \code{\link{getwd}}.
 %%     ~~Describe \code{file} here~~
 }
   \item{type}{Type of the database to be read. The following types are accepted: \dQuote{bitacoras},\dQuote{landings}. 
 %%     ~~Describe \code{type} here~~
 }
-  \item{\dots}{Further arguments allowed by \code{\link{read.csv()}} function.
+  \item{\dots}{Further arguments allowed by \code{\link{read.csv}} function.
 %%     ~~Describe \code{\dots} here~~
 }
 }
@@ -44,7 +44,7 @@ Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Ro
 
 Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
-\note{If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv()}}
+\note{If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}
 %%  ~~further notes~~
 }
 

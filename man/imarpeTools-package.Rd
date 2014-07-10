@@ -4,7 +4,7 @@
 \alias{imarpe}
 \docType{package}
 \title{
-\pkg{imarpe}: Automation of Graphs, Tables and Reports of the Instituto del Mar del Perú (IMARPE).
+\pkg{imarpe}: Automation of Graphs, Tables and Reports of the Instituto del Mar del Peru (IMARPE).
 %imarpe: automatizaci?n de gr?ficas, tablas y reportes del Instituto del Mar del Per?.
 }
 \description{

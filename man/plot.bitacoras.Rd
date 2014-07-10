@@ -24,7 +24,7 @@ The \code{plot} method for objects of class \dQuote{bitacoras}. This function pl
   }
 %%     ~~Describe \code{type} here~~
 }
-  \item{\dots}{Other graphical parameters accepted by \code{\link{plot()}}.
+  \item{\dots}{Other graphical parameters accepted by \code{\link{plot}}.
 %%     ~~Describe \code{\dots} here~~
 }
 }
