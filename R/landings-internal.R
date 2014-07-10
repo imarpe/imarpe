@@ -28,12 +28,13 @@
 }
 
 .trimData.landings = function(x, start, end) {
-  datos = x
+  datos=x$data
   months = datos$month
   monthsPosition = unique(months)
   dataDate = paste(datos$year,"-",match(months, monthsPosition), "-",datos$day,sep="")
-  data = data.frame(dataDate, datos$Ports)
-  
+  SumPorts = .getSumPorts.landings(x)
+  data = data.frame(dataDate, SumPorts)
+   
   data$date = as.Date(as.character(data$dataDate), format="%Y-%m-%d")
   data = subset(data, data$date >= as.Date(start) & data$date <= as.Date(end))
   
@@ -49,18 +50,24 @@
   }
   months = monthsName
   
-  tabla = data.frame(years, months, days, data$datos.Ports)
+  tabla = data.frame(years, months, days, data$Ports)
   names(tabla) = c("year", "month", "day", "Ports")
   
   return(tabla)
 }
 
 .plotDays.landings = function (x, start=NULL, end=NULL, ...) {
-  datos = .getSumPorts.landings(x)
-  datos = .trimData.landings(datos, start=start, end=end)
-  days = paste0(datos$day,"-",capitalize(datos$month))
-  daysToPlot = c(1,7,15,21) #dias que seran ploteados
-  daysToPlot = which(datos$day %in% daysToPlot) #posicion de los dias que seran ploteados
+  if(is.null(start) & is.null(end)){
+    months = x$data$month
+    monthsPosition = unique(months)
+    dataDate = as.Date(as.character(paste(x$data$year,"-",match(months, monthsPosition), "-",x$data$day,sep="")),format="%Y-%m-%d")
+    start=min(dataDate)
+    end=max(dataDate)
+  }
+  datos = .trimData.landings(x, start=start, end=end)
+  days = paste0(as.character(datos$day),"-",capitalize(as.character(datos$month)))
+  daysToPlot = c(1,8,15,22) #dias que seran ploteados
+  daysToPlot = which(as.numeric(datos$day) %in% daysToPlot) #posicion de los dias que seran ploteados
   daysToPlot = days[daysToPlot] #formato de los dias que seran ploteados
   
   days[! days %in% daysToPlot] = NA

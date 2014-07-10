@@ -19,11 +19,11 @@
 
 print.landings = function(x, ...) {
   
-  cat("Landings data from", sQuote(x$info$file), "\n", sep="")
-  cat("Number of records:", x$info$records, "\n", sep="")
-  cat("Number of months of data:", x$info$months, "\n", sep="")
-  cat("Number of years of data:", x$info$years, "\n", sep="")
-  cat("Number of ports:", x$info$ports, "\n", sep="")
+  cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
+  cat("Number of records: ", x$info$records, "\n", sep="")
+  cat("Number of months of data: ", x$info$months, "\n", sep="")
+  cat("Number of years of data: ", x$info$years, "\n", sep="")
+  cat("Number of ports: ", x$info$ports, "\n", sep="")
   
   return(invisible())
   
@@ -47,11 +47,11 @@ summary.landings = function(object, ...) {
 
 print.summary.landings = function(x, ...) {
   
-  cat("Landings data from", sQuote(x$info$file), "\n", sep="")
-  cat("Number of records:", x$info$records, "\n", sep="")
-  cat("Number of months of data:", x$info$months, "\n", sep="")
-  cat("Number of years of data:", x$info$years, "\n", sep="")
-  cat("Number of ports:", x$info$ports, "\n", sep="")
+  cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
+  cat("Number of records: ", x$info$records, "\n", sep="")
+  cat("Number of months of data: ", x$info$months, "\n", sep="")
+  cat("Number of years of data: ", x$info$years, "\n", sep="")
+  cat("Number of ports: ", x$info$ports, "\n", sep="")
   
   #   cat("\nDaily landing:\n\n")
   #   print(x$sumPorts)
