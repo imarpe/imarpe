@@ -6,7 +6,7 @@ Plot a Landings Object
 %%  ~~function to do ... ~~
 }
 \description{
-Plot method for objects of class \dQuote{landings}.
+The \code{plot} method for objects of class \dQuote{landings}. This function plots three kinds of graphs, which are defined by \dQuote{time} argument.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -34,23 +34,26 @@ Required period of time. Possible types are
 }
 }
 \details{
+In \dQuote{day} graph, the user can define the extent of the days that he wants to plot by adding the start and end date parameters as a character class.
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{None (invisible NULL).
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
-\references{
-Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
-}
 \author{
 Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Romero Romero.
 
 Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
+
+\references{
+Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
+}
+
 \note{
 %%  ~~further notes~~
 }
@@ -58,11 +61,18 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+\code{\link{getData}}, \code{\link{print.landings}}, \code{\link{summary.landings}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 ## Loading the data
 data = getData("desembarques_data3.csv", type="landings")
+
+## Plotting by day
+# to plot the whole range of days 
+plot(data,time="day") 
+# to plot a subset of the days 
+plot(data,time="day",start="2013-02-14",end="2013-06-16") 
 
 ## Plotting by month
 plot(data,time="month")

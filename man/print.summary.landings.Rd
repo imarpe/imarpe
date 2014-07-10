@@ -2,38 +2,38 @@
 \alias{print.summary.landings}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-print.summary.landings
+Print General Description of Summary.landings Objects
 %%  ~~function to do ... ~~
 }
 \description{
-Shows a summary for objects of class "landings".
+Prints summary information about a \dQuote{landings} object, which includes  the metadata, landings by ports, monthly landings and annual landings.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-print.summary.landings(x, ...)
+\method{print}{summary.landings}(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{An object of class "landings".
+  \item{x}{An object of class \dQuote{summary.landings}.
 %%     ~~Describe \code{x} here~~
 }
-  \item{\dots}{Further arguments
+%  \item{\dots}{Further arguments
 %%     ~~Describe \code{\dots} here~~
+%}
 }
-}
+
 \details{
 %%  ~~ If necessary, more details than the description above ~~
+  \tabular{ll}{
+    \code{info} \tab General overview of the landings database (number of records, months, years and ports). \cr
+    \code{ports} \tab Table indicating the number of landings by port.\cr
+    \code{months} \tab Table indicating the number of landings by month.\cr
+    \code{years} \tab Table indicating the number of landings by year.
+  }
 }
+
 \value{
-\item{info}{General overview of the landings database (number of records, months, years and ports).}
-\item{ports}{Dataframe indicating the number of landings by port.}
-\item{months}{Dataframe indicating the number of landings by month.}
-\item{years}{Dataframe indicating the number of landings by year.}
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+None (invisible NULL).
 }
 \references{
 Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
@@ -50,11 +50,12 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+\code{\link{getData}}, \code{\link{summary.landings}}, \code{\link{print.landings}}, \code{\link{plot.landings}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 ## Loading the data
-data <- getData("desembarques_data3.csv", type="landings")
+data = getData("desembarques_data3.csv", type="landings")
 
 ## Printing the summary
 summary(data)

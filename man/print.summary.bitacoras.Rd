@@ -50,11 +50,11 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{getData}}, \code{\link{summary.bitacoras}}, \code{\link{print.bitacoras}, \code{\link{plot.bitacoras}
-}}}
+\code{\link{getData}}, \code{\link{summary.bitacoras}}, \code{\link{print.bitacoras}}, \code{\link{plot.bitacoras}}
+}
 \examples{
 ## Reading a database of the 'bitacoras' class 
-data <- getData("matrizPBP.csv", type="bitacoras")
+data = getData("matrizPBP.csv", type="bitacoras")
 
 ## Printing the summary
 summary(data)
