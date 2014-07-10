@@ -37,7 +37,6 @@ Returns an object of class \dQuote{summary.landings} containing the following fe
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
-}
 \references{
 Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
 }
@@ -82,7 +81,6 @@ SummaryLandings = summary(data)
 %    class(output) = "summary.landings"
 %    return(output)
 %  }
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 %\keyword{ ~kwd1 }

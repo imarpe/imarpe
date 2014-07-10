@@ -82,7 +82,6 @@ SummaryBitacoras = summary(data)
 %    output$depth = .getDepth.bitacoras(object)
 %    class(output) = "summary.bitacoras"
 %    return(output)
-  }
 %}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

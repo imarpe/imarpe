@@ -32,7 +32,7 @@ Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Ro
 
 Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
-\note{The function accepts any numeric value as input, but you should take into consideration that \dQuote(lat) coordinate goes from -90 to 90, while \dQuote(lon) coordinate goes from -180 to 180.
+\note{The function accepts any numeric value as input, but you should take into consideration that \dQuote{lat} coordinate goes from -90 to 90, while \dQuote{lon} coordinate goes from -180 to 180.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

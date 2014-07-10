@@ -84,7 +84,6 @@ plot(data,type="depth")
 %        depth = .plotDepth.bitacoras(object = x, ...), error("Plot type not defined."))
 %    return(invisible())
 %  }
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 %\keyword{ ~kwd1 }
