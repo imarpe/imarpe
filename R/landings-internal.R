@@ -13,8 +13,6 @@
 
 .getPorts.landings = function (object, ...) {
   
-  require(Hmisc)
-  
   datos = object$data
   
   ports = datos[,c(4:length(colnames(datos)))]
