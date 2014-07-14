@@ -3,13 +3,13 @@ Type: Package
 Title: Tools for graphics and summary reports for IMARPE
 Version: 0.1
 Date: 2014-03-12
-Authors@R: c(person("Criscely", "Luján-Paredes", role = "aut",
+Authors@R: c(person("Criscely", "Lujan-Paredes", role = "aut",
   	     email = "criscely@gmail.com"),
 	      person("Ricardo", "Oliveros-Ramos", role = c("aut", "cre"),
 		     email = "roliveros@imarpe.gob.pe"))
 Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 Description: Tools for graphics and summary reports for IMARPE
 License: TBD
-Depends: Hmisc, lattice 
+Depends: R (>= 3.0.0), Hmisc, lattice 
 LazyData: TRUE
 ByteCompile: TRUE

@@ -84,7 +84,7 @@ plot.bitacoras = function(x, type, ...) {
   switch(type,
          effort = .plotEffort.bitacoras(x=x, ...),
          depth = .plotDepth.bitacoras(object=x, ...),
-         error("Plot type not defined."))
+         stop("Plot type not defined."))
   
   return(invisible())
 }

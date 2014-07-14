@@ -172,8 +172,8 @@
   
   boxplot(valores~lat, datos, outline = FALSE, xlab = "Latitud",
           ylab = "Profundidad", ylim = ylim, col = "red", main = "", axes=FALSE)
-  axis(2, at=axTicks(2), label=axTicks(2), las=2)
-  axis(1, at=axTicks(1), label=coord2text(-unique(datos$lat),"lat"))#need to be generalized
+  axis(2, at=axTicks(2), labels=axTicks(2), las=2)
+  axis(1, at=axTicks(1), labels=coord2text(-unique(datos$lat),"lat"))#need to be generalized
   box()
 
   return(invisible())
