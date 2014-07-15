@@ -53,9 +53,9 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 %Introducci?n al paquete \code{imarpe} para la automatizaci?n de gr?ficos, tablas y reportes usando \code{R}.
 }
 
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

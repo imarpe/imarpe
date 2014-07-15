@@ -37,9 +37,9 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%}
 \examples{
 ## Defining a vector of latitude coordinate
 Coord = c(-6,-8,-10,-15,-16,-17)

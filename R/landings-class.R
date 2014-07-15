@@ -17,7 +17,7 @@
   
 }
 
-print.landings = function(x, ...) {
+print.landings = function(x) {
   
   cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
   cat("Number of records: ", x$info$records, "\n", sep="")
@@ -29,7 +29,7 @@ print.landings = function(x, ...) {
   
 }
 
-summary.landings = function(object, ...) {
+summary.landings = function(object) {
   
   output = list()
   
@@ -45,7 +45,7 @@ summary.landings = function(object, ...) {
   
 }
 
-print.summary.landings = function(x, ...) {
+print.summary.landings = function(x) {
   
   cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
   cat("Number of records: ", x$info$records, "\n", sep="")
@@ -69,11 +69,11 @@ print.summary.landings = function(x, ...) {
   
 }
 
-plot.landings = function(x, y=NULL, time=NULL, ...) {
+plot.landings = function(x, time=NULL, ...) {
   
-  if(!is.null(y) & is.null(time)) time = y
-  if( is.null(y) & is.null(time)) time = "day"
-  
+#  if(!is.null(y) & is.null(time)) time = y
+#  if( is.null(y) & is.null(time)) time = "day"
+   if(is.null(time)) time="day"
   switch(time,
          day   = .plotDays.landings(x=x, ...),
          month = .plotMonths.landings(x=x, ...),

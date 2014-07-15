@@ -37,7 +37,7 @@ print.bitacoras = function(x, ...) {
   
 }
 
-summary.bitacoras = function(object, ...) {
+summary.bitacoras = function(object) {
   
   output = list()
   
@@ -53,7 +53,7 @@ summary.bitacoras = function(object, ...) {
   
 }
 
-print.summary.bitacoras = function(x, ...) {
+print.summary.bitacoras = function(x) {
   
   cat("Bitacoras data from ", sQuote(x$info$file), "\n", sep="")
   cat("Number of records: ", x$info$records, "\n", sep="")

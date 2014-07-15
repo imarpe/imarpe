@@ -54,9 +54,9 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
 }
 
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

@@ -38,9 +38,9 @@ Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Ro
 
 Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -55,7 +55,8 @@ data = getData("desembarques_data3.csv", type="landings")
 ## Verifying the class of data
 class(data)
 
-\method{print}{landings}(data)
+## S3 method for class 'landings'
+print(data)
 }
 
 %##---- Should be DIRECTLY executable !! ----

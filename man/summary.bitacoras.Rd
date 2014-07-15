@@ -21,9 +21,9 @@ Creates a new object of class \dQuote{summary.bitacoras}. This class has summary
 %%     ~~Describe \code{\dots} here~~
 %}
 }
-\details{
+%\details{
 %%  ~~ If necessary, more details than the description above ~~
-}
+%}
 \value{
 Returns an object of class \dQuote{summary.bitacoras} containing the following features:
 \item{info}{General overview, metadata, of the \dQuote{bitacoras} database (number of records, observers, ports and involved years).}
@@ -46,9 +46,9 @@ Criscely Lujan Paredes, Ricardo Oliveros-Ramos, Erick Chacon Montalvan, Vilma Ro
 
 Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 }
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
