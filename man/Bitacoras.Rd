@@ -2,10 +2,9 @@
 \alias{Bitacoras}
 \docType{data}
 \title{Bitacoras Data
-%%   ~~ data name/kind ... ~~
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+Fishing Bitacoras data is gathered through the board observer program that was established as an important support tool in the evaluation of the main species of the Peruvian sea and its own management decisions complementary to traditional sources of information such as Tracking fisheries, Birds and Mammals and Acoustics evaluation. This data covers characteristics of fishing trips.
 }
 \usage{data(Bitacoras)}
 \format{
@@ -16,11 +15,11 @@ An object of the \code{\link{class}} \dQuote{bitacoras}, which is list with 2 co
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+Main data inside this dataset are related to fishery effort and the abundance of the pelagic resources. 
 }
-\source{
+%\source{
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
+%}
 \references{
 Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
 %%  ~~ possibly secondary sources and usages ~~

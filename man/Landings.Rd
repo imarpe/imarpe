@@ -19,9 +19,9 @@ An object of the \code{\link{class}} \dQuote{landings}, which is list with 2 com
 The first three variables refer to the year, month and day, while the rest variables refer to 13 peruvian ports.
 %%  ~~ If necessary, more details than the __description__ above ~~
 }
-\source{
+%\source{
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
+%}
 \references{
 Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
 %%  ~~ possibly secondary sources and usages ~~
