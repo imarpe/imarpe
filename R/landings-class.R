@@ -20,13 +20,24 @@
 print.landings = function(x) {
   
   cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
-  cat("Number of records: ", x$info$records, "\n", sep="")
-  cat("Number of months of data: ", x$info$months, "\n", sep="")
-  cat("Number of years of data: ", x$info$years, "\n", sep="")
-  cat("Number of ports: ", x$info$ports, "\n", sep="")
+  RowNames=c("Number of records","Number of months of data",
+             "Number of years of data","Number of ports")
+  #W=rep(':',4)
+  #Z=data.frame(W,Value=as.numeric(x$info[-1]),row.names=RowNames)
+  #colnames(Z)=c(" "," ")
+  #print(Z)
+  
+  RowNames=RefineChar4Table(RowNames)
+  FrameInfo=data.frame(Value=as.numeric(x$info[-1]),row.names=RowNames)
+  colnames(FrameInfo)=c(" ")
+  print(FrameInfo)
+
+  #cat("Number of records: ", x$info$records, "\n", sep="")
+  #cat("Number of months of data: ", x$info$months, "\n", sep="")
+  #cat("Number of years of data: ", x$info$years, "\n", sep="")
+  #cat("Number of ports: ", x$info$ports, "\n", sep="")
   
   return(invisible())
-  
 }
 
 summary.landings = function(object) {
@@ -46,17 +57,26 @@ summary.landings = function(object) {
 }
 
 print.summary.landings = function(x) {
-  
+
   cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
-  cat("Number of records: ", x$info$records, "\n", sep="")
-  cat("Number of months of data: ", x$info$months, "\n", sep="")
-  cat("Number of years of data: ", x$info$years, "\n", sep="")
-  cat("Number of ports: ", x$info$ports, "\n", sep="")
+  RowNames=c("Number of records","Number of months of data",
+             "Number of years of data","Number of ports")
+  RowNames=RefineChar4Table(RowNames)
+  FrameInfo=data.frame(Value=as.numeric(x$info[-1]),row.names=RowNames)
+  colnames(FrameInfo)=c(" ")
+  print(FrameInfo)
+#   cat("Number of records: ", x$info$records, "\n", sep="")
+#   cat("Number of months of data: ", x$info$months, "\n", sep="")
+#   cat("Number of years of data: ", x$info$years, "\n", sep="")
+#   cat("Number of ports: ", x$info$ports, "\n", sep="")
   
-  #   cat("\nDaily landing:\n\n")
-  #   print(x$sumPorts)
+#   cat("\nDaily landing:\n\n")
+#   print(x$sumPorts)
   
   cat("\nLandings by ports (non-zero only):\n\n")
+#   PortNames=rownames(x$ports)
+#   PortNames[x$ports$Landings>0]=RefineChar4Table(PortNames[x$ports$Landings>0])
+#   rownames(x$ports)=PortNames
   print(x$ports[x$ports$Landings>0, ,drop=FALSE])
   
   cat("\nMonthly landing:\n\n")
