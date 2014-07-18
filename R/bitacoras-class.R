@@ -28,16 +28,23 @@
 print.bitacoras = function(x, ...) {
   
   cat("Bitacoras data from ", sQuote(x$info$file), "\n", sep="")
-  cat("Number of records: ", x$info$records, "\n", sep="")
-  cat("Number of observers: ", x$info$observers,"\n", sep="")
-  cat("Number of ports: ", x$info$ports,"\n", sep="")
-  cat("Years: ", x$info$years, "\n", sep="")
+  x$info$years=as.character(paste(x$info$years,collapse=", "))
+  RowNames=c("Number of records","Number of observers",
+             "Number of ports","Years")
+  RowNames=RefineChar4Table(RowNames)
+  FrameInfo=data.frame(Value=as.character(x$info[-1]),row.names=RowNames)
+  colnames(FrameInfo)=c(" ")
+  print(FrameInfo,...)
+#   cat("Number of records: ", x$info$records, "\n", sep="")
+#   cat("Number of observers: ", x$info$observers,"\n", sep="")
+#   cat("Number of ports: ", x$info$ports,"\n", sep="")
+#   cat("Years: ", x$info$years, "\n", sep="")
   
   return(invisible())
   
 }
 
-summary.bitacoras = function(object) {
+summary.bitacoras = function(object,...) {
   
   output = list()
   
@@ -53,28 +60,25 @@ summary.bitacoras = function(object) {
   
 }
 
-print.summary.bitacoras = function(x) {
+print.summary.bitacoras = function(x,...) {
   
-  cat("Bitacoras data from ", sQuote(x$info$file), "\n", sep="")
-  cat("Number of records: ", x$info$records, "\n", sep="")
-  cat("Number of observers: ", x$info$observers,"\n", sep="")
-  cat("Ports: ", x$info$ports,"\n", sep="")
-  cat("Years: ", x$info$years, "\n", sep="")
-  
+    x2=x; class(x2)='bitacoras'
+    print(x2,...)
+    
   cat("\nSpecies composition:\n\n")
-  print(x$composition)
+  print(x$composition,...)
   
   cat("\nSampling effort:\n\n")
-  print(x$effort)
+  print(x$effort,...)
   
   cat("\nNumber of observers:\n\n")
-  print(x$observer)
+  print(x$observer,...)
   
   cat("\nNumber of sets by latitudinal degree:\n\n")
-  print(t(x$set))
+  print(t(x$set),...)
   
   cat("\nDepth by latitudinal degree:\n\n")
-  print(t(x$depth))
+  print(t(x$depth),...)
   
   return(invisible(x))
 }

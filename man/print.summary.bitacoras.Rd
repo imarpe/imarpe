@@ -10,16 +10,15 @@ Prints summary information about a \dQuote{bitacoras} object, which includes  th
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{print}{summary.bitacoras}(x)
+\method{print}{summary.bitacoras}(x,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{An object of class \dQuote{summary.bitacoras}.
 %%     ~~Describe \code{x} here~~
 }
-%  \item{\dots}{Further arguments
-%%     ~~Describe \code{\dots} here~~
-%}
+  \item{\dots}{Further arguments accepted by \code{\link{print}}
+}
 }
 \details{
   \tabular{ll}{

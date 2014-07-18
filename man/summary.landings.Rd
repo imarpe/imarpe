@@ -10,16 +10,16 @@ Creates a new object of class \dQuote{summary.landings}. This class has summary 
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{summary}{landings}(object)
+\method{summary}{landings}(object,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{An object of class \dQuote{landings}.
 %%     ~~Describe \code{object} here~~
 }
-%  \item{\dots}{Further arguments
+  \item{\dots}{Further arguments
 %%     ~~Describe \code{\dots} here~~
-%}
+}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~

@@ -10,16 +10,15 @@ Creates a new object of class \dQuote{summary.bitacoras}. This class has summary
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{summary}{bitacoras}(object)
+\method{summary}{bitacoras}(object, \dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{An object of class \dQuote{bitacoras}.
 %%     ~~Describe \code{object} here~~
 }
-%  \item{\dots}{Further arguments
-%%     ~~Describe \code{\dots} here~~
-%}
+  \item{\dots}{Further arguments
+}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~

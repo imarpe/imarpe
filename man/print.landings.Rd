@@ -9,16 +9,16 @@ Prints the main features of the \dQuote{landings} database such as the number of
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{print}{landings}(x)
+\method{print}{landings}(x,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{An object of the class \dQuote{landings}.
 %%     ~~Describe \code{x} here~~
 }
-%  \item{\dots}{Further arguments
+  \item{\dots}{Further arguments accepted by \code{\link{print}}
 %%     ~~Describe \code{\dots} here~~
-%}
+}
 }
 \details{It is not useful to print all the content of large databases as \dQuote{landings} objects. For this reason, this function is useful to print only metadata of \dQuote{landings} objects.
 %%  ~~ If necessary, more details than the description above ~~

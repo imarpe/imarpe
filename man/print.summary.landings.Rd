@@ -10,16 +10,14 @@ Prints summary information about a \dQuote{landings} object, which includes  the
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{print}{summary.landings}(x)
+\method{print}{summary.landings}(x,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{An object of class \dQuote{summary.landings}.
-%%     ~~Describe \code{x} here~~
-}
-%  \item{\dots}{Further arguments
-%%     ~~Describe \code{\dots} here~~
-%}
+  }
+  \item{\dots}{Further arguments accepted by \code{\link{print}}
+  }
 }
 
 \details{

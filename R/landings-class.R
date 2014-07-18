@@ -17,7 +17,7 @@
   
 }
 
-print.landings = function(x) {
+print.landings = function(x,...) {
   
   cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
   RowNames=c("Number of records","Number of months of data",
@@ -30,7 +30,7 @@ print.landings = function(x) {
   RowNames=RefineChar4Table(RowNames)
   FrameInfo=data.frame(Value=as.numeric(x$info[-1]),row.names=RowNames)
   colnames(FrameInfo)=c(" ")
-  print(FrameInfo)
+  print(FrameInfo,...)
 
   #cat("Number of records: ", x$info$records, "\n", sep="")
   #cat("Number of months of data: ", x$info$months, "\n", sep="")
@@ -40,7 +40,7 @@ print.landings = function(x) {
   return(invisible())
 }
 
-summary.landings = function(object) {
+summary.landings = function(object,...) {
   
   output = list()
   
@@ -56,7 +56,7 @@ summary.landings = function(object) {
   
 }
 
-print.summary.landings = function(x) {
+print.summary.landings = function(x, ...) {
 
   cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
   RowNames=c("Number of records","Number of months of data",
@@ -64,7 +64,7 @@ print.summary.landings = function(x) {
   RowNames=RefineChar4Table(RowNames)
   FrameInfo=data.frame(Value=as.numeric(x$info[-1]),row.names=RowNames)
   colnames(FrameInfo)=c(" ")
-  print(FrameInfo)
+  print(FrameInfo,...)
 #   cat("Number of records: ", x$info$records, "\n", sep="")
 #   cat("Number of months of data: ", x$info$months, "\n", sep="")
 #   cat("Number of years of data: ", x$info$years, "\n", sep="")
@@ -77,13 +77,13 @@ print.summary.landings = function(x) {
 #   PortNames=rownames(x$ports)
 #   PortNames[x$ports$Landings>0]=RefineChar4Table(PortNames[x$ports$Landings>0])
 #   rownames(x$ports)=PortNames
-  print(x$ports[x$ports$Landings>0, ,drop=FALSE])
+  print(x$ports[x$ports$Landings>0, ,drop=FALSE],...)
   
   cat("\nMonthly landing:\n\n")
-  print(t(x$months))
+  print(t(x$months),...)
   
   cat("\nAnnual landing:\n\n")
-  print(x$years)
+  print(x$years,...)
   
   return(invisible(x))
   

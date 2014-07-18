@@ -10,16 +10,15 @@ Prints the main features of the \dQuote{bitacoras} database such as file name, n
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{print}{bitacoras}(x)
+\method{print}{bitacoras}(x,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{An object of the class \dQuote{bitacoras}.
 %%     ~~Describe \code{x} here~~
 }
-%  \item{\dots}{Further arguments accepted by \code{\link{print}}
-%%     ~~Describe \code{\dots} here~~
-%}
+  \item{\dots}{Further arguments accepted by \code{\link{print}}
+}
 }
 \details{It is not useful to print all the content of large databases as \dQuote{bitacoras} object. For this reason, this function is useful to print only metadata of \dQuote{bitacoras} object.
 %%  ~~ If necessary, more details than the description above ~~
