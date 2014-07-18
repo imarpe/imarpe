@@ -27,7 +27,7 @@ print.landings = function(x,...) {
   #colnames(Z)=c(" "," ")
   #print(Z)
   
-  RowNames=RefineChar4Table(RowNames)
+  RowNames=.RefineChar4Table(RowNames)
   FrameInfo=data.frame(Value=as.numeric(x$info[-1]),row.names=RowNames)
   colnames(FrameInfo)=c(" ")
   print(FrameInfo,...)
@@ -57,19 +57,10 @@ summary.landings = function(object,...) {
 }
 
 print.summary.landings = function(x, ...) {
-
-  cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
-  RowNames=c("Number of records","Number of months of data",
-             "Number of years of data","Number of ports")
-  RowNames=RefineChar4Table(RowNames)
-  FrameInfo=data.frame(Value=as.numeric(x$info[-1]),row.names=RowNames)
-  colnames(FrameInfo)=c(" ")
-  print(FrameInfo,...)
-#   cat("Number of records: ", x$info$records, "\n", sep="")
-#   cat("Number of months of data: ", x$info$months, "\n", sep="")
-#   cat("Number of years of data: ", x$info$years, "\n", sep="")
-#   cat("Number of ports: ", x$info$ports, "\n", sep="")
   
+  x2=x; class(x2)='landings'
+  print(x2,...)
+    
 #   cat("\nDaily landing:\n\n")
 #   print(x$sumPorts)
   

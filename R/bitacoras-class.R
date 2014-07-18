@@ -31,7 +31,7 @@ print.bitacoras = function(x, ...) {
   x$info$years=as.character(paste(x$info$years,collapse=", "))
   RowNames=c("Number of records","Number of observers",
              "Number of ports","Years")
-  RowNames=RefineChar4Table(RowNames)
+  RowNames=.RefineChar4Table(RowNames)
   FrameInfo=data.frame(Value=as.character(x$info[-1]),row.names=RowNames)
   colnames(FrameInfo)=c(" ")
   print(FrameInfo,...)
