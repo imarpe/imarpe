@@ -10,7 +10,6 @@
   return(tabla)
 } 
 
-
 .getPorts.landings = function (object, ...) {
   
   datos = object$data
@@ -54,7 +53,7 @@
   return(tabla)
 }
 
-.plotDays.landings = function (x, start=NULL, end=NULL, ...) {
+.plotDays.landings = function (x, start=NULL, end=NULL, main=NULL, xlab=NULL, ylab=NULL,...) {
   if(is.null(start) & is.null(end)){
     months = x$data$month
     monthsPosition = unique(months)
@@ -69,11 +68,16 @@
   daysToPlot = days[daysToPlot] #formato de los dias que seran ploteados
   
   days[! days %in% daysToPlot] = NA
-  
-  barplot(datos$Ports, main="Daily landing", xlab="Days",
-          ylab="Landing (t)", col="blue", names.arg = FALSE,
+
+  if(is.null(main)) main="Desembarques Diarios"
+  if(is.null(xlab)) xlab="D\u{ED}a"
+  if(is.null(ylab)) ylab="Frecuencia"
+  barplot(datos$Ports, main=main, xlab=xlab,
+          ylab=ylab, col="blue", names.arg = FALSE,
           ylim=c(0,max(datos$Ports)*1.2), cex.names=0.7, axes=FALSE)
-  axis(1, at=seq(1, by=1.2, length.out=length(days)), labels=days, las=2,cex.axis=0.7)
+  AxisDate=seq(0.7, by=1.2, length.out=length(days))
+  NonNa=!is.na(days)
+  axis(1, at=AxisDate[NonNa], labels=days[NonNa], las=2,cex.axis=0.7)
   axis(2, las=2, cex.axis=0.7)
   box()
   
@@ -106,7 +110,7 @@
   return(tabla)  
 }
 
-.plotMonths.landings = function (x, ...) {
+.plotMonths.landings = function (x, main=NULL, xlab=NULL, ylab=NULL,...) {
   
   datos = .getMonth.landings(x)
   years = as.numeric(colnames(datos))
@@ -118,8 +122,11 @@
   monthPlot = monthPlot[!is.na(monthPlot)]
   namesMonthPlot = capitalize(rep(rownames(datos), length.out = length(monthPlot) ))
   
-  barplot(monthPlot, main="",
-          xlab="Months", ylab="Landings (t)", col="blue", names.arg=FALSE,
+  if(is.null(main)) main="Desembarques Mensuales"
+  if(is.null(xlab)) xlab="Mes"
+  if(is.null(ylab)) ylab="Frecuencia"
+  barplot(monthPlot, main=main,
+          xlab=xlab, ylab=ylab, col="blue", names.arg=FALSE,
           ylim=c(0, max(monthPlot)*1.2), cex.names=0.7, axes=FALSE)
   axis(1, at=seq(0.7, by=1.2, length.out=length(monthPlot)), labels=namesMonthPlot,
        las=1, cex.axis=0.8, line=0)
@@ -151,12 +158,16 @@
   return(tabla)
 }
 
-.plotYears.landings = function (x, ...) {
+.plotYears.landings = function (x, main=NULL, xlab=NULL, ylab=NULL,...) {
   
   datos = .getYear.landing(x)
   years = as.numeric(rownames(datos))
-  barplot(datos$Landings, main="", xlab="Years",
-          ylab="Landings (t)", col="blue", names.arg=FALSE,
+  
+  if(is.null(main)) main="Desembarques Anuales"
+  if(is.null(xlab)) xlab="A\u{F1}o"
+  if(is.null(ylab)) ylab="Frecuencia"
+  barplot(datos$Landings, main=main, xlab=xlab,
+          ylab=ylab, col="blue", names.arg=FALSE,
           ylim=c(0,max(datos)*1.2), cex.names=0.7, axes=FALSE)
   axis(1, at=seq(0.7, by=1.2, length.out=length(years)), labels=years, las=1,
        cex.axis=0.8)
