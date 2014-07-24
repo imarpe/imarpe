@@ -48,7 +48,7 @@
 }
 
 # It needs to be completed automated
-.plotEffort.bitacoras = function (x=x,main=NULL,xlab=NULL,ylab=NULL,legend=NULL,...) {
+.plotEffort.bitacoras = function (x=x,main=NULL,xlab=NULL,ylab=NULL,legend=NULL,col=NULL) {
   
   datos = .getEffort.bitacoras(x)
   duracionViaje = as.vector(datos[,1])
@@ -63,12 +63,14 @@
   if(is.null(xlab)) xlab="Puertos"
   if(is.null(ylab)){ ylab="Duraci\u{F3}n promedio de viaje";ylab2=NULL}
   else {ylab2=ylab[2];ylab=ylab[1]}
+  if(is.null(col)){ col1="red";col2="dark blue"}
+  else {col1=col[1];col2=col[2]}
   barplot(duracionViaje, main = main,
-          xlab = xlab, ylab = ylab, col = "red",
+          xlab = xlab, ylab = ylab, col = col1,
           names.arg = .capwords(rownames(datos)), beside = FALSE, xlim = NULL,
           ylim = c(0, ceiling(1.3*max(duracionViaje))))
   
-  lines(seq(0.7, 1.2*length(duracionViaje),1.2), lineValues, col = "dark blue", lwd = 2.5,
+  lines(seq(0.7, 1.2*length(duracionViaje),1.2), lineValues, col = col2, lwd = 2.5,
         xlab = NA, xlim = NULL, ylab = NULL, yaxs = "i", xaxs = "i",
         ylim = c(0, ceiling(1.3*max(as.numeric(duracionViaje)))) )
   
@@ -79,7 +81,7 @@
   mtext(side = 4, line = 3, ylab2,col="blue")
   if(is.null(legend)) legend=c("Duraci\u{F3}n promedio de viaje", "N\u{B0} de calas promedio")
   legend("topleft", legend= legend,
-         col = c("black", "dark blue"), pch = c(22,46),pt.bg='red',lty=c(0,1),lwd = c(1,2.5), bty = "n", pt.cex=c(3,0.85),cex=0.85)
+         col = c("black", col2), pch = c(22,46),pt.bg=col1,lty=c(0,1),lwd = c(1,2.5), bty = "n", pt.cex=c(3,0.85),cex=0.85)
   box()
   par(opar)
   return(invisible())
