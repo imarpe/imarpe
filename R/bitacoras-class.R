@@ -83,11 +83,11 @@ print.summary.bitacoras = function(x,...) {
   return(invisible(x))
 }
 
-plot.bitacoras = function(x, type, ...) {
+plot.bitacoras = function(x, type, detailed=FALSE,...) {
   
   switch(type,
          effort = .plotEffort.bitacoras(x=x, ...),
-         depth = .plotDepth.bitacoras(object=x, ...),
+         depth = .plotDepth.bitacoras(object=x,detailed,...),
          stop("Plot type not defined."))
   
   return(invisible())

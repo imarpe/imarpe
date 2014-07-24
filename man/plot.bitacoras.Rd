@@ -10,19 +10,19 @@ The \code{plot} method for objects of class \dQuote{bitacoras}. This function pl
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{plot}{bitacoras}(x, type, ...)
+\method{plot}{bitacoras}(x, type, detailed=FALSE, \dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{Object of class "bitacoras".
-%%     ~~Describe \code{x} here~~
 }
   \item{type}{ Type of graph to plot. Possible types are:
   \itemize{
   \item \dQuote{effort} for plotting a barplot of average travel time with a line of average coves by port.
   \item \dQuote{depth} for plotting a boxplot of depths by ranges of latitudes.
   }
-%%     ~~Describe \code{type} here~~
+}
+  \item{detailed}{Logical attribute for \dQuote{depth} \code{type}. If it is TRUE, points will be added in the boxplot (FALSE by defautl).
 }
   \item{\dots}{Other graphical parameters accepted by \code{\link{plot}}.
 %%     ~~Describe \code{\dots} here~~

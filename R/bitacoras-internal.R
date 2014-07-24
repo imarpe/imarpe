@@ -48,35 +48,40 @@
 }
 
 # It needs to be completed automated
-.plotEffort.bitacoras = function (x=x, ...) {
+.plotEffort.bitacoras = function (x=x,main=NULL,xlab=NULL,ylab=NULL,legend=NULL,...) {
   
   datos = .getEffort.bitacoras(x)
   duracionViaje = as.vector(datos[,1])
-  duracionViaje = as.numeric(duracionViaje)
+  #duracionViaje = as.numeric(duracionViaje)
   
   lineRange = as.numeric(datos[,2])
-  lineValues = (lineRange*35)/ceiling(max(lineRange))
+  lineValues = (lineRange*ceiling(max(duracionViaje)))/ceiling(max(lineRange))
   
   #Para la grafica de esfuerzo
-  par(mar=c(4.1, 4.1, 4.1, 4.1), xpd=TRUE)
-  
-  barplot(duracionViaje, main = "", xlab = "Puertos", 
-          ylab = "Duraci\u{F3}n de viaje promedio", col = "red",
-          names.arg = rownames(datos), beside = FALSE, xlim = NULL,
+  opar=par(mar=c(4.1, 4.1, 4.1, 4.1), xpd=TRUE)
+  if(is.null(main)) main="Principales Caracter\u{ED}sticas del Esfuerzo Pesquero"
+  if(is.null(xlab)) xlab="Puertos"
+  if(is.null(ylab)){ ylab="Duraci\u{F3}n promedio de viaje";ylab2=NULL}
+  else {ylab2=ylab[2];ylab=ylab[1]}
+  barplot(duracionViaje, main = main,
+          xlab = xlab, ylab = ylab, col = "red",
+          names.arg = .capwords(rownames(datos)), beside = FALSE, xlim = NULL,
           ylim = c(0, ceiling(1.3*max(duracionViaje))))
   
-  lines(seq(0.6, 5.6, 1.25), lineValues, col = "dark blue", lwd = 2.5,
+  lines(seq(0.7, 1.2*length(duracionViaje),1.2), lineValues, col = "dark blue", lwd = 2.5,
         xlab = NA, xlim = NULL, ylab = NULL, yaxs = "i", xaxs = "i",
         ylim = c(0, ceiling(1.3*max(as.numeric(duracionViaje)))) )
   
-  axis(side = 4, at = seq(0, ceiling(max(lineRange)),
-                          length.out = ceiling(max(lineRange)) + 1)*35/ceiling(max(lineRange)),
-       labels = seq(0, ceiling(max(lineRange))))
-  mtext(side = 4, line = 3, "Cala")
-  legend("topleft", legend= c("Duraci\u{F3}n de viaje promedio", "N\u{B0} de calas promedio"),
+  axis(side = 4, at = seq(0, max(lineRange)*1.3,
+                          0.5*(round(max(lineRange)*1.3/4)))*ceiling(max(duracionViaje))/ceiling(max(lineRange)),
+       labels = seq(0, max(lineRange)*1.3,0.5*(round(max(lineRange)*1.3/4))),col="blue",col.axis="blue")
+  if(is.null(ylab2)) ylab2="Cala"
+  mtext(side = 4, line = 3, ylab2,col="blue")
+  if(is.null(legend)) legend=c("Duraci\u{F3}n promedio de viaje", "N\u{B0} de calas promedio")
+  legend("topleft", legend= legend,
          col = c("black", "dark blue"), pch = c(22,46),pt.bg='red',lty=c(0,1),lwd = c(1,2.5), bty = "n", pt.cex=c(3,0.85),cex=0.85)
   box()
-  
+  par(opar)
   return(invisible())
 }
 
@@ -154,7 +159,7 @@
 }
 
 
-.plotDepth.bitacoras = function (object, ...) {
+.plotDepth.bitacoras = function (object,detailed,main=NULL,xlab=NULL,ylab=NULL,col=NULL,...) {
   
   datos = object$data
   datos = datos[, c("latGf", "tope.sup", "tope.inf")]
@@ -169,13 +174,28 @@
   if(is.null(ylim))
     ylim = rev(range(mean)) else
       ylim = rev(ylim)
-  
-  boxplot(valores~lat, datos, outline = FALSE, xlab = "Latitud",
-          ylab = "Profundidad", ylim = ylim, col = "red", main = "", axes=FALSE)
+  if(is.null(main)) main="Profundidad de Cala seg\u{FA}n Latitud"
+  if(is.null(xlab)) xlab="Latitud"
+  if(is.null(ylab)) ylab="Profundidad (m)"
+  if(is.null(col)) col=rgb(1,0,0,0.3)
+  opar=par(xaxs='i')
+  BoxInfo=boxplot(valores~lat, datos, outline = FALSE, xlab = xlab,
+          ylab = ylab, ylim = ylim, col = col, 
+          main = main, axes=FALSE)#,width=as.numeric(table(datos$lat))
+  if(detailed==TRUE){
+  set.seed(1)
+  auxdata=data.frame(order=cumsum(!duplicated(datos$lat)),x=cumsum(!duplicated(datos$lat))+runif(nrow(datos),-0.4,0.4),y=datos$valores)
+  auxdata$Low=BoxInfo$stats[1,][auxdata$order]
+  auxdata$Up=BoxInfo$stats[5,][auxdata$order]
+  auxdata$Out=(auxdata$y<auxdata$Low)|(auxdata$y>auxdata$Up)
+  auxdata$x[auxdata$Out]=auxdata$order[auxdata$Out]
+  points(auxdata$x[!auxdata$Out],auxdata$y[!auxdata$Out],pch=20,col=rgb(0.2,0.2,0.2,0.3))
+  points(auxdata$x[auxdata$Out],auxdata$y[auxdata$Out],pch=20)
+  abline(v=1:(length(BoxInfo$n)-1)+0.5)
+  }
   axis(2, at=axTicks(2), labels=axTicks(2), las=2)
   axis(1, at=axTicks(1), labels=coord2text(-unique(datos$lat),"lat"))#need to be generalized
   box()
-
+  par(opar)
   return(invisible())
-  
 }
