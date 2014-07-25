@@ -52,11 +52,11 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 \code{\link{getData}}, \code{\link{summary.bitacoras}}, \code{\link{print.bitacoras}}, \code{\link{plot.bitacoras}}
 }
 \examples{
-## Reading a database of the 'bitacoras' class 
-data = getData("matrizPBP.csv", type="bitacoras")
+## Loading the database of the class 'bitacoras'
+data(Bitacoras)
 
 ## Printing the summary
-summary(data)
+summary(Bitacoras)
 }
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,

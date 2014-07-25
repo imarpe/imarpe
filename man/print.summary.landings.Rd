@@ -52,11 +52,11 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Loading the data
-data = getData("desembarques_data3.csv", type="landings")
+## Loading the database of the class 'landings'
+data(Landings)
 
 ## Printing the summary
-summary(data)
+summary(Landings)
 }
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,

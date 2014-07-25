@@ -65,13 +65,13 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 }
 \examples{
 ## Loading the data
-data = getData("matrizPBP.csv", type="bitacoras")
+data(Bitacoras)
 
 ## Plotting by effort
-plot(data,type="effort")
+plot(Bitacoras,type="effort")
 
 ## Plotting by depth
-plot(data,type="depth")
+plot(Bitacoras,type="depth")
 }
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,

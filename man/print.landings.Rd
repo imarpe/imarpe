@@ -49,14 +49,14 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Loading the database of the class 'landings'.
-data = getData("desembarques_data3.csv", type="landings")
+## Loading the database of the class 'landings'
+data(Landings)
 
 ## Verifying the class of data
-class(data)
+class(Landings)
 
 ## S3 method for class 'landings'
-print(data)
+print(Landings)
 }
 
 %##---- Should be DIRECTLY executable !! ----

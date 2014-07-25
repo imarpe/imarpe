@@ -48,15 +48,18 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 \code{\link{getData}}, \code{\link{plot.bitacoras}}, \code{\link{summary.bitacoras}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
+%\examples{
+%## Reading a database of the class 'bitacoras'.
+%data = getData("matrizPBP.csv", type="bitacoras")
 \examples{
-## Reading a database of the class 'bitacoras'.
-data = getData("matrizPBP.csv", type="bitacoras")
+## Loading the database of the class 'bitacoras'
+data(Bitacoras)
 
-## Verifying the class of data
-class(data)
+## Verifying the class of the data
+class(Bitacoras)
 
 ## S3 method for class 'bitacoras'
-print(data)
+print(Bitacoras)
 }
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,

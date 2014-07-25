@@ -66,19 +66,19 @@ Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014
 }
 \examples{
 ## Loading the data
-data = getData("desembarques_data3.csv", type="landings")
+data(Landings)
 
 ## Plotting by day
 # to plot the whole range of days 
-plot(data,time="day") 
+plot(Landings,time="day") 
 # to plot a subset of the days 
-plot(data,time="day",start="2013-02-14",end="2013-06-16") 
+plot(Landings,time="day",start="2013-02-14",end="2013-06-16") 
 
 ## Plotting by month
-plot(data,time="month")
+plot(Landings,time="month")
 
 ## Plotting by year
-plot(data,time="year")
+plot(Landings,time="year")
 }
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,

@@ -56,14 +56,14 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Reading a database of the class 'bitacoras'.
-data = getData("matrizPBP.csv", type="bitacoras")
+## Loading the database of the class 'bitacoras'
+data(Bitacoras)
 
-## Verifying the class of data
-class(data)
+## Verifying the class of the data
+class(Bitacoras)
 
 ## S3 method for class 'bitacoras'
-SummaryBitacoras = summary(data)
+SummaryBitacoras = summary(Bitacoras)
 }
 %##---- Should be DIRECTLY executable !! ----
 %##-- ==>  Define data, use random,
