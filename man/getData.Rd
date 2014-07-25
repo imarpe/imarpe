@@ -54,21 +54,35 @@ Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@imarpe.gob.pe}>
 After reading a database with \code{\link{getData}} function, you can use other functions to summary or plot the obtained data using functions like \code{\link{plot.bitacoras}}, \code{\link{plot.landings}}, \code{\link{summary.bitacoras}}, \code{\link{summary.landings}}.
 }
 \examples{
-## Reading a database of the 'landings' class.
-data = getData("desembarques_data3.csv", type="landings")
-## Verifying the class of data
-class(data)
+## Creating the database in a temporal file
+data(Bitacoras)
+Data = Bitacoras$data
+tf = tempfile('Bitacoras.csv')
+write.csv(datos$data,tf,na="")
 
-## Reading a database of the 'bitacoras' class with encoding of windows computer.
-data = getData("matrizPBP.csv", type="bitacoras",fileEncoding="iso-8859-1")
-## Verifying the class of data
-class(data)
+## Importing the data with the function
+ImpData=getData(tf,type = 'bitacoras')
+unlink(tf)
 
-## Reading a database without an specific class.
-data = getData("matrizPBP.csv")
-## Verifying the class of data
+## Verifying the class of the data
 class(data)
 }
+%## Reading a database of the 'landings' class.
+%data = getData("desembarques_data3.csv", type="landings")
+%## Verifying the class of data
+%class(data)
+
+%## Reading a database of the 'bitacoras' class with encoding of windows computer.
+%data = getData("matrizPBP.csv", type="bitacoras",fileEncoding="iso-8859-1")
+%## Verifying the class of data
+%class(data)
+
+%## Reading a database without an specific class.
+%data = getData("matrizPBP.csv")
+%## Verifying the class of data
+%class(data)
+%}
+
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 %\keyword{ ~kwd1 }
