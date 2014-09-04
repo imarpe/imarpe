@@ -45,7 +45,7 @@ The following list shows the functions that can be used to analyze the different
 \examples{
 ## For bitacoras class
 ## Loading the data
-data = getData("matrizPBP.csv", type="bitacoras")
+data = Bitacoras
 ## Plotting by effort
 plot(data,type="effort")
 ## Plotting by depth
@@ -53,7 +53,7 @@ plot(data,type="depth")
 
 ## For landings class
 ## Loading the data
-data = getData("desembarques_data3.csv", type="landings")
+data = Landings
 ## Plotting by month
 plot(data,time="month")
 ## Plotting by year
