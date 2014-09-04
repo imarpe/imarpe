@@ -58,14 +58,14 @@ After reading a database with \code{\link{getData}} function, you can use other 
 data(Bitacoras)
 Data = Bitacoras$data
 tf = tempfile('Bitacoras.csv')
-write.csv(datos$data,tf,na="")
+write.csv(Data,tf,na="")
 
 ## Importing the data with the function
 ImpData=getData(tf,type = 'bitacoras')
 unlink(tf)
 
 ## Verifying the class of the data
-class(data)
+class(ImpData)
 }
 %## Reading a database of the 'landings' class.
 %data = getData("desembarques_data3.csv", type="landings")
