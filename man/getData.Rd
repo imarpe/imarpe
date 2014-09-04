@@ -61,7 +61,7 @@ tf = tempfile('Bitacoras.csv')
 write.csv(Data,tf,na="")
 
 ## Importing the data with the function
-ImpData=getData(tf,type = 'bitacoras')
+ImpData = getData(tf,type = 'bitacoras')
 unlink(tf)
 
 ## Verifying the class of the data
