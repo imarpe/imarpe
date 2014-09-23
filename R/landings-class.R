@@ -17,6 +17,30 @@
   
 }
 
+#' Print General Description of Landings Objects
+#' @description
+#' Prints the main features of the \dQuote{landings} database such as the number of records, months, years and ports, 
+#' and returns them invisibly (via \code{\link{invisible}}).
+#' @param x An object of the class \dQuote{landings}.
+#' @param \dots Further arguments accepted by \code{\link{print}}
+#' @details It is not useful to print all the content of large databases as \dQuote{landings} objects. 
+#' For this reason, this function is useful to print only metadata of \dQuote{landings} objects.
+#' @return None (invisible NULL).
+#' @author Erick Chacon Montalvan, Vilma Romero Romero, Criscely Lujan Paredes, Ricardo Oliveros-Ramos.
+#' 
+#' Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@@imarpe.gob.pe}>
+#' @references Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. 
+#' Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
+#' @seealso \code{\link{getData}}, \code{\link{plot.landings}}, \code{\link{summary.landings}}
+#' @examples
+#' ## Loading the database of the class 'landings'
+#' data(Landings)
+#' 
+#' ## Verifying the class of data
+#' class(Landings)
+#' 
+#' ## S3 method for class 'landings'
+#' print(Landings)
 print.landings = function(x,...) {
   
   cat("Landings data from ", sQuote(x$info$file), "\n", sep="")
@@ -40,6 +64,35 @@ print.landings = function(x,...) {
   return(invisible())
 }
 
+#' Create a Summary.landings Object
+#' @description
+#' Creates a new object of class \dQuote{summary.landings}. This class has summary information about a \dQuote{landings} object, which includes the metadata, 
+#' captures by specie, number of ports by day, landings by port, landings by month and landings by year.
+#' @param object An object of class \dQuote{landings}.
+#' @param \dots Further arguments
+#' @return Returns an object of class \dQuote{summary.landings} containing the following features:
+#' \tabular{ll}{
+#' \code{info} \tab General overview, metadata, of the landings database (number of records, months, years and ports).\cr
+#' \code{sumPorts} \tab Dataframe containing the number of ports by day.\cr
+#' \code{ports} \tab Dataframe indicating the number of landings by port.\cr
+#' \code{months} \tab Dataframe indicating the number of landings by month.\cr
+#' \code{years} \tab Dataframe indicating the number of landings by year.
+#' }
+#' @author Erick Chacon Montalvan, Vilma Romero Romero, Criscely Lujan Paredes, Ricardo Oliveros-Ramos.
+#' 
+#' Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@@imarpe.gob.pe}>
+#' @references Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. 
+#' Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
+#' @seealso \code{\link{getData}}, \code{\link{plot.landings}}, \code{\link{summary.landings}}
+#' @examples
+#' ## Loading the database of the class 'landings'
+#' data(Landings)
+#' 
+#' ## Verifying the class of the data
+#' class(Landings)
+#' 
+#' ## S3 method for class 'landings'
+#' SummaryLandings = summary(Landings)
 summary.landings = function(object,...) {
   
   output = list()
@@ -56,6 +109,31 @@ summary.landings = function(object,...) {
   
 }
 
+#' Print General Description of Summary.landings Objects
+#' @description
+#' Prints summary information about a \dQuote{landings} object, which includes  the metadata, landings by ports, monthly landings and annual landings.
+#' @param x An object of class \dQuote{summary.landings}.
+#' @param \dots Further arguments accepted by \code{\link{print}}
+#' @details
+#' \tabular{ll}{
+#' \code{info} \tab General overview of the landings database (number of records, months, years and ports). \cr
+#' \code{ports} \tab Table indicating the number of landings by port.\cr
+#' \code{months} \tab Table indicating the number of landings by month.\cr
+#' \code{years} \tab Table indicating the number of landings by year.
+#' }
+#' @return None (invisible NULL).
+#' @author Erick Chacon Montalvan, Vilma Romero Romero, Criscely Lujan Paredes, Ricardo Oliveros-Ramos.
+#' 
+#' Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@@imarpe.gob.pe}>
+#' @references Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. 
+#' Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
+#' @seealso \code{\link{getData}}, \code{\link{summary.landings}}, \code{\link{print.landings}}, \code{\link{plot.landings}}
+#' @examples
+#' ## Loading the database of the class 'landings'
+#' data(Landings)
+#' 
+#' ## Printing the summary
+#' summary(Landings)
 print.summary.landings = function(x, ...) {
   
   x2=x; class(x2)='landings'
@@ -80,6 +158,41 @@ print.summary.landings = function(x, ...) {
   
 }
 
+#' Plot a Landings Object
+#' @description
+#' The \code{plot} method for objects of class \dQuote{landings}. 
+#' This function plots three kinds of graphs, which are defined by \dQuote{time} argument.
+#' @param x Object of class "landings".
+#' @param time Required period of time. Possible types are
+#' \itemize{
+#'   \item "day" for plotting by days,
+#'   \item "month" for plotting by months,
+#'   \item "year" for plotting by years.
+#' }
+#' @param \dots Other graphical parameters accepted by \code{\link{plot}}.
+#' @details In \dQuote{day} graph, the user can define the extent of the days that he wants to plot by adding the start and end date parameters as a character class.
+#' @return None (invisible NULL).
+#' @author Erick Chacon Montalvan, Vilma Romero Romero, Criscely Lujan Paredes, Ricardo Oliveros-Ramos.
+#' 
+#' Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@@imarpe.gob.pe}>
+#' @references Lujan Paredes C., Oliveros-Ramos R., Chacon Montalvan E., Romero Romero V., 2014. 
+#' Introduction to \pkg{imarpe} package for the automation of graphs, charts and reports using \code{R}.
+#' @seealso \code{\link{getData}}, \code{\link{print.landings}}, \code{\link{summary.landings}}
+#' @examples
+#' ## Loading the data
+#' data(Landings)
+#' 
+#' ## Plotting by day
+#' # to plot the whole range of days 
+#' plot(Landings,time="day") 
+#' # to plot a subset of the days 
+#' plot(Landings,time="day",start="2013-02-14",end="2013-06-16") 
+#' 
+#' ## Plotting by month
+#' plot(Landings,time="month")
+#' 
+#' ## Plotting by year
+#' plot(Landings,time="year")
 plot.landings = function(x, time=NULL, ...) {
   
 #  if(!is.null(y) & is.null(time)) time = y
