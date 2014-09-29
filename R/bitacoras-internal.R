@@ -162,7 +162,7 @@
 
 
 .plotDepth.bitacoras = function (object,detailed,main=NULL,xlab=NULL,ylab=NULL,col=NULL,...) {
-  
+
   datos = object$data
   datos = datos[, c("latGf", "tope.sup", "tope.inf")]
   datos = datos[!is.na(datos$latGf & datos$tope.sup & datos$tope.inf), ]
@@ -197,6 +197,40 @@
   }
   axis(2, at=axTicks(2), labels=axTicks(2), las=2)
   axis(1, at=axTicks(1), labels=coord2text(-unique(datos$lat),"lat"))#need to be generalized
+  box()
+  par(opar)
+  return(invisible())
+}
+
+.plotSets.bitacoras = function(object, ...){
+
+  load("Ports.RData")
+  Ports = data
+  
+  load("coastLine.RData")
+  coastLine = data
+  
+  datos = object$data
+  datos = datos[, c("lon", "lat", "anchoveta")]
+  datos = datos[!is.na(datos$lon & datos$lat & datos$anchoveta), ]
+  datos = datos[!(datos$anchoveta == 0), ]
+  
+  opar = par(mar=c(2,2,1,1))
+  plot(coastLine$lon,coastLine$lat,type="p",ylim=c(-21,-3),xlim=c(-84,-68),
+       ylab="",xlab="",xaxs="i",yaxs="i"
+       ,cex=0.1,asp=1,yaxt="n",xaxt="n",yaxp=c(-3,-21,18), col="black")
+  points(datos$lon, datos$lat, col="black",pch=1, cex=0.8)
+  
+  polygon(c(0,coastLine$lon,0),c(coastLine$lat[1],coastLine$lat,
+                                 coastLine$lat[length(coastLine$lat)]), col="khaki1", border=NA)
+  axis(2,-3:-21, labels=FALSE, las=1, cex.axis=0.75,
+       hadj=0.6, tck=-0.01)
+  axis(2, seq(-3,-21,by=-2), labels=paste(seq(3,21,by=2),"°S",sep=""),las=1,cex.axis=0.75,
+       hadj=0.6, tck=-0.01)
+  axis(1,-84:-68, paste(84:68,"°W",sep=""), cex.axis=0.75, padj=-1.3,tck=-0.01)
+  text(Ports$lon, Ports$lat, labels=Ports$namePort, cex=0.6)
+  text(-74, -6, labels= "Calas con Captura",cex=0.7)
+  text(-74, -6.7, labels= "de Anchoveta",cex=0.7)
   box()
   par(opar)
   return(invisible())

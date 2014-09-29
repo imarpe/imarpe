@@ -203,6 +203,7 @@ plot.bitacoras = function(x, type, detailed=FALSE,...) {
   switch(type,
          effort = .plotEffort.bitacoras(x=x, ...),
          depth = .plotDepth.bitacoras(object=x,detailed,...),
+         sets = .plotSets.bitacoras(object=x,detailed,...),
          stop("Plot type not defined."))
   
   return(invisible())
