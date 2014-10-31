@@ -118,4 +118,3 @@ N_mortalidad <-
   }
   return(out)
 }
-
