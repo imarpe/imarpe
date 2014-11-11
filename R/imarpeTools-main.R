@@ -42,6 +42,8 @@ getData = function(file, type, ...) {
   output = switch(type,
                   bitacoras = .getBitacorasData(file=file, ...),
                   landings = .getLandingsData(file=file, ...),
+                  survey = .getSurveyData(file=file, fSp = fSp,
+                                          lSp = lSp, ...),
                   read.csv(file=file, ...)
   )
   return(output)
