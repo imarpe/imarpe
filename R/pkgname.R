@@ -1,31 +1,27 @@
-#' \pkg{imarpe}: AutomatizaciÛn de gr·ficas, tablas y reportes del Instituto del Mar del Peru (IMARPE).
+#' @title imarpe: Automatizaci√≥n de gr√°ficas, tablas y reportes del Instituto del Mar del Peru (IMARPE).
 #'
-#' Este paquete proporciona herramientas para la elaboraciÛn de gr·ficas y tablas que se realizan de manera rutinaria en los informes producidos por el Instituto del Mar del Peru (IMARPE). 
-#' El paquete \pkg{imarpe} est· diseÒado para trabajar con funciones genÈricas (e.g. \code{\link{plot}}, \code{\link{summary}}, \code{\link{print}}) sin importar el tipo de datos utilizados, 
-#' facilitando su uso y permitiendo su utilizaciÛn incluso con conocimientos mÌnimos de \code{R}. 
+#' @description Este paquete proporciona herramientas para la elaboraci√≥n de gr√°ficas y tablas que se realizan de manera rutinaria en los informes producidos por el Instituto del Mar del Peru (IMARPE). 
+#' El paquete \pkg{imarpe} est√° dise√±ado para trabajar con funciones gen√©ricas (e.g. \code{\link{plot}}, \code{\link{summary}}, \code{\link{print}}) sin importar el tipo de datos utilizados, 
+#' facilitando su uso y permitiendo su utilizaci√≥n incluso con conocimientos m√≠nimos de \code{R}. 
 #'
 #' @details 
-#' El entorno del paquete trabaja b·sicamente con cinco diferentes clases de objetos tales como: bitacoras, landing, length, composition and spatialDistribution.
-#' @section InformaciÛn adicional:
+#' El entorno del paquete trabaja b√°sicamente con cinco diferentes clases de objetos tales como: bitacoras, landing, length, composition and spatialDistribution.
+#' @section Informaci√≥n adicional:
 #' \tabular{ll}{
 #' Package: \tab imarpe\cr
 #' Type: \tab Package\cr
 #' Version: \tab 0.1\cr
 #' Date: \tab 2014-03-11\cr
-#' License: \tab TBD
+#' License: \tab GLP-2
 #' }
 #' @author Ricardo Oliveros-Ramos, Criscely Lujan Paredes, Erick Chacon Montalvan, Vilma Romero Romero.
 #' 
 #' Maintainer: Ricardo Oliveros-Ramos <\email{roliveros@@imarpe.gob.pe}>
 #' @references Lujan Paredes C., Oliveros-Ramos R., 2014. 
-#' IntroducciÛn al paquete \pkg{imarpe} para la automatizaciÛn de gr·ficos, tablas y reportes usando \code{R}.
+#' Introducci√≥n al paquete \pkg{imarpe} para la automatizaci√≥n de gr√°ficos, tablas y reportes usando \code{R}.
 #' 
 #' @seealso La siguiente lista muestra las funciones que se pueden utilizar para analizar los diferentes tipos de clases 
-#' Leer el conjunto de datos de un archivo con la funciÛn \code{\link{getData}}.
-#' \describe{
-#'   \item{\bold{Bitacoras}}{\code{\link{print.bitacoras}},\code{\link{summary.bitacoras}}, \code{\link{plot.bitacoras}}}
-#'   \item{\bold{Landings}}{\code{\link{print.landings}},\code{\link{summary.landings}}, \code{\link{plot.landings}}}
-#' }
+#' Leer el conjunto de datos de un archivo con la funci√≥n \code{\link{getData}}.
 #' @keywords graphs tables reports R
 #' @concept IMARPE
 #' @examples
@@ -42,7 +38,7 @@
 #' data = Landings
 #' ## Grafica por meses
 #' plot(data,time="month")
-#' ## Grafica por aÒos
+#' ## Grafica por a√±os
 #' plot(data,time="year")
 #' 
 #' @docType package

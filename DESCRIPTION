@@ -19,3 +19,4 @@ License: TBD
 Depends: R (>= 3.0.0), Hmisc, grid, lattice, survival, splines, Formula 
 LazyData: TRUE
 ByteCompile: TRUE
+Encoding:  utf-8
