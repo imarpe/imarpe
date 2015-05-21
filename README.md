@@ -2,7 +2,7 @@ imarpe
 ======
 
 Tools for graphics and summary reports for IMARPE
-Readme file
+
 
 ### About the package
 imarpe provides tools for development of graphics and tables routinely performed in reports produced by the Instituto del Mar del Peru (IMARPE).
