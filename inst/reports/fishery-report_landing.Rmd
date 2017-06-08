@@ -1,0 +1,75 @@
+---
+title: "Reporte de Desembarques"
+author: "IMARPE - DGIRP"
+header-includes:
+  - \usepackage{fancyhdr}
+  - \fancyfoot[LE,RO]{DGIRP}
+  - \usepackage[spanish]{babel}
+  - \usepackage[utf8]{inputenc}
+fontsize: 10pt
+geometry: margin=1cm
+output: pdf_document
+---
+
+\pagenumbering{gobble}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Desembarque por mes y tipo de flota
+```{r, echo=FALSE, cache=TRUE, message=FALSE}
+fleeTable = x$fleeTable
+pander::pander(fleeTable, align = "c", keep.line.breaks = TRUE)
+```
+
+# Desembarque diario
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=4.5, fig.width=8}
+plot(x, language = "spanish", ploType = "plotDaily", col = "black", main = "")
+```
+
+\pagebreak
+
+# Desembarque mensual
+\vspace{1.5cm}
+```{r, echo=FALSE, cache=TRUE, message=FALSE}
+monthTable = .getMonth.fishery(object=x, language="spanish")
+pander::pander(monthTable, align = "c", keep.line.breaks = TRUE)
+```
+\vspace{3cm}
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height= 4.5, fig.width=8}
+plot(x, language = "spanish", ploType = "plotMonthly", col = "gray", main = "")
+```
+
+\pagebreak
+
+# Desembarque anual
+\vspace{1.5cm}
+```{r, echo=FALSE, cache=TRUE, message=FALSE}
+yearTable = .getYear.fishery(object=x, language="spanish")
+pander::pander(yearTable, align = "c", keep.line.breaks = TRUE)
+```
+\vspace{3cm}
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=5.5, fig.width=6.5}
+plot(x, language = "spanish", ploType = "plotYearly", col = "gray", main = "")
+```
+
+\pagebreak
+
+# Desembarque por puerto
+```{r, echo=FALSE, cache=TRUE, message=FALSE}
+portTable = .getPorts.fishery(object=x, language="spanish")
+pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
+```
+
+# Desembarques diarios y acumulados en la región Norte-Centro
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
+plot(x, language = "spanish", ploType = "plotNC", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acomulado (miles t)")
+```
+
+\pagebreak
+
+# Desembarques diarios y acumulados en la región Sur
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
+plot(x, language = "spanish", ploType = "plotS", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acomulado (miles t)")
+```
