@@ -62,14 +62,14 @@ portTable = .getPorts.fishery(object=x, language="spanish")
 pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
 ```
 
-# Desembarques diarios y acumulados en la region Norte-Centro
+# Desembarque diario y acumulado en la region Norte-Centro
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
-plot(x, language = "spanish", ploType = "plotNC", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acumulado (miles t)", daysToPlot = daysToPlot)
+plot(x, language = "spanish", ploType = "plotNC", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
 ```
 
 \pagebreak
 
-# Desembarques diarios y acumulados en la region Sur
+# Desembarque diario y acumulado en la region Sur
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
-plot(x, language = "spanish", ploType = "plotS", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acumulado (miles t)", daysToPlot = daysToPlot)
+plot(x, language = "spanish", ploType = "plotS", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
 ```

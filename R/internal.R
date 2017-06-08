@@ -241,7 +241,7 @@
 }
 
 # Function to plot the regions (NC and S)
-.plotRegion = function(x, region, byAxis2="default", milesTons=TRUE, textAxis2=NULL, textAxis4=NULL, cexLab=1.2,
+.plotRegion = function(x, region, byAxis2="default", milesTons=TRUE, textAxis2, textAxis4, cexLab=1.2,
                        daysToPlot, cexAxis24 = 1.1, cexAxis1 = 0.9, cexLegend = 1){
 
   if(region == "NC"){dataBase = x$regionNC} else {dataBase = x$regionS}
@@ -296,7 +296,10 @@
         textAxis2 = "Esfuerzo diario (anzuelos)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " anzuelos)")) }
       if(efforType == "embarcaciones"){
         textAxis2 = "Esfuerzo diario (embarcaciones)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " embarcaciones)")) }
-    }}
+    }} else {
+      textAxis2 = textAxis2
+      textAxis4 = textAxis4
+  }
 
   mtext(text = textAxis2, side = 2, line = 4, cex = cexLab)
   mtext(text = textAxis4, side = 4, line = 4, cex = cexLab)
