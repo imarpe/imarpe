@@ -150,6 +150,7 @@
     colnames(dataTable) = cut(x = vectorNames, breaks = c(0,1,2,3,4,5,6),
                               labels = c("Latitude", "Artisanal", "Small scale", "Industrial wood", "Industrial", "Total"))}
   if(language == "spanish"){colnames(dataTable) = colnames(dataTable)}
+  rownames(dataTable) = NULL
 
   return(dataTable)
 

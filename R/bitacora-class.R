@@ -49,3 +49,27 @@ print.summary.bitacora = function(x, language = "spanish") {
 
   return(invisible())
 }
+
+
+report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
+
+  if(is.null(output)) output = getwd()
+  outputName = deparse(substitute(x))
+
+  skeleton = system.file("reports", "bitacora-report.Rmd", package = "imarpe")
+
+  if(isTRUE(tangle)) {
+    knit(skeleton, tangle=TRUE)
+    f1 = gsub(pattern = ".Rmd", replacement = "\\.R", skeleton)
+    file.rename(from=basename(f1), to=paste0(outputName, ".R"))
+  }
+
+  outputFile = paste0(outputName, "_output.pdf")
+  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output)
+
+  if(isTRUE(open)) shell.exec(outputFile)
+
+  return(invisible(file.path(output, outputFile)))
+
+}
+
