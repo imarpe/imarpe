@@ -1,8 +1,7 @@
 
-getData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL, port = NULL,
-                    efforType = "viaje", fleeType=NULL, ...){
+getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL, port = NULL,
+                           efforType = "viaje", fleeType=NULL, ...){
 
-  #getdat: adicionar esto
   dataBase = .convertBase(file=file, sp=sp, fleeType=fleeType, efforType=efforType)
   fleet    = .fleetData(file = file, varType = varType, toTons = toTons, sp = sp, efforType=efforType,
                         fleeType = fleeType, start = start, end = end, port = port, ...)
@@ -15,4 +14,12 @@ getData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL
                   read.csv(file = dataBase, stringsAsFactors = FALSE, ...))
 
   return(output)
+}
+
+getBitacorasData = function(file, colPort = "PUERTO_SALIDA", colDates = "DIA_SALIDA",
+                            colTrip = "CODIGO_VIAJE", colStorageCapacity = "CAPACIDAD_BODEGA_REGISTRADA"){
+
+  dataBase = .getBitacoraData(file = file, colPort = colPort, colDates = colDates, colTrip = colTrip,
+                              colStorageCapacity = colStorageCapacity)
+  return(dataBase)
 }
