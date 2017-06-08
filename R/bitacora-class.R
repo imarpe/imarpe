@@ -75,14 +75,16 @@ report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
 }
 
 
-plot.bitacora = function(x, language, ploType = NULL, dataType, group, ...) {
+plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, group, threshold = TRUE, minPercentage = 0.2, ...) {
 
   if(is.null(ploType)) ploType = "plotFishingPoints"
   if(ploType %in% c("plotFishingPoints", "plotFishingPresence")) {dataFishingPoints = .fishingPoints.bitacora(x)}
+  if(ploType %in% "plotSpeciesComposition") {dataSpeciesComposition = .speciesComposition.bitacora(x = x, language = language)}
 
   switch(ploType,
-         plotFishingPoints    = .plotFishingPoints.bitacora(x=dataFishingPoints, language=language, dataType = dataType, ...),
-         plotFishingPresence  = .plotFishingPresence.bitacora(x=dataFishingPoints, group = group, ...))
+         plotFishingPoints      = .plotFishingPoints.bitacora(x = dataFishingPoints, language = language, dataType = dataType, ...),
+         plotFishingPresence    = .plotFishingPresence.bitacora(x = dataFishingPoints, group = group, ...),
+         plotSpeciesComposition = .plotSpeciesComposition.bitacora(x = dataSpeciesComposition, threshold = threshold, minPercentage = minPercentage, ...))
 
   return(invisible())
 }

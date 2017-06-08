@@ -93,3 +93,14 @@ dataGroups = .fishingPoints.bitacora(object = x)
 .plotFishingPresence.bitacora(x = dataGroups, byGroup = FALSE)
 ```
 
+\pagebreak
+
+#Composicion por especies de la capturas
+```{r, echo=FALSE, cache=TRUE, message=FALSE}
+catchComposition = .speciesComposition.bitacora(object = x, language = "spanish")
+pander::pander(catchComposition, align = "c", keep.line.breaks = TRUE)
+```
+
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6.5, fig.width=6.5}
+plot(x, language = "spanish", ploType = "plotSpeciesComposition")
+```

@@ -329,3 +329,61 @@
   return(invisible())
 
 }
+
+#Funcion para obtener la composicion de especies de las capturas
+.speciesComposition.bitacora = function(object, language) {
+
+  #cleaning data
+  dataBase = object$data
+  dataBase = dataBase[, c(object$info$colCapCala, catchSpecies$catch) ]
+  dataBase[, 1] = apply(dataBase[2:dim(dataBase)[2]], 1, sum, na.rm = TRUE)
+  dataBase = dataBase[!dataBase[, 1] == 0, ]
+  dataBase[, 1] = NULL
+
+  #remove species with catch = 0
+  index = apply(dataBase, 2, sum, na.rm = TRUE)
+  index = which(index != 0); names(index) = NULL
+  dataBase = dataBase[, index]
+
+  #data.frame in a new format (species, catch, porcentaje)
+  dataTable = apply(dataBase, 2, sum, na.rm = TRUE)
+  dataTable = as.data.frame(dataTable)
+  dataTable$species = capitalizeFirstLetter(catchSpecies$species[match(rownames(dataTable), catchSpecies$catch)])
+  dataTable = dataTable[order(dataTable$dataTable, decreasing = TRUE), ]
+
+  dataTable = data.frame(Species    = dataTable$species,
+                         Catch      = round(dataTable$dataTable, 4),
+                         Percentage = round((dataTable$dataTable * 100) / sum(dataTable$dataTable), 4) )
+  dataTable$Species = as.character(dataTable$Species)
+
+  dataTable = rbind(dataTable, c("Total", round(sum(dataTable$Catch),2), round(sum(dataTable$Percentage), 2)))
+  dataTable$Catch   = as.numeric(dataTable$Catch)
+  dataTable$Percentage = as.numeric(dataTable$Percentage)
+
+  #Language
+  if(language == "english") {colnames(dataTable) = colnames(dataTable)}
+  if(language == "spanish") {colnames(dataTable) = c("Especie", "Captura", "Porcentaje")}
+
+  return(dataTable)
+}
+
+#Funcion para plotear el pie de composicion de especies
+.plotSpeciesComposition.bitacora = function(x, threshold = TRUE, minPercentage = 0.2, ...) {
+
+  dataBase = x
+  dataBase = dataBase[- dim(dataBase)[1],]
+
+  if(isTRUE(threshold)){
+    dataBase = dataBase[dataBase[, 3] >= minPercentage, ]
+  } else {
+    dataBase = dataBase
+  }
+
+  #plot
+  par(oma = c(1,1,1,1))
+  pie3D(dataBase[,3], labels = dataBase[, 1], col = rainbow(dim(dataBase)[1]),
+        radius = 1, height = 0.15, theta = 1.1, start = 1,
+        labelcex = 1.2, labelrad = 1.3, ...)
+
+  return(invisible())
+}
