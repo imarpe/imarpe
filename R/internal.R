@@ -234,14 +234,14 @@
   #dataNC = .trimData(x = dataNC, start = start, end = end) ; rownames(dataNC) = NULL
   #dataS  = .trimData(x = dataS, start = start, end = end) ; rownames(dataS) = NULL
 
-  output = list(regionNC = dataNC, regionS = dataS)
+  output = list(regionNC = dataNC, regionS = dataS, varType = x$info$varType, efforType = x$info$efforType)
 
   return(output)
 
 }
 
 # Function to plot the regions (NC and S)
-.plotRegion = function(x, region, byAxis2="default", milesTons=TRUE, textAxis2, textAxis4, cexLab=1.2,
+.plotRegion = function(x, region, byAxis2="default", milesTons=TRUE, textAxis2=NULL, textAxis4=NULL, cexLab=1.2,
                        daysToPlot, cexAxis24 = 1.1, cexAxis1 = 0.9, cexLegend = 1){
 
   if(region == "NC"){dataBase = x$regionNC} else {dataBase = x$regionS}
@@ -281,6 +281,22 @@
   yLabs2 = seq(from = 0, to = maxY2, length.out = 10) / ifelse(isTRUE(milesTons), 1e3, 1e6)
   axis(side = 4, at = seq(from = 0, to = maxY1, length.out = length(yLabs2)), labels = round(yLabs2,2), las = 2, cex.axis = cexAxis24)
   box()
+
+  if(is.null(textAxis2) & is.null(textAxis4)){
+    if(x$varType == "landing"){
+      textAxis2="Desembarque diario (t)" ; textAxis4=expression(paste("Desembarque acumulado ( ", 10^3, " t)"))
+    } else {
+      efforType = x$efforType
+
+      if(efforType == "viaje"){
+        textAxis2 = "Esfuerzo diario (viajes)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " viajes)")) }
+      if(efforType == "capacidad_bodega"){
+        textAxis2 = expression(paste("Esfuerzo diario ( ", m^3, ")")) ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, m^3, ")")) }
+      if(efforType == "anzuelos"){
+        textAxis2 = "Esfuerzo diario (anzuelos)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " anzuelos)")) }
+      if(efforType == "embarcaciones"){
+        textAxis2 = "Esfuerzo diario (embarcaciones)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " embarcaciones)")) }
+    }}
 
   mtext(text = textAxis2, side = 2, line = 4, cex = cexLab)
   mtext(text = textAxis4, side = 4, line = 4, cex = cexLab)

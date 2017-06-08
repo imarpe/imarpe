@@ -72,7 +72,7 @@ print.summary.fishery = function(x, language = "spanish", ...) {
 }
 
 
-plot.fishery = function(x, language, ploType = NULL, textAxis2, textAxis4, daysToPlot = c(1,8,15,22), ...) {
+plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), ...) {
 
   if(is.null(ploType)) ploType = "plotDaily"
   if(ploType %in% c("plotNC", "plotS")){dataRegion = .getRegionData(x = x)}
@@ -81,10 +81,8 @@ plot.fishery = function(x, language, ploType = NULL, textAxis2, textAxis4, daysT
          plotDaily   = .plotDays.fishery(x=x, language=language, daysToPlot = daysToPlot, ...),
          plotMonthly = .plotMonths.fishery(x=x, language=language, ...),
          plotYearly  = .plotYears.fishery(x=x, language=language, ...),
-         plotNC      = .plotRegion(x = dataRegion, region = "NC", daysToPlot = daysToPlot,
-                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
-         plotS       = .plotRegion(x = dataRegion, region = "S", daysToPlot = daysToPlot,
-                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...))
+         plotNC      = .plotRegion(x = dataRegion, region = "NC", daysToPlot = daysToPlot, ...),
+         plotS       = .plotRegion(x = dataRegion, region = "S", daysToPlot = daysToPlot, ...))
   return(invisible())
 }
 
@@ -101,7 +99,7 @@ report.fishery = function(x, format = "latex", tangle=FALSE, output = NULL, days
 
   varType = x$info$varType
   if(varType == "landing"){skeleton = system.file("reports", "fishery-report_landing.Rmd", package = "imarpe")
-  } else {skeleton = system.file("reports", "fishery-report_cpue.Rmd", package = "imarpe")}
+  } else {skeleton = system.file("reports", "fishery-report_effort.Rmd", package = "imarpe")}
 
   if(isTRUE(tangle)) {
     knit(skeleton, tangle=TRUE)
