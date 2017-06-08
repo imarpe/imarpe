@@ -5,7 +5,6 @@ header-includes:
   - \usepackage{fancyhdr}
   - \fancyfoot[LE,RO]{DGIRP}
   - \usepackage[spanish]{babel}
-  - \usepackage[utf8]{inputenc}
 fontsize: 10pt
 geometry: margin=1cm
 output: pdf_document

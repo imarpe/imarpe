@@ -127,7 +127,7 @@ report.fishery = function(x, format = "latex", tangle=FALSE, output = NULL, days
   } else {skeleton = system.file("reports", "fishery-report_effort.Rmd", package = "imarpe")}
 
   if(isTRUE(tangle)) {
-    knit(skeleton, tangle=TRUE)
+    knit(skeleton, tangle=TRUE, encoding = "latin1")
     f1 = gsub(pattern = ".Rmd", replacement = "\\.R", skeleton)
     file.rename(from=basename(f1), to=paste0(outputName, ".R"))
   }

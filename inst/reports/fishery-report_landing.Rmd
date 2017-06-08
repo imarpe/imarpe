@@ -5,7 +5,6 @@ header-includes:
   - \usepackage{fancyhdr}
   - \fancyfoot[LE,RO]{DGIRP}
   - \usepackage[spanish]{babel}
-  - \usepackage[utf8]{inputenc}
 fontsize: 10pt
 geometry: margin=1cm
 output: pdf_document
@@ -62,14 +61,14 @@ portTable = .getPorts.fishery(object=x, language="spanish")
 pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
 ```
 
-# Desembarque diario y acumulado en la region Norte-Centro
+# Desembarque diario y acumulado en la región Norte-Centro
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
 plot(x, language = "spanish", ploType = "plotNC", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
 ```
 
 \pagebreak
 
-# Desembarque diario y acumulado en la region Sur
+# Desembarque diario y acumulado en la región Sur
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
 plot(x, language = "spanish", ploType = "plotS", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
 ```
