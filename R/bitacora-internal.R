@@ -225,7 +225,7 @@
                                        colMap = "khaki1",
                                        cexPointCatch = FALSE, cexPoint = 0.8,
                                        colFleet = c("red", "blue", "green", "black"),
-                                       cex.axis = 1.2, cexPorts = 0.9){
+                                       cex.axis = 1.2, cexPorts = 0.9, ...){
 
   dataBase = x[[dataType]]
   ports    = portData[portData$importance == 1, ]
@@ -246,10 +246,10 @@
   if(isTRUE(cexPointCatch)){cexPoints = as.numeric(as.character(sizePoints))} else {cexPoints = cexPoint}
 
   #plot
-  par(mar = c(3.5, 3.5, 1,1))
+  par(mar = c(3.5, 3.5, 1, 1))
   plot(x = dataBase$lon, y = dataBase$lat, xlim = c(-85, -70), ylim = c(-20,-2),
-       xlab = "", ylab = "", col = colVector, axes = FALSE, type = "p", pch = 16,
-       cex = cexPoints)
+       xlab = "", ylab = "", col = as.character(colVector), axes = FALSE, type = "p", pch = 16,
+       cex = cexPoints, ...)
   map(add = TRUE, fill = TRUE, col = colMap)
   box()
 
@@ -267,3 +267,4 @@
   return(invisible())
 
 }
+

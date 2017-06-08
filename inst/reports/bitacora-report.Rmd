@@ -1,0 +1,67 @@
+---
+title: "Reporte Programa de Bitacoras de Pesca"
+author: "PBP - DGIRP - IMARPE "
+header-includes:
+  - \usepackage{fancyhdr}
+  - \fancyfoot[LE,RO]{DGIRP}
+  - \usepackage[spanish]{babel}
+  - \usepackage[utf8]{inputenc}
+fontsize: 10pt
+geometry: margin=1cm
+output: pdf_document
+---
+
+\pagenumbering{gobble}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Tamanho de muestra
+
+* Viajes observados
+```{r, echo=FALSE, cache=TRUE, message=FALSE}
+observedTrip = .observedTrip.bitacora(object = x, language = "spanish")
+pander::pander(observedTrip, align = "c", keep.line.breaks = TRUE, split.table = 120)
+```
+
+* Lances muestreados
+```{r, echo=FALSE, cache=TRUE, message=FALSE}
+fishingHaul = .fishingHaul.bitacora(object = x, language = "spanish", latByPort = FALSE)
+vecLat      = fishingHaul$Latitud
+newVecLat   = vecLat[-length(vecLat)]
+fishingHaul$Latitud = c(paste(substring(newVecLat, 2), "S", sep=" "), vecLat[length(vecLat)])
+
+pander::pander(fishingHaul, align = "c", keep.line.breaks = TRUE, split.table = 120)
+```
+
+\pagebreak
+
+# Distribucion espacial de anchoveta 
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=9, fig.width=7.5}
+plot(x, language = "spanish", ploType = "plotFishingPoints", dataType = "dataAnch")
+```
+
+# Presencia de otras especies
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=10.5, fig.width=8}
+dataSpecies = .fishingPoints.bitacora(object = x)
+
+par(mfrow = c(2,2), oma = c(0,0,1,0))
+
+if(dim(dataSpecies[[2]])[1] != 0){
+  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataSar", language = "spanish")
+  mtext(text = "Sardina", side = 3, line = 0.5) }
+
+if(dim(dataSpecies[[3]])[1] != 0){
+  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataJur", language = "spanish")
+  mtext(text = "Jurel", side = 3, line = 0.5) }
+
+if(dim(dataSpecies[[4]])[1] != 0){
+  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataCab", language = "spanish")
+  mtext(text = "Caballa", side = 3, line = 0.5) }
+
+if(dim(dataSpecies[[5]])[1] != 0){
+  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataBon", language = "spanish")
+  mtext(text = "Bonito", side = 3, line = 0.5) }
+```
+
