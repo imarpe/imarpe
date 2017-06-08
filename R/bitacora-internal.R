@@ -270,3 +270,62 @@
 
 }
 
+.plotFishingPresence.bitacora = function(x, byGroup = TRUE, group = NULL,
+                                         cexPoint = 1, colMap = "khaki1",
+                                         cex.axis = 1.2, cexPorts = 0.9,
+                                         colSpecies = NULL, colLegend = NULL){
+
+  dataBase = x$dataGroups
+
+  if(isTRUE(byGroup)){
+    dataBase = dataBase[dataBase$group %in% group, ]
+    specieVector = match(dataBase$species, unique(dataBase$species))
+
+    if(is.null(colSpecies)){
+      colPlot   = vectorColours(length(dataBase$species))[rank(dataBase$species)]
+      colLegend = unique(vectorColours(length(dataBase$species))[rank(dataBase$species)])
+    } else {
+      colPlot   = colSpecies
+      colLegend = colLegend
+    }
+
+    namesLegend = capitalizeFirstLetter(unique(dataBase$species))
+
+  } else {
+    dataBase = dataBase[!dataBase$group %in% c("neritico", "transzonal", "oceanico", "demersal"),]
+    specieVector = match(dataBase$group, unique(dataBase$group))
+
+    if(is.null(colSpecies)){
+      colPlot   = vectorColours(length(dataBase$group))[rank(dataBase$group)]
+      colLegend = unique(vectorColours(length(dataBase$group))[rank(dataBase$group)])
+    } else {
+      colPlot   = colSpecies
+      colLegend = colLegend
+    }
+
+    namesLegend = capitalizeFirstLetter(unique(dataBase$group))
+  }
+
+  ports    = portData[portData$importance == 1, ]
+
+  #plot
+  par(mar = c(3.5, 3.5, 1,1))
+  plot(x = dataBase$lon, y = dataBase$lat, xlim = c(-85, -70), ylim = c(-20,-2),
+       xlab = "", ylab = "", col = colPlot, axes = FALSE, type = "p", pch = 16, cex = cexPoint)
+  map(add = TRUE, fill = TRUE, col = colMap)
+  box()
+
+  axis(2, at = seq(from = -20, to = -2, by = 2), las = 2, cex.axis = cex.axis,
+       labels = paste(seq(from = 20, to = 2, by = -2), "S", sep = " "))
+
+  axis(1, at = seq(from = -82, to = -70, by = 2), cex.axis = cex.axis,
+       labels = paste(seq(from = 82, to = 70, by = -2), "W", sep = " "))
+
+  text(x = ports$lon, y = ports$lat, labels = ports$name, adj = -0.1, cex = cexPorts)
+
+  legend("bottomleft", legend = namesLegend, col = colLegend,
+         pch = 20, horiz = FALSE, bty = "n", cex = 1)
+
+  return(invisible())
+
+}

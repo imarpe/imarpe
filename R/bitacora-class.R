@@ -75,14 +75,14 @@ report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
 }
 
 
-plot.bitacora = function(x, language, ploType = NULL, dataType, ...) {
+plot.bitacora = function(x, language, ploType = NULL, dataType, group, ...) {
 
   if(is.null(ploType)) ploType = "plotFishingPoints"
-  if(ploType %in% "plotFishingPoints") {dataFishingPoints = .fishingPoints.bitacora(x)}
+  if(ploType %in% c("plotFishingPoints", "plotFishingPresence")) {dataFishingPoints = .fishingPoints.bitacora(x)}
 
   switch(ploType,
-         plotFishingPoints = .plotFishingPoints.bitacora(x=dataFishingPoints, language=language, dataType = dataType, ...))
+         plotFishingPoints    = .plotFishingPoints.bitacora(x=dataFishingPoints, language=language, dataType = dataType, ...),
+         plotFishingPresence  = .plotFishingPresence.bitacora(x=dataFishingPoints, group = group, ...))
 
   return(invisible())
-
 }

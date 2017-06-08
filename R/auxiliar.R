@@ -10,14 +10,14 @@
 # Function to convert months in words to months in numbers
 word2month = function(x){
   x = seq_along(month.abb)[match(tolower(x), tolower(month.abb))]
-  
+
   return(x)
 }
 
 # Function to convert months in numbers to months in words
 month2word = function(x){
   x = month.abb[match(as.numeric(x), 1:12)]
-  
+
   return(x)
 }
 
@@ -52,27 +52,32 @@ engToSpa = function(x){
 capitalizeFirstLetter = function(x) {
   x = paste0(toupper(substr(x, 1, 1)), tolower(substr(x, 2, 9999)))
   return(x)
-} 
+}
 
 # Function to order the port names in relation to the latitude
 getPort = function(myPorts){
-  
+
   myPorts = tolower(myPorts)
-  
+
   portPosition = NULL
   for(i in seq_along(myPorts)){
     evalPort = myPorts[i]
     posPort  = which(sapply(portData$pattern, grepl, x = evalPort))
-    
+
     if(length(posPort) > 1){
       warning(paste(evalPort, "combinado con mas de un patron en la posicion =", i,
                     "\nLa funcion tomara el primer valor encontrado:", portData$name[posPort[1]]))}
-    
+
     portPosition = c(portPosition, posPort[1])
   }
-  
+
   output = list(data     = as.list(portData[portPosition,]),
                 position = portPosition)
-  
+
   return(output)
+}
+
+#Function to use an additional vector of colours (tim.colors(1e3))
+vectorColours = function (n){
+  return(colorRampPalette(colors = tim.colors(64))(n))
 }

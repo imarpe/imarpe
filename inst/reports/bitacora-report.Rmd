@@ -37,6 +37,8 @@ pander::pander(fishingHaul, align = "c", keep.line.breaks = TRUE, split.table = 
 plot(x, language = "spanish", ploType = "plotFishingPoints", dataType = "dataAnch")
 ```
 
+\pagebreak
+
 # Presencia de otras especies
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=10.5, fig.width=8}
 dataSpecies = .fishingPoints.bitacora(object = x)
@@ -45,18 +47,49 @@ par(mfrow = c(2,2), oma = c(0,0,1,0))
 
 if(dim(dataSpecies[[2]])[1] != 0){
   .plotFishingPoints.bitacora(dataSpecies, dataType = "dataSar", language = "spanish")
-  mtext(text = "Sardina", side = 3, line = 0.5) }
+  mtext(text = "SARDINA", side = 3, line = 0.5) }
 
 if(dim(dataSpecies[[3]])[1] != 0){
   .plotFishingPoints.bitacora(dataSpecies, dataType = "dataJur", language = "spanish")
-  mtext(text = "Jurel", side = 3, line = 0.5) }
+  mtext(text = "JUREL", side = 3, line = 0.5) }
 
 if(dim(dataSpecies[[4]])[1] != 0){
   .plotFishingPoints.bitacora(dataSpecies, dataType = "dataCab", language = "spanish")
-  mtext(text = "Caballa", side = 3, line = 0.5) }
+  mtext(text = "CABALLA", side = 3, line = 0.5) }
 
 if(dim(dataSpecies[[5]])[1] != 0){
   .plotFishingPoints.bitacora(dataSpecies, dataType = "dataBon", language = "spanish")
-  mtext(text = "Bonito", side = 3, line = 0.5) }
+  mtext(text = "BONITO", side = 3, line = 0.5) }
+```
+
+# Incidencia de otros especies
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=10.5, fig.width=8}
+dataGroups = .fishingPoints.bitacora(object = x)
+
+par(mfrow = c(2,2), oma = c(0,0,1,0))
+
+if(dim(dataGroups[[6]][dataGroups[[6]]$group == "neritico",])[1] != 0){
+  .plotFishingPresence.bitacora(x = dataGroups, group = "neritico")
+  mtext(text = "NERITICO", side = 3, line = 0.5) }
+
+if(dim(dataGroups[[6]][dataGroups[[6]]$group == "transzonal",])[1] != 0){
+  .plotFishingPresence.bitacora(x = dataGroups, group = "transzonal")
+  mtext(text = "TRANSZONAL", side = 3, line = 0.5) }
+
+if(dim(dataGroups[[6]][dataGroups[[6]]$group == "oceanico",])[1] != 0){
+  .plotFishingPresence.bitacora(x = dataGroups, group = "oceanico")
+  mtext(text = "OCEANICO", side = 3, line = 0.5) }
+
+if(dim(dataGroups[[6]][dataGroups[[6]]$group == "demersal",])[1] != 0){
+  .plotFishingPresence.bitacora(x = dataGroups, group = "demersal")
+  mtext(text = "DEMERSAL", side = 3, line = 0.5) }
+```
+
+\pagebreak
+
+#Incidencia de otros grupos taxonómicos
+```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=9, fig.width=7.5}
+dataGroups = .fishingPoints.bitacora(object = x)
+.plotFishingPresence.bitacora(x = dataGroups, byGroup = FALSE)
 ```
 
