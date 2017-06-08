@@ -112,3 +112,7 @@ plot(x, language = "spanish", ploType = "plotSpeciesComposition", minPercentage 
 spatialCatches = .distributionCatch.bitacora(object = x, language = "spanish", specie = "anchoveta")
 pander::pander(spatialCatches, align = "c", keep.line.breaks = TRUE)
 ```
+
+\pagebreak
+
+#Esfuerzo pesquero y captura por unidad de esfuerzo

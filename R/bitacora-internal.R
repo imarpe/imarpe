@@ -3,8 +3,9 @@
 # Internal function for the class bitacora --------------------------------
 
 #Funcion para obtener la data del programa de bitacoras (PBP)
-.getBitacoraData = function(file, colPort, colDates, colTrip, colStorageCapacity, colLat, colHaul,
-                            colLon, colCala, colCapCala, capAnch, capSar, capJur, capCab, capBon, ...) {
+.getBitacoraData = function(file, colPort, colDates, colTrip, colStorageCapacity,
+                            colLat, colLon, colHaul, colCatchHaul,
+                            capAnch, capSar, capJur, capCab, capBon, ...) {
 
   dataBase = read.csv(file = file, header = TRUE, na.strings = "", stringsAsFactors = FALSE, ...)
 
@@ -46,9 +47,8 @@
               years  =  unique(yearVector),
               months =  length(rle(monthVector)$values),
               fleets =  as.vector(unique(dataBase$flota[!is.na(dataBase$flota)])),
-              colTrip = colTrip, colLat  = colLat, colHaul = colHaul, colLon  = colLon, colCala = colCala,
-              colCapCala = colCapCala, capAnch = capAnch, capSar = capSar, capJur = capJur, capCab = capCab,
-              capBon  = capBon)
+              colTrip = colTrip, colLat  = colLat, colLon  = colLon, colHaul = colHaul, colCatchHaul = colCatchHaul,
+              capAnch = capAnch, capSar = capSar, capJur = capJur, capCab = capCab, capBon  = capBon)
 
   output = list(data = dataBase, info = info)
   class(output) = c("bitacora")
@@ -60,8 +60,7 @@
 .observedTrip.bitacora = function(object, language) {
 
   dataBase = object$data
-  colTrip  = object$info$colTrip
-  dataBase = dataBase[, c(colTrip, "puerto", "flota", "latitudAux") ]
+  dataBase = dataBase[, c(object$info$colTrip, "puerto", "flota", "latitudAux") ]
   dataBase = dataBase[!apply(dataBase == 0, 1, FUN = any, na.rm = TRUE),]
 
   #to get the trips
@@ -105,10 +104,7 @@
 .fishingHaul.bitacora = function(object, language, latByPort) {
 
   dataBase = object$data
-  colLat   = object$info$colLat
-  colHaul  = object$info$colHaul
-
-  dataBase = dataBase[, c(colLat, "latitudAux", colHaul, "flota") ]
+  dataBase = dataBase[, c(object$info$colLat, "latitudAux", object$info$colHaul, "flota") ]
   dataBase[, 1] = -abs(dataBase[, 1])
   colnames(dataBase) = c("lat", "latAux", "haul", "fleet")
 
@@ -163,8 +159,8 @@
 .fishingPoints.bitacora = function(object){
 
   dataBase = object$data
-  dataBase = dataBase[, c(object$info$colLat, object$info$colLon, "flota", object$info$colCala,
-                          object$info$colCapCala, catchSpecies$catch) ]
+  dataBase = dataBase[, c(object$info$colLat, object$info$colLon, "flota", object$info$colHaul,
+                          object$info$colCatchHaul, catchSpecies$catch) ]
   colnames(dataBase)[1:5] = c("lat", "lon", "fleet", "num_haul", "catch_haul")
 
   #remove null catched
@@ -335,7 +331,7 @@
 
   #cleaning data
   dataBase = object$data
-  dataBase = dataBase[, c(object$info$colCapCala, catchSpecies$catch) ]
+  dataBase = dataBase[, c(object$info$colCatchHaul, catchSpecies$catch) ]
   dataBase[, 1] = apply(dataBase[2:dim(dataBase)[2]], 1, sum, na.rm = TRUE)
   dataBase = dataBase[!dataBase[, 1] == 0, ]
   dataBase[, 1] = NULL
@@ -430,7 +426,7 @@
 
   #Language
   if(language == "spanish"){colnames(dataTable)[1] = "Latitud"}
-  if(language == "spanish"){colnames(dataTable)[1] = "Latitude"}
+  if(language == "english"){colnames(dataTable)[1] = "Latitude"}
 
   return(dataTable)
 
