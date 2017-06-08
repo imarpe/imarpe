@@ -16,17 +16,18 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
   return(output)
 }
 
-getBitacoraData = function(file, colPort = "PUERTO_SALIDA", colDates = "DIA_SALIDA",
-                            colTrip = "CODIGO_VIAJE",
-                            colStorageCapacity = "CAPACIDAD_BODEGA_REGISTRADA",
-                            colLat = "LATITUD_INICIAL", colLon = "LONGITUD_INICIAL",
-                            colHaul = "NUMERO_CALA", colCatchHaul = "CAPTURA_CALA",
-                            capAnch = "CAPTURA_ANCHOVETA", capSar = "CAPTURA_SARDINA",
-                            capJur = "CAPTURA_JUREL", capCab = "CAPTURA_CABALLA", capBon = "CAPTURA_BONITO"){
+getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
+                           colDateStart = "DIA_SALIDA", colDateOut = "DIA_ARRIBO",
+                           colSearchTime = "DURACION_BUSQUEDA", colStorageCapacity = "CAPACIDAD_BODEGA_REGISTRADA",
+                           colLat = "LATITUD_INICIAL", colLon = "LONGITUD_INICIAL",
+                           colHaul = "NUMERO_CALA", colHaulTotal = "TOTAL_CALAS", colCatchHaul = "CAPTURA_CALA",
+                           capAnch = "CAPTURA_ANCHOVETA", capSar = "CAPTURA_SARDINA",
+                           capJur = "CAPTURA_JUREL", capCab = "CAPTURA_CABALLA", capBon = "CAPTURA_BONITO"){
 
-  dataBase = .getBitacoraData(file = file, colPort = colPort, colDates = colDates, colTrip = colTrip,
+  dataBase = .getBitacoraData(file = file, colTrip = colTrip, colPort = colPort,
+                              colDateOut = colDateOut, colDateStart = colDateStart, colSearchTime = colSearchTime,
                               colStorageCapacity = colStorageCapacity, colLat = colLat, colLon = colLon,
-                              colHaul = colHaul, colCatchHaul = colCatchHaul,
+                              colHaul = colHaul, colHaulTotal = colHaulTotal, colCatchHaul = colCatchHaul,
                               capAnch = capAnch, capSar = capSar, capJur = capJur, capCab = capCab, capBon = capBon)
   return(dataBase)
 }

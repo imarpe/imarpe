@@ -3,21 +3,22 @@
 # Internal function for the class bitacora --------------------------------
 
 #Funcion para obtener la data del programa de bitacoras (PBP)
-.getBitacoraData = function(file, colPort, colDates, colTrip, colStorageCapacity,
-                            colLat, colLon, colHaul, colCatchHaul,
+.getBitacoraData = function(file, colTrip, colPort, colDateOut, colDateStart,
+                            colSearchTime, colStorageCapacity,
+                            colLat, colLon, colHaul, colHaulTotal, colCatchHaul,
                             capAnch, capSar, capJur, capCab, capBon, ...) {
 
   dataBase = read.csv(file = file, header = TRUE, na.strings = "", stringsAsFactors = FALSE, ...)
 
   #Fishing trip
   tripVector = dataBase[, colTrip]
-  if(sum(is.na(tripVector)) != 0) {warning("Viajes sin el registro del codigo de viaje")}
+  if(sum(is.na(tripVector)) != 0) {warning("Existen viajes sin el registro del codigo de viaje")}
   tripVector = tripVector[tripVector != 0 & tripVector != ""]
   tripVector = tripVector[!duplicated(tripVector)]
 
   #Ports (seguir poniendo a prueba el vector de puertos)
   portsVector = dataBase[, colPort]
-  if(sum(is.na(portsVector)) != 0) {warning("Viajes sin el registro del puerto")}
+  if(sum(is.na(portsVector)) != 0) {warning("Existen Viajes sin el registro del puerto")}
 
   portsVector = gsub(pattern = "\\([[:print:]]+\\)", replacement = "", x = portsVector, perl = TRUE)
   portList    = getPort(myPorts = portsVector)
@@ -25,8 +26,8 @@
   dataBase$latitudAux = portList$data$lat
 
   #Dates
-  datesVector = dataBase[, colDates]
-  if(sum(is.na(datesVector)) != 0) {warning("Viajes sin el registro de la fecha")}
+  datesVector = dataBase[, colDateOut]
+  if(sum(is.na(datesVector)) != 0) {warning("Existen viajes sin el registro de la fecha")}
   datesVector = datesVector[datesVector != "" & !is.na(datesVector)]
   newDatesVector = as.Date(datesVector, format="%d/%m/%Y %H:%M:%S")
 
@@ -36,7 +37,7 @@
 
   #Fleet
   fleetVector = dataBase[, colStorageCapacity]
-  if(sum(is.na(fleetVector)) != 0) {warning("Viajes sin el registro del tipo de flota")}
+  if(sum(is.na(fleetVector)) != 0) {warning("Existen viajes sin el registro del tipo de flota")}
 
   dataBase$flota = cut(x  = fleetVector, breaks = c(0, 10, 32.5, 110, Inf),
                        labels = c("Artesanal", "Menor escala", "Industrial madera", "Industrial"))
@@ -47,7 +48,10 @@
               years  =  unique(yearVector),
               months =  length(rle(monthVector)$values),
               fleets =  as.vector(unique(dataBase$flota[!is.na(dataBase$flota)])),
-              colTrip = colTrip, colLat  = colLat, colLon  = colLon, colHaul = colHaul, colCatchHaul = colCatchHaul,
+              colTrip = colTrip, colDateOut = colDateOut, colDateStart = colDateStart,
+              colSearchTime = colSearchTime, colStorageCapacity = colStorageCapacity,
+              colLat  = colLat, colLon  = colLon,
+              colHaul = colHaul, colHaulTotal = colHaulTotal, colCatchHaul = colCatchHaul,
               capAnch = capAnch, capSar = capSar, capJur = capJur, capCab = capCab, capBon  = capBon)
 
   output = list(data = dataBase, info = info)
@@ -61,7 +65,10 @@
 
   dataBase = object$data
   dataBase = dataBase[, c(object$info$colTrip, "puerto", "flota", "latitudAux") ]
-  dataBase = dataBase[!apply(dataBase == 0, 1, FUN = any, na.rm = TRUE),]
+
+  dataBase = dataBase[!is.na(dataBase$CODIGO_VIAJE) & dataBase$CODIGO_VIAJE != 0 & dataBase$CODIGO_VIAJE != "" &
+                        !is.na(dataBase$puerto) & dataBase$puerto != 0 & dataBase$puerto != "" &
+                        !is.na(dataBase$flota) & dataBase$flota != 0 & dataBase$flota != "" , ]
 
   #to get the trips
   dataBase = dataBase[!duplicated(dataBase), ]
@@ -108,14 +115,15 @@
   dataBase[, 1] = -abs(dataBase[, 1])
   colnames(dataBase) = c("lat", "latAux", "haul", "fleet")
 
+  dataBase = dataBase[!is.na(dataBase$lat) & dataBase$lat != 0 & dataBase$lat != "" &
+                        !is.na(dataBase$haul) & dataBase$haul != 0 & dataBase$haul != "" &
+                        !is.na(dataBase$fleet) & dataBase$fleet != 0 & dataBase$fleet != "", ]
+
   if(isTRUE(latByPort)) {
     indexLat = which(is.na(dataBase$lat))
     dataBase$lat[indexLat] = dataBase$latAux[indexLat]
-  } else {
-    dataBase = dataBase[!is.na(dataBase$lat), ]
   }
 
-  dataBase = dataBase[!is.na(dataBase$haul),]
   dataBase$latAux = NULL
   rownames(dataBase) = NULL
 
@@ -164,7 +172,9 @@
   colnames(dataBase)[1:5] = c("lat", "lon", "fleet", "num_haul", "catch_haul")
 
   #remove null catched
-  dataBase = dataBase[!is.na(dataBase$num_haul) & dataBase$num_haul != 0, ]
+  dataBase = dataBase[!is.na(dataBase$num_haul) & dataBase$num_haul != 0 & dataBase$num_haul != "", ]
+  #remove null fleet type
+  dataBase = dataBase[!is.na(dataBase$fleet) & dataBase$fleet != 0, ]
 
   #removing null lat and lon
   dataBase = dataBase[!is.na(dataBase$lat) & dataBase$lat != "", ]
@@ -266,10 +276,11 @@
 
 }
 
+#Funcion para plotear la presencia de otras especies por grupo taxonomico
 .plotFishingPresence.bitacora = function(x, byGroup = TRUE, group = NULL,
                                          cexPoint = 1, colMap = "khaki1",
                                          cex.axis = 1.2, cexPorts = 0.9,
-                                         colSpecies = NULL, colLegend = NULL){
+                                         colSpecies = NULL, colLegend = NULL, cexLegend = 1, ...){
 
   dataBase = x$dataGroups
 
@@ -289,6 +300,7 @@
 
   } else {
     dataBase = dataBase[!dataBase$group %in% c("neritico", "transzonal", "oceanico", "demersal"),]
+    dataBase = dataBase[!dataBase$group == "", ]
     specieVector = match(dataBase$group, unique(dataBase$group))
 
     if(is.null(colSpecies)){
@@ -307,7 +319,7 @@
   #plot
   par(mar = c(3.5, 3.5, 1,1))
   plot(x = dataBase$lon, y = dataBase$lat, xlim = c(-85, -70), ylim = c(-20,-2),
-       xlab = "", ylab = "", col = colPlot, axes = FALSE, type = "p", pch = 16, cex = cexPoint)
+       xlab = "", ylab = "", col = colPlot, axes = FALSE, type = "p", pch = 16, cex = cexPoint, ...)
   map(add = TRUE, fill = TRUE, col = colMap)
   box()
 
@@ -320,7 +332,7 @@
   text(x = ports$lon, y = ports$lat, labels = ports$name, adj = -0.1, cex = cexPorts)
 
   legend("bottomleft", legend = namesLegend, col = colLegend,
-         pch = 20, horiz = FALSE, bty = "n", cex = 1)
+         pch = 20, horiz = FALSE, bty = "n", cex = cexLegend)
 
   return(invisible())
 
@@ -347,6 +359,9 @@
   dataTable$species = capitalizeFirstLetter(catchSpecies$species[match(rownames(dataTable), catchSpecies$catch)])
   dataTable = dataTable[order(dataTable$dataTable, decreasing = TRUE), ]
 
+  #remove Unidentified species
+  dataTable = dataTable[!dataTable$species == "", ]
+
   dataTable = data.frame(Species    = dataTable$species,
                          Catch      = round(dataTable$dataTable, 4),
                          Percentage = round((dataTable$dataTable * 100) / sum(dataTable$dataTable), 4) )
@@ -371,6 +386,7 @@
 
   if(isTRUE(threshold)){
     dataBase = dataBase[dataBase[, 3] >= minPercentage, ]
+    dataBase$Porcentaje = dataBase$Captura * 100 / sum(dataBase$Captura)
   } else {
     dataBase = dataBase
   }
