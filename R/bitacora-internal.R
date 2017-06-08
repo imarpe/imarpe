@@ -136,6 +136,8 @@
   dataTable = dataTable[sort(dataTable$Latitud, decreasing = TRUE),]
 
   dataTable$Latitud   =  as.character(dataTable$Latitud)
+  dataTable$Latitud   =  paste0(substring(dataTable$Latitud, 2), "S")
+  #dataTable$Latitud  =  paste0(substring(dataTable$Latitud, 2), "\U00B0", "S")
 
   #Order by colnames
   fleetNames = c("Latitud", "Artesanal", "Menor escala", "Industrial madera", "Industrial")

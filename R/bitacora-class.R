@@ -24,7 +24,7 @@ print.bitacora = function(x, language="spanish") {
 summary.bitacora = function(object, language = "spanish", latByPort = FALSE) {
 
   output = list()
-  output$observedTrip = .observedTrip.bitacora(object = object, language = language)
+  output$observedTrip  = .observedTrip.bitacora(object = object, language = language)
   output$fishingHaul   = .fishingHaul.bitacora(object = object, language = language, latByPort = latByPort)
   class(output) = "summary.bitacora"
 
