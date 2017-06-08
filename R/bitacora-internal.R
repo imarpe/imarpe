@@ -3,7 +3,7 @@
 # Internal function for the class bitacora --------------------------------
 
 #Funcion para obtener la data del programa de bitacoras (PBP)
-.getBitacoraData = function(file, colPort, colDates, colTrip, colStorageCapacity, ...) {
+.getBitacoraData = function(file, colPort, colDates, colTrip, colStorageCapacity, colLat, colHaul, ...) {
 
   dataBase = read.csv(file = file, header = TRUE, na.strings = "", stringsAsFactors = FALSE, ...)
 
@@ -45,7 +45,9 @@
               years  =  unique(yearVector),
               months =  length(rle(monthVector)$values),
               fleets =  as.vector(unique(dataBase$flota[!is.na(dataBase$flota)])),
-              colTrip = colTrip)
+              colTrip = colTrip,
+              colLat  = colLat,
+              colHaul = colHaul)
 
   output = list(data = dataBase, info = info)
   class(output) = c("bitacora")
@@ -54,7 +56,7 @@
 }
 
 #Funcion para obtener los viajes observados
-.observedTrip.bitacora = function(object, language){
+.observedTrip.bitacora = function(object, language) {
 
   dataBase = object$data
   colTrip  = object$info$colTrip
@@ -96,4 +98,59 @@
   if(language == "spanish"){colnames(dataTable) = colnames(dataTable)}
 
   return(dataTable)
+}
+
+#Funcion para obtener los lances pesqueros muestreados
+.fishingHaul.bitacora = function(object, language, latByPort) {
+
+  dataBase = object$data
+  colLat   = object$info$colLat
+  colHaul  = object$info$colHaul
+
+  dataBase = dataBase[, c(colLat, "latitudAux", colHaul, "flota") ]
+  dataBase[, 1] = -dataBase[, 1]
+  colnames(dataBase) = c("lat", "latAux", "haul", "fleet")
+
+  if(isTRUE(latByPort)) {
+    indexLat = which(is.na(dataBase$lat))
+    dataBase$lat[indexLat] = dataBase$latAux[indexLat]
+  } else {
+    dataBase = dataBase[!is.na(dataBase$lat), ]
+  }
+
+  dataBase = dataBase[!is.na(dataBase$haul),]
+  dataBase$latAux = NULL
+  rownames(dataBase) = NULL
+
+  dataBase$lat = cut(dataBase$lat,
+                     breaks = seq(from = -19, to = -3, by = 1),
+                     labels = seq(from = -18, to = -3, by = 1))
+
+  dataTable = table(dataBase$lat, dataBase$fleet)
+  dataTable = data.frame(dataTable)
+  dataTable = reshape(dataTable, idvar = "Var1", timevar = "Var2", direction = "wide")
+  namesData = unlist(strsplit(colnames(dataTable), "\\."))
+  namesData = namesData[!namesData == "Freq"]
+  colnames(dataTable) =  c("Latitud", namesData[-1])
+  dataTable = dataTable[sort(dataTable$Latitud, decreasing = TRUE),]
+
+  dataTable$Latitud   =  as.character(dataTable$Latitud)
+
+  #Order by colnames
+  fleetNames = c("Latitud", "Artesanal", "Menor escala", "Industrial madera", "Industrial")
+  sortFleet  = sort(match(colnames(dataTable), fleetNames), decreasing = FALSE)
+  dataTable  = dataTable[sortFleet]
+  dataTable$Total = rowSums(dataTable[, seq(from = 2, to = dim(dataTable)[2], by = 1)])
+
+  dataTable = rbind(dataTable, c("Total", as.vector(colSums(dataTable[, seq(from = 2, to = dim(dataTable)[2], by = 1)]))))
+
+  #Language
+  if(language == "english"){
+    vectorNames = match(colnames(dataTable), c("Latitud", "Artesanal", "Menor escala", "Industrial madera", "Industrial", "Total"))
+    colnames(dataTable) = cut(x = vectorNames, breaks = c(0,1,2,3,4,5,6),
+                              labels = c("Latitude", "Artisanal", "Small scale", "Industrial wood", "Industrial", "Total"))}
+  if(language == "spanish"){colnames(dataTable) = colnames(dataTable)}
+
+  return(dataTable)
+
 }

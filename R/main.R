@@ -17,9 +17,12 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
 }
 
 getBitacorasData = function(file, colPort = "PUERTO_SALIDA", colDates = "DIA_SALIDA",
-                            colTrip = "CODIGO_VIAJE", colStorageCapacity = "CAPACIDAD_BODEGA_REGISTRADA"){
+                            colTrip = "CODIGO_VIAJE",
+                            colStorageCapacity = "CAPACIDAD_BODEGA_REGISTRADA",
+                            colLat = "LATITUD_INICIAL",
+                            colHaul = "NUMERO_CALA"){
 
   dataBase = .getBitacoraData(file = file, colPort = colPort, colDates = colDates, colTrip = colTrip,
-                              colStorageCapacity = colStorageCapacity)
+                              colStorageCapacity = colStorageCapacity, colLat = colLat, colHaul = colHaul)
   return(dataBase)
 }
