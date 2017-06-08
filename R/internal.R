@@ -242,7 +242,7 @@
 
 # Function to plot the regions (NC and S)
 .plotRegion = function(x, region, byAxis2="default", milesTons=TRUE, textAxis2, textAxis4, cexLab=1.2,
-                       daysToPlot = c(1,8,15,22), cexAxis24 = 1.1, cexAxis1 = 0.9, cexLegend = 1){
+                       daysToPlot, cexAxis24 = 1.1, cexAxis1 = 0.9, cexLegend = 1){
 
   if(region == "NC"){dataBase = x$regionNC} else {dataBase = x$regionS}
 
@@ -286,8 +286,8 @@
   mtext(text = textAxis4, side = 4, line = 4, cex = cexLab)
 
   #Axis1
+  if(unique(daysToPlot %in% "all")){index = dataBase$day} else {index = which(dataBase$day %in% daysToPlot)}
   xLabs = dataBase$dates
-  index = which(dataBase$day %in% daysToPlot)
   index = xLabs[index]
   xLabs[!xLabs %in% index] = NA
 

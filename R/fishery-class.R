@@ -81,8 +81,10 @@ plot.fishery = function(x, language, ploType = NULL, textAxis2, textAxis4, daysT
          plotDaily   = .plotDays.fishery(x=x, language=language, daysToPlot = daysToPlot, ...),
          plotMonthly = .plotMonths.fishery(x=x, language=language, ...),
          plotYearly  = .plotYears.fishery(x=x, language=language, ...),
-         plotNC      = .plotRegion(x = dataRegion, region = "NC", textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
-         plotS       = .plotRegion(x = dataRegion, region = "NC", textAxis2 = textAxis2, textAxis4 = textAxis4, ...))
+         plotNC      = .plotRegion(x = dataRegion, region = "NC", daysToPlot = daysToPlot,
+                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
+         plotS       = .plotRegion(x = dataRegion, region = "S", daysToPlot = daysToPlot,
+                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...))
   return(invisible())
 }
 
@@ -92,7 +94,7 @@ report = function(x, ...) {
 }
 
 
-report.fishery = function(x, format = "latex", tangle=FALSE, output = NULL){
+report.fishery = function(x, format = "latex", tangle=FALSE, output = NULL, daysToPlot = c(1,8,15,22)){
 
   if(is.null(output)) output = getwd()
   outputName = deparse(substitute(x))

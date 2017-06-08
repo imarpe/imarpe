@@ -25,7 +25,7 @@ pander::pander(fleeTable, align = "c", keep.line.breaks = TRUE)
 
 # Desembarque diario
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=4.5, fig.width=8}
-plot(x, language = "spanish", ploType = "plotDaily", col = "black", main = "")
+plot(x, language = "spanish", ploType = "plotDaily", col = "black", main = "", daysToPlot = daysToPlot)
 ```
 
 \pagebreak
@@ -62,14 +62,14 @@ portTable = .getPorts.fishery(object=x, language="spanish")
 pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
 ```
 
-# Desembarques diarios y acumulados en la región Norte-Centro
+# Desembarques diarios y acumulados en la region Norte-Centro
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
-plot(x, language = "spanish", ploType = "plotNC", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acomulado (miles t)")
+plot(x, language = "spanish", ploType = "plotNC", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acumulado (miles t)", daysToPlot = daysToPlot)
 ```
 
 \pagebreak
 
-# Desembarques diarios y acumulados en la región Sur
+# Desembarques diarios y acumulados en la region Sur
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
-plot(x, language = "spanish", ploType = "plotS", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acomulado (miles t)")
+plot(x, language = "spanish", ploType = "plotS", textAxis2= "Desembarque diario (t)", textAxis4="Desembarque acumulado (miles t)", daysToPlot = daysToPlot)
 ```
