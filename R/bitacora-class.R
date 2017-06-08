@@ -79,7 +79,7 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
 
   if(is.null(ploType)) ploType = "plotFishingPoints"
   if(ploType %in% c("plotFishingPoints", "plotFishingPresence")) {dataFishingPoints = .fishingPoints.bitacora(x)}
-  if(ploType %in% "plotSpeciesComposition") {dataSpeciesComposition = .speciesComposition.bitacora(x = x, language = language)}
+  if(ploType %in% "plotSpeciesComposition") {dataSpeciesComposition = .speciesComposition.bitacora(object = x, language = language)}
 
   switch(ploType,
          plotFishingPoints      = .plotFishingPoints.bitacora(x = dataFishingPoints, language = language, dataType = dataType, ...),

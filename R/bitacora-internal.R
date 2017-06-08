@@ -387,3 +387,52 @@
 
   return(invisible())
 }
+
+#Funcion para obtener la distribucion espacial de las capturas
+.distributionCatch.bitacora = function(object, language, specie) {
+
+  dataBase = object$data
+  dataBase = dataBase[, c(object$info$colLat, object$info$colLon, catchSpecies$catch) ]
+  colnames(dataBase)[c(1,2)] = c("lat", "lon")
+  dataBase$lat = -abs(dataBase$lat)
+  dataBase$lon = -abs(dataBase$lon)
+
+  dataBase = dataBase[!is.na(dataBase$lat) & !is.na(dataBase$lon), ]
+
+  aip = isopArea.assigner(dataBase)
+  getAipInfo = getAIPInfo(aipVector = aip)
+
+  dataBase$lon = getAipInfo$dc
+  colnames(dataBase)[2] = "dc"
+  colnames(dataBase)[3:dim(dataBase)[2]] = catchSpecies$species[match(colnames(dataBase[3:dim(dataBase)[2]]), catchSpecies$catch)]
+
+  #Indexing for name specie
+  dataTable = dataBase[, c(1, 2)]
+  dataTable$specie = round(dataBase[, specie], 2)
+
+  dataTable$lat = cut(dataTable$lat, breaks = seq(from = -19, to = -3, by = 1), labels = seq(from = -18, to = -3, by = 1))
+  dataTable     = aggregate(specie ~ lat + dc, data = dataTable, FUN = sum, na.rm = TRUE)
+  dataTable     = dcast(dataTable, lat ~ dc, value.var = "specie")
+
+  #Order by latitude
+  dataTable$lat  = as.numeric(as.character(dataTable$lat))
+  dataTable      = dataTable[order(dataTable$lat, decreasing = TRUE), ]
+  dataTable[is.na(dataTable)] = 0
+  rownames(dataTable) = NULL
+
+  #Latitud
+  dataTable$lat = as.character(dataTable$lat)
+  dataTable$lat =  paste0(substring(dataTable$lat, 2), "S")
+
+  #Total
+  dataTable$Total = rowSums(dataTable[, seq(from = 2, to = dim(dataTable)[2], by = 1)])
+  dataTable = rbind(dataTable, c("Total", as.vector(colSums(dataTable[, seq(from = 2, to = dim(dataTable)[2], by = 1)]))))
+
+  #Language
+  if(language == "spanish"){colnames(dataTable)[1] = "Latitud"}
+  if(language == "spanish"){colnames(dataTable)[1] = "Latitude"}
+
+  return(dataTable)
+
+}
+

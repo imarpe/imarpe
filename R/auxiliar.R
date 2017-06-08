@@ -81,3 +81,43 @@ getPort = function(myPorts){
 vectorColours = function (n){
   return(colorRampPalette(colors = tim.colors(64))(n))
 }
+
+#Function to get the aip
+isopArea.assigner <- function(dataPoints, colLon = "lon", colLat = "lat"){
+
+  referenceShapefile <- AIPShapefile_old
+
+  dataPoints <- switch(class(dataPoints),
+                       "data.frame" = as.data.frame(dataPoints[,c(colLon, colLat)]),
+                       "numeric" = data.frame(lon = dataPoints[1], lat = dataPoints[2], stringsAsFactors = FALSE))
+
+  output <- rep(NA, nrow(dataPoints))
+
+  index <- complete.cases(dataPoints)
+  dataPoints <- dataPoints[index,]
+
+  coordinates(dataPoints) <- dataPoints
+
+  proj4string(dataPoints) <- proj4string(referenceShapefile)
+
+  dataPoints <- over(x = dataPoints, y = referenceShapefile)
+
+  output[index] <- dataPoints$code
+
+  return(output)
+}
+
+#Function to get the distance to the coast
+getAIPInfo <- function(aipVector){
+  ncharAip <- nchar(aipVector)
+
+  dc <- as.numeric(substr(aipVector, 1, ifelse(ncharAip == 4, 1, 2)))*10
+  lat <- as.numeric(substr(aipVector, ifelse(ncharAip == 4, 2, 3), ncharAip - 1))
+  upDown <- as.numeric(substr(aipVector, ncharAip, ncharAip))
+
+  # if(any(!is.element(upDown, c(0, 3)))){
+  #   warning(paste("Values #", paste(which(!is.element(upDown, c(0, 3))), collapse = ", "), "have wrong values for up-down info."))
+  # }
+
+  return(data.frame(dc, lat, upDown, stringsAsFactors = FALSE))
+}
