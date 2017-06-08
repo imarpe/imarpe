@@ -2,7 +2,7 @@
 # Internal functions for the class fishery --------------------------------
 
 #Funcion para obtener la data para desembarques o esfuerzo por puerto
-.getFisheryData = function(x, fileName, fleet, varType, toTons, sp, start, end, port) {
+.getFisheryData = function(x, fileName, fleet, varType, toTons, sp, start, end, port, efforType) {
 
   fleeTable = fleet
   dataBase  = .readSegFile(file = x)
@@ -33,13 +33,20 @@
     dataTable[, port] = dataBase[, port]
   }
 
+  if(varType == "landing"){
+    efforType = NULL
+  } else{
+    efforType = efforType
+  }
+
   info = list(file    = fileName,
               records = nrow(dataTable),
               months  = length(rle(dataTable$month)$values),
               years   = length(unique(dataTable$year)),
               ports   = length(colnames(dataTable))-3,
               sp      = sp,
-              varType = varType)
+              varType = varType,
+              efforType = efforType)
 
   output = list(data = dataTable, info = info, fleeTable = fleeTable)
   class(output) = c("fishery")
@@ -146,13 +153,12 @@
 
 #GRAFICAS
 #Funcion para plotear el desembarque o esfuerzo diario
-.plotDays.fishery = function(x, main = NULL, xlab=NULL, ylab = NULL, language,
-                             col = "blue", daysToPlot = c(1,8,15,22),
-                             cex.axis = 0.8, cex.names=0.7, cex.main = 1, ...) {
+.plotDays.fishery = function(x, main = NULL, xlab=NULL, ylab = NULL, language, col = "blue",
+                             daysToPlot, cex.axis = 0.8, cex.names=0.7, cex.main = 1, ...) {
 
   dataBase   = .getSumPorts.fishery(object = x, language = language)
 
-  if(is.null(daysToPlot)){
+  if(unique(daysToPlot %in% "all")){
     vectorDays = paste0(as.character(dataBase[,3]),"-", capitalize(as.character(dataBase[,2])))
   } else {
     vectorDays = paste0(as.character(dataBase[,3]),"-", capitalize(as.character(dataBase[,2])))
@@ -167,12 +173,24 @@
     } else {
       if(language == "english"){main = "Daily effort"} else {main = "Esfuerzo diario"}}}
 
+  efforType  = x$info$efforType
+  if(!is.null(efforType)){
+    if(efforType == "viaje"){
+      if(language == "spanish"){labUnits = "Número de viajes" } else {labUnits = "Number of travels"}}
+    if(efforType == "capacidad_bodega"){
+      if(language == "spanish"){labUnits = expression(paste("Capacidad bodega (", m^3, ")")) } else {labUnits = expression(paste("Hold storage (", m^3, ")"))}}
+    if(efforType == "anzuelos"){
+      if(language == "spanish"){labUnits = "Número de anzuelos)" } else {labUnits = "Number of fishhook"}}
+    if(efforType == "embarcaciones"){
+      if(language == "spanish"){labUnits = "Número de embarcaciones)" } else {labUnits = "Number of boats"}}
+  }
+
   if(is.null(ylab)){
     if(x$info$varType == "landing"){
       if(language == "english"){ylab = "Landing (t)"} else {ylab = "Desembarque (t)"}
-    } else {
-      if(language == "english"){ylab = expression(paste("Effort (", m^-3, ")"))} else {ylab = expression(paste("Esfuerzo (", m^-3, ")"))}}}
-  par(mar = c(4,4,2,0.5))
+    } else {ylab = labUnits}}
+
+  par(mar = c(4,4.5,2,0.5))
   barplot(dataBase[,4], main=main, xlab=xlab, ylab=ylab, col=col, names.arg = FALSE,
           ylim=c(0,max(dataBase[,4])*1.2), cex.names=cex.names, axes=FALSE, cex.main = cex.main, ...)
   AxisDate = seq(0.7, by=1.2, length.out=length(vectorDays))
@@ -203,12 +221,24 @@
     } else {
       if(language == "english"){main = "Monthly effort"} else {main = "Esfuerzo mensual"}}}
 
+  efforType  = x$info$efforType
+  if(!is.null(efforType)){
+    if(efforType == "viaje"){
+      if(language == "spanish"){labUnits = "Número de viajes" } else {labUnits = "Number of travels"}}
+    if(efforType == "capacidad_bodega"){
+      if(language == "spanish"){labUnits = expression(paste("Capacidad bodega (", m^3, ")")) } else {labUnits = expression(paste("Hold storage (", m^3, ")"))}}
+    if(efforType == "anzuelos"){
+      if(language == "spanish"){labUnits = "Número de anzuelos)" } else {labUnits = "Number of fishhook"}}
+    if(efforType == "embarcaciones"){
+      if(language == "spanish"){labUnits = "Número de embarcaciones)" } else {labUnits = "Number of boats"}}
+  }
+
   if(is.null(ylab)){
     if(x$info$varType == "landing"){
       if(language == "english"){ylab = "Landing (t)"} else {ylab = "Desembarque (t)"}
-    } else {
-      if(language == "english"){ylab = expression(paste("Effort (", m^-3, ")"))} else {ylab = expression(paste("Esfuerzo (", m^-3, ")"))}}}
-  par(mar = c(4,4,2,0.5))
+    } else {ylab = labUnits}}
+
+  par(mar = c(4,4.5,2,0.5))
   barplot(monthPlot, main=main, xlab=xlab, ylab=ylab, col=col, names.arg=FALSE,
           ylim=c(0, max(monthPlot)*1.2), cex.names=cex.names, axes=FALSE, cex.main=cex.main, ...)
   axis(1, at=seq(0.7, by=1.2, length.out=length(monthPlot)), labels=namesMonthPlot,
@@ -235,12 +265,24 @@
     } else {
       if(language == "english"){main = "Yearly effort"} else {main = "Esfuerzo anual"}}}
 
+  efforType  = x$info$efforType
+  if(!is.null(efforType)){
+    if(efforType == "viaje"){
+      if(language == "spanish"){labUnits = "Número de viajes" } else {labUnits = "Number of travels"}}
+    if(efforType == "capacidad_bodega"){
+      if(language == "spanish"){labUnits = expression(paste("Capacidad bodega (", m^3, ")")) } else {labUnits = expression(paste("Hold storage (", m^3, ")"))}}
+    if(efforType == "anzuelos"){
+      if(language == "spanish"){labUnits = "Número de anzuelos)" } else {labUnits = "Number of fishhook"}}
+    if(efforType == "embarcaciones"){
+      if(language == "spanish"){labUnits = "Número de embarcaciones)" } else {labUnits = "Number of boats"}}
+  }
+
   if(is.null(ylab)){
     if(x$info$varType == "landing"){
       if(language == "english"){ylab = "Landing (t)"} else {ylab = "Desembarque (t)"}
-    } else {
-      if(language == "english"){ylab = expression(paste("Effort (", m^-3, ")"))} else {ylab = expression(paste("Esfuerzo (", m^-3, ")"))}}}
-  par(mar = c(2.5,4,2,0.5))
+    } else {ylab = labUnits}}
+
+  par(mar = c(2.5,4.5,2,0.5))
   barplot(dataBase[,1], main=main, xlab=xlab, ylab=ylab, col=col, names.arg=FALSE,
           ylim=c(0,max(dataBase)*1.2), cex.names=cex.names, axes=FALSE, cex.main = cex.main, ...)
   axis(1, at=seq(0.7, by=1.2, length.out=length(years)), labels=years, las=1,
