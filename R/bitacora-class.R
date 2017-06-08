@@ -73,3 +73,15 @@ report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
 
 }
 
+
+plot.bitacora = function(x, language, ploType = NULL, dataType, ...) {
+
+  if(is.null(ploType)) ploType = "plotFishingPoints"
+  if(ploType %in% "plotFishingPoints") {dataFishingPoints = .fishingPoints.bitacora(x)}
+
+  switch(ploType,
+         plotFishingPoints = .plotFishingPoints.bitacora(x=dataFishingPoints, language=language, dataType = dataType, ...))
+
+  return(invisible())
+
+}

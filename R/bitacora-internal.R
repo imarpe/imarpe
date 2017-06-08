@@ -3,7 +3,8 @@
 # Internal function for the class bitacora --------------------------------
 
 #Funcion para obtener la data del programa de bitacoras (PBP)
-.getBitacoraData = function(file, colPort, colDates, colTrip, colStorageCapacity, colLat, colHaul, ...) {
+.getBitacoraData = function(file, colPort, colDates, colTrip, colStorageCapacity, colLat, colHaul,
+                            colLon, colCala, colCapCala, capAnch, capSar, capJur, capCab, capBon, ...) {
 
   dataBase = read.csv(file = file, header = TRUE, na.strings = "", stringsAsFactors = FALSE, ...)
 
@@ -45,9 +46,9 @@
               years  =  unique(yearVector),
               months =  length(rle(monthVector)$values),
               fleets =  as.vector(unique(dataBase$flota[!is.na(dataBase$flota)])),
-              colTrip = colTrip,
-              colLat  = colLat,
-              colHaul = colHaul)
+              colTrip = colTrip, colLat  = colLat, colHaul = colHaul, colLon  = colLon, colCala = colCala,
+              colCapCala = colCapCala, capAnch = capAnch, capSar = capSar, capJur = capJur, capCab = capCab,
+              capBon  = capBon)
 
   output = list(data = dataBase, info = info)
   class(output) = c("bitacora")
@@ -108,7 +109,7 @@
   colHaul  = object$info$colHaul
 
   dataBase = dataBase[, c(colLat, "latitudAux", colHaul, "flota") ]
-  dataBase[, 1] = -dataBase[, 1]
+  dataBase[, 1] = -abs(dataBase[, 1])
   colnames(dataBase) = c("lat", "latAux", "haul", "fleet")
 
   if(isTRUE(latByPort)) {
@@ -153,5 +154,116 @@
   rownames(dataTable) = NULL
 
   return(dataTable)
+
+}
+
+#Funcion para obtener los puntos de pesca (por especie y grupo taxonomico)
+.fishingPoints.bitacora = function(object){
+
+  dataBase = object$data
+  dataBase = dataBase[, c(object$info$colLat, object$info$colLon, "flota", object$info$colCala,
+                          object$info$colCapCala, catchSpecies$catch) ]
+  colnames(dataBase)[1:5] = c("lat", "lon", "fleet", "num_haul", "catch_haul")
+
+  #remove null catched
+  dataBase = dataBase[!is.na(dataBase$num_haul) & dataBase$num_haul != 0, ]
+
+  #removing null lat and lon
+  dataBase = dataBase[!is.na(dataBase$lat) & dataBase$lat != "", ]
+  dataBase = dataBase[!is.na(dataBase$lon) & dataBase$lon != "", ]
+  rownames(dataBase) = NULL
+
+  dataBase$lat = -abs(dataBase$lat)
+  dataBase$lon = -abs(dataBase$lon)
+
+  #data for plot the 5 species
+  dataAnch = dataBase[, c("lat", "lon", "fleet", "num_haul", "catch_haul", object$info$capAnch)]
+  dataSar  = dataBase[, c("lat", "lon", "fleet", "num_haul", "catch_haul", object$info$capSar)]
+  dataJur  = dataBase[, c("lat", "lon", "fleet", "num_haul", "catch_haul", object$info$capJur)]
+  dataCab  = dataBase[, c("lat", "lon", "fleet", "num_haul", "catch_haul", object$info$capCab)]
+  dataBon  = dataBase[, c("lat", "lon", "fleet", "num_haul", "catch_haul", object$info$capBon)]
+
+  colnames(dataAnch) = c("lat", "lon", "fleet", "num_haul", "catch_haul", "catchSpecies")
+  dataAnch = dataAnch[!is.na(dataAnch$catchSpecies) & dataAnch$catchSpecies !=0, ]
+  rownames(dataAnch) = NULL
+
+  colnames(dataSar) = c("lat", "lon", "fleet", "num_haul", "catch_haul", "catchSpecies")
+  dataSar  = dataSar[!is.na(dataSar$catchSpecies) & dataSar$catchSpecies !=0, ]
+  rownames(dataSar) = NULL
+
+  colnames(dataJur) = c("lat", "lon", "fleet", "num_haul", "catch_haul", "catchSpecies")
+  dataJur  = dataJur[!is.na(dataJur$catchSpecies) & dataJur$catchSpecies !=0, ]
+  rownames(dataJur) = NULL
+
+  colnames(dataCab) = c("lat", "lon", "fleet", "num_haul", "catch_haul", "catchSpecies")
+  dataCab  = dataCab[!is.na(dataCab$catchSpecies) & dataCab$catchSpecies !=0, ]
+  rownames(dataCab) = NULL
+
+  colnames(dataBon) = c("lat", "lon", "fleet", "num_haul", "catch_haul", "catchSpecies")
+  dataBon  = dataBon[!is.na(dataBon$catchSpecies) & dataBon$catchSpecies !=0, ]
+  rownames(dataBon) = NULL
+
+  #presence for other species
+  dataGroups = dataBase[, -which(names(dataBase) %in%
+                                   c(object$info$capAnch, object$info$capSar, object$info$capJur, object$info$capCab, object$info$capBon))]
+  dataGroups = melt(dataGroups, id.vars=c("lat", "lon", "fleet", "num_haul", "catch_haul"))
+  indexGroup = match(dataGroups$variable, catchSpecies$catch)
+  dataGroups$group = catchSpecies$group[indexGroup]
+  dataGroups$species = catchSpecies$species[indexGroup]
+  dataGroups = dataGroups[!is.na(dataGroups$value),]
+  rownames(dataGroups) = NULL
+
+  output = list(dataAnch = dataAnch, dataSar = dataSar, dataJur = dataJur, dataCab = dataCab,
+                dataBon = dataBon, dataGroups = dataGroups, dataTotal = dataBase)
+
+  return(output)
+
+}
+
+#Funcion para plotear los mapas con puntos de pesca
+.plotFishingPoints.bitacora = function(x, language, dataType,
+                                       colMap = "khaki1",
+                                       cexPointCatch = FALSE, cexPoint = 0.8,
+                                       colFleet = c("red", "blue", "green", "black"),
+                                       cex.axis = 1.2, cexPorts = 0.9){
+
+  dataBase = x[[dataType]]
+  ports    = portData[portData$importance == 1, ]
+
+  #Colours by fleet
+  colVector = match(dataBase$fleet, c("Artesanal", "Menor escala", "Industrial madera", "Industrial"))
+
+  #Legend colours
+  if(language == "spanish"){fleetName = c("AR", "ME", "IM", "IN")[sort(unique(colVector), decreasing = FALSE)]}
+  if(language == "english"){fleetName = c("AR", "SS", "IW", "IN")[sort(unique(colVector), decreasing = FALSE)]}
+  colLegend = colFleet[sort(unique(colVector), decreasing = FALSE)]
+
+  colVector = cut(colVector, breaks = c(-Inf, 1, 2, 3, 4), labels = colFleet)
+
+  #Size according the catch
+  sizePoints = cut(x = dataBase$catchSpecies, breaks = pretty(dataBase$catchSpecies),
+                   labels = seq(from = 1, by = 1, length.out = length(pretty(dataBase$catchSpecies))-1))
+  if(isTRUE(cexPointCatch)){cexPoints = as.numeric(as.character(sizePoints))} else {cexPoints = cexPoint}
+
+  #plot
+  par(mar = c(3.5, 3.5, 1,1))
+  plot(x = dataBase$lon, y = dataBase$lat, xlim = c(-85, -70), ylim = c(-20,-2),
+       xlab = "", ylab = "", col = colVector, axes = FALSE, type = "p", pch = 16,
+       cex = cexPoints)
+  map(add = TRUE, fill = TRUE, col = colMap)
+  box()
+
+  axis(2, at = seq(from = -20, to = -2, by = 2), las = 2, cex.axis = cex.axis,
+       labels = paste(seq(from = 20, to = 2, by = -2), "S", sep = " "))
+
+  axis(1, at = seq(from = -82, to = -70, by = 2), cex.axis = cex.axis,
+       labels = paste(seq(from = 82, to = 70, by = -2), "W", sep = " "))
+
+  text(x = ports$lon, y = ports$lat, labels = ports$name, adj = -0.1, cex = cexPorts)
+
+  legend("bottomleft", legend = fleetName, col = colLegend,
+         pch = 20, horiz = FALSE, bty = "n", cex = 1)
+
+  return(invisible())
 
 }
