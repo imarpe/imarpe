@@ -283,11 +283,12 @@
   box()
 
   if(is.null(textAxis2) & is.null(textAxis4)){
-    if(x$varType == "landing"){
-      textAxis2="Desembarque diario (t)" ; textAxis4=expression(paste("Desembarque acumulado ( ", 10^3, " t)"))
-    } else {
-      efforType = x$efforType
 
+    if(x$varType == "landing"){
+      textAxis2="Desembarque diario (t)" ; textAxis4=expression(paste("Desembarque acumulado ( ", 10^3, " t)"))}
+
+    if(x$varType == "effort"){
+      efforType = x$efforType
       if(efforType == "viaje"){
         textAxis2 = "Esfuerzo diario (viajes)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " viajes)")) }
       if(efforType == "capacidad_bodega"){
@@ -295,11 +296,22 @@
       if(efforType == "anzuelos"){
         textAxis2 = "Esfuerzo diario (anzuelos)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " anzuelos)")) }
       if(efforType == "embarcaciones"){
-        textAxis2 = "Esfuerzo diario (embarcaciones)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " embarcaciones)")) }
-    }} else {
+        textAxis2 = "Esfuerzo diario (embarcaciones)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " embarcaciones)")) }}
+
+    if(x$varType == "cpue"){
+      efforType = x$efforType
+      if(efforType == "viaje"){
+        textAxis2 = expression(paste("Cpue diario ("," t ", viajes^-1,")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", viajes^-1, 10^3, ")")) }
+      if(efforType == "capacidad_bodega"){
+        textAxis2 = expression(paste("Cpue diario ("," t ", m^-3, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", m^-3, 10^3, ")")) }
+      if(efforType == "anzuelos"){
+        textAxis2 = expression(paste("Cpue diario ("," t ", anzuelos^-1, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", anzuelos^-1, 10^3, ")")) }
+      if(efforType == "embarcaciones"){
+        textAxis2 = expression(paste("Cpue diario ("," t ", embarcaciones^-1, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", embarcaciones^-1, 10^3, ")")) }}
+
+    } else {
       textAxis2 = textAxis2
-      textAxis4 = textAxis4
-  }
+      textAxis4 = textAxis4}
 
   mtext(text = textAxis2, side = 2, line = 4, cex = cexLab)
   mtext(text = textAxis4, side = 4, line = 4, cex = cexLab)

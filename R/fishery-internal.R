@@ -6,7 +6,6 @@
 
   fleeTable = fleet
   dataBase  = .readSegFile(file = x)
-  #dataBase = readSegFile(file = file, na.strings = "", stringsAsFactors = FALSE)
   dataBase[is.na(dataBase)] =  0
 
   if(varType == "landing"){
@@ -61,12 +60,19 @@
 
   dataTable = data.frame(dataBase[, c(1:3)], apply(ports, 1, sum))
 
-  if(language == "english"){
-    colnames(dataTable) = c("year", "month", "day", "ports")
-  } else {
-    colnames(dataTable) = c("anho", "mes", "dia", "puertos")
-    dataTable$mes = engToSpa(dataTable$mes)
-  }
+  if(object$info$varType == "landing"){
+    if(language == "english"){
+      colnames(dataTable) = c("year", "month", "day", "landing")
+    } else {
+      colnames(dataTable) = c("anho", "mes", "dia", "desembarque")
+      dataTable$mes       = engToSpa(dataTable$mes)
+    }} else {
+    if(language == "english"){
+      colnames(dataTable) =  c("year", "month", "day", "effort")
+    } else {
+      colnames(dataTable) = c("anho", "mes", "dia", "esfuerzo")
+      dataTable$mes       = engToSpa(dataTable$mes)
+    }}
 
   return(dataTable)
 }
@@ -180,7 +186,7 @@
     if(efforType == "capacidad_bodega"){
       if(language == "spanish"){labUnits = expression(paste("Capacidad bodega (", m^3, ")")) } else {labUnits = expression(paste("Hold storage (", m^3, ")"))}}
     if(efforType == "anzuelos"){
-      if(language == "spanish"){labUnits = "Número de anzuelos)" } else {labUnits = "Number of fishhook"}}
+      if(language == "spanish"){labUnits = "Número de anzuelos)" } else {labUnits = "Number of fish hook"}}
     if(efforType == "embarcaciones"){
       if(language == "spanish"){labUnits = "Número de embarcaciones)" } else {labUnits = "Number of boats"}}
   }

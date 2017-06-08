@@ -10,8 +10,8 @@ getData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL
   output = switch(tolower(type),
                   fisheryinfo = .getFisheryData(x=dataBase, fileName = file, fleet = fleet, varType=varType,
                                                 toTons = toTons, sp=sp, start=start, end=end, port=port, efforType = efforType),
-                  cpue        = .getCPUEData(x=dataBase, fileName = file, fleet = fleet,
-                                             toTons = toTons, sp=sp, start=start, end=end, port=port, efforType),
+                  cpue        = .getCPUEData(x=dataBase, fileName = file, fleet = fleet, varType=varType,
+                                             toTons = toTons, sp=sp, start=start, end=end, port=port, efforType = efforType),
                   read.csv(file = dataBase, stringsAsFactors = FALSE, ...))
 
   return(output)

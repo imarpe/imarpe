@@ -1,5 +1,5 @@
 
-print.fishery = function(x, language="spanish", ...) {
+print.fishery = function(x, language="spanish") {
 
   if(language == "english"){
     cat("Data from: ", sQuote(x$info$file), "\n", sep="")
@@ -23,13 +23,24 @@ print.fishery = function(x, language="spanish", ...) {
 }
 
 
-summary.fishery =  function(object, language = "spanish", ...) {
+summary.fishery =  function(object, language = "spanish") {
+
+  object2 = object
+  if(language=="spanish"){
+    object2$data$month = engToSpa(object2$data$month)
+    colnames(object2$data)[1:3] = c("anho", "mes", "dia")
+
+  } else{
+    object2$data$month = object2$data$month
+    colnames(object2$data)[1:3] = c("year", "month", "day")
+  }
 
   output = list()
 
   output$var      = object$info$varType
-  output$sumPorts = .getSumPorts.fishery(object=object, language=language)
-  output$ports    = .getPorts.fishery(object=object, language=language)
+  output$portDay =  object2$data
+  output$day     =  .getSumPorts.fishery(object=object, language=language)
+  output$port    =  .getPorts.fishery(object=object, language=language)
   output$months   = .getMonth.fishery(object=object, language=language)
   output$years    = .getYear.fishery(object=object, language=language)
 
@@ -38,32 +49,36 @@ summary.fishery =  function(object, language = "spanish", ...) {
 }
 
 
-print.summary.fishery = function(x, language = "spanish", ...) {
+print.summary.fishery = function(x, language = "spanish") {
 
   x2 = x
   class(x2) = 'fishery'
 
   if(x$var == "landing"){
     if(language == "english"){
-      cat("\nLanding by day:\n\n") ; print(x$sumPorts)
-      cat("\nLanding by port (non-zero only):\n\n") ; print(x$ports[x$ports[,1]>0, ,drop=FALSE])
+      cat("\nLanding by port and day (non-zero only):\n\n") ; print(x$portDay[x$portDay[,1]>0, ,drop=FALSE])
+      cat("\nLanding by day:\n\n") ; print(x$day)
+      cat("\nLanding by port (non-zero only):\n\n") ; print(x$port[x$port[,1]>0, ,drop=FALSE])
       cat("\nMonthly landing:\n\n") ; print(t(x$months))
       cat("\nAnnual landing:\n\n") ; print(x$years)}
     else {
-      cat("\nDesembarque por dia:\n\n") ; print(x$sumPorts)
-      cat("\nDesembarque por puertos (solo positivos):\n\n") ; print(x$ports[x$ports[,1]>0, ,drop=FALSE])
+      cat("\nDesembarque por puerto y por dia (solo positivos):\n\n") ; print(x$portDay[x$portDay[,1]>0, ,drop=FALSE])
+      cat("\nDesembarque por dia:\n\n") ; print(x$day)
+      cat("\nDesembarque por puerto (solo positivos):\n\n") ; print(x$port[x$port[,1]>0, ,drop=FALSE])
       cat("\nDesembarque mensual:\n\n") ; print(t(x$months))
       cat("\nDesembarque anual:\n\n") ; print(x$years)}
 
   } else {
     if(language == "english"){
-      cat("\nEffort by day:\n\n") ; print(x$sumPorts)
-      cat("\nEffort by port (non-zero only):\n\n") ; print(x$ports[x$ports[,1]>0, ,drop=FALSE])
+      cat("\nEffort by port and day (non-zero only):\n\n") ; print(x$portDay[x$portDay[,1]>0, ,drop=FALSE])
+      cat("\nEffort by day:\n\n") ; print(x$day)
+      cat("\nEffort by port (non-zero only):\n\n") ; print(x$port[x$port[,1]>0, ,drop=FALSE])
       cat("\nMonthly effort:\n\n") ; print(t(x$months))
       cat("\nAnnual effort:\n\n") ; print(x$years)}
     else {
-      cat("\nEsfuerzo por dia:\n\n") ; print(x$sumPorts)
-      cat("\nEsfuerzo por puertos (solo positivos):\n\n") ; print(x$ports[x$ports[,1]>0, ,drop=FALSE])
+      cat("\nEsfuerzo por puerto y por dia (solo positivos):\n\n") ; print(x$portDay[x$portDay[,1]>0, ,drop=FALSE])
+      cat("\nEsfuerzo por dia:\n\n") ; print(x$day)
+      cat("\nEsfuerzo por puerto (solo positivos):\n\n") ; print(x$port[x$port[,1]>0, ,drop=FALSE])
       cat("\nEsfuerzo mensual:\n\n") ; print(t(x$months))
       cat("\nEsfuerzo anual:\n\n") ; print(x$years)}
   }
