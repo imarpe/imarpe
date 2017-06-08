@@ -75,7 +75,7 @@
 # Internal function for getData
 .fleetData = function(file, varType, fleeType, sp, efforType, toTons=TRUE,
                       landingFun = sum, effortFun = sum, cpueFun = mean,
-                      start = start, end = end){
+                      start = start, end = end, port = port){
 
   #Lectura de base
   dataBase = read.csv(file = file, header = TRUE)
@@ -95,6 +95,14 @@
   dataBase       = .trimData(x = dataBase, start = start, end = end)
   dataBase[, c("year", "month", "day")] = NULL
   rownames(dataBase) = NULL
+
+  #port
+  if(is.null(port)){
+    dataBase = dataBase
+  } else{
+    dataBase = dataBase[dataBase$puerto %in% port,]
+    rownames(dataBase) = NULL
+  }
 
   #Obtencion de vectores captura, esfuerzo o cpue -> nombre: dataTable
   if(varType == "cpue"){ #cpue
