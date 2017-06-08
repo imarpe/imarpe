@@ -46,7 +46,7 @@ plot(x, language = "spanish", ploType = "plotMonthly", col = "gray", main = "")
 # Cpue anual
 \vspace{1.5cm}
 ```{r, echo=FALSE, cache=TRUE, message=FALSE}
-yearTable = .getYear.cpue(object=x, language="spanish")
+yearTable = .getYear.cpue(object=x)
 pander::pander(yearTable, align = "c", keep.line.breaks = TRUE)
 ```
 \vspace{3cm}
