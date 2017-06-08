@@ -62,14 +62,14 @@ portTable = .getPorts.fishery(object=x, language="spanish")
 pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
 ```
 
-# Esfuerzo diario y acumulado en la region Norte-Centro
+# Esfuerzo diario y acumulado en la región Norte-Centro
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
 plot(x, language = "spanish", ploType = "plotNC", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
 ```
 
 \pagebreak
 
-# Esfuerzo diario y acumulado en la region Sur
+# Esfuerzo diario y acumulado en la región Sur
 ```{r, cache=TRUE, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
 plot(x, language = "spanish", ploType = "plotS", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
 ```

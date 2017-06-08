@@ -133,7 +133,8 @@ report.fishery = function(x, format = "latex", tangle=FALSE, output = NULL, days
   }
 
   outputFile = paste0(outputName, "_output.pdf")
-  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output)
+  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output,
+         encoding = "latin1")
 
   if(isTRUE(open)) shell.exec(outputFile)
 

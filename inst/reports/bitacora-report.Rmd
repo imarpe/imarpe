@@ -5,7 +5,6 @@ header-includes:
   - \usepackage{fancyhdr}
   - \fancyfoot[LE,RO]{DGIRP}
   - \usepackage[spanish]{babel}
-  - \usepackage[utf8]{inputenc}
 fontsize: 10pt
 geometry: margin=1cm
 output: pdf_document
@@ -17,7 +16,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Tamanho de muestra
+# Tamaño de muestra
 
 * Viajes observados
 ```{r, echo=FALSE, cache=TRUE, message=FALSE}
@@ -30,7 +29,7 @@ pander::pander(observedTrip, align = "c", keep.line.breaks = TRUE, split.table =
 fishingHaul = .fishingHaul.bitacora(object = x, language = "spanish", latByPort = FALSE)
 vecLat      = fishingHaul$Latitud
 newVecLat   = vecLat[-length(vecLat)]
-fishingHaul$Latitud = c(paste(substring(newVecLat, 2), "S", sep=" "), vecLat[length(vecLat)])
+fishingHaul$Latitud = c(paste0(substring(newVecLat, 2), "S"), vecLat[length(vecLat)])
 
 pander::pander(fishingHaul, align = "c", keep.line.breaks = TRUE, split.table = 120)
 ```
