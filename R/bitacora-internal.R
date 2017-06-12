@@ -65,8 +65,9 @@
 
   dataBase = object$data
   dataBase = dataBase[, c(object$info$colTrip, "puerto", "flota", "latitudAux") ]
+  colnames(dataBase) = c("codeTrip", "puerto", "flota", "latitudAux")
 
-  dataBase = dataBase[!is.na(dataBase$CODIGO_VIAJE) & dataBase$CODIGO_VIAJE != 0 & dataBase$CODIGO_VIAJE != "" &
+  dataBase = dataBase[!is.na(dataBase$codeTrip) & dataBase$codeTrip != 0 & dataBase$codeTrip != "" &
                         !is.na(dataBase$puerto) & dataBase$puerto != 0 & dataBase$puerto != "" &
                         !is.na(dataBase$flota) & dataBase$flota != 0 & dataBase$flota != "" , ]
 
@@ -442,7 +443,7 @@
 
   #Language
   if(language == "spanish"){colnames(dataTable)[1] = "Latitud"}
-  if(language == "english"){colnames(dataTable)[1] = "Latitude"}
+  if(language == "spanish"){colnames(dataTable)[1] = "Latitude"}
 
   return(dataTable)
 
