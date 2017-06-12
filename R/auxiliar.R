@@ -121,3 +121,21 @@ getAIPInfo <- function(aipVector){
 
   return(data.frame(dc, lat, upDown, stringsAsFactors = FALSE))
 }
+
+#Function to assign anchovy season
+assignAnchovy_season = function(x, region){
+
+  if(region == "norte-centro") { seasonData = seasonAnchovyNC }
+  if(region == "sur") { seasonData = seasonAnchovyS }
+
+  seasonData$start = as.Date(seasonData$start, format ="%d/%m/%Y")
+  seasonData$end   = as.Date(seasonData$end, format ="%d/%m/%Y")
+
+  seasonVector = rep(NA, length(x))
+
+  for(i in seq_along(seasonData$year)){
+
+    seasonVector[x >= seasonData$start[i] & x <= seasonData$end[i]] = seasonData$season[i]
+  }
+  return(seasonVector)
+}
