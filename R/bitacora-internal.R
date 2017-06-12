@@ -449,3 +449,42 @@
 
 }
 
+#Funcion para obtener la data para analizar el esfuerzo y el cpue
+.effortData.bitacora = function(object) {
+
+  dataBase = object$data
+  dataBase = dataBase[, c(object$info$colTrip, object$info$colStorageCapacity, "flota", "puerto",
+                          object$info$colDateStart, object$info$colDateOut,
+                          object$info$colLat, object$info$colLon, object$info$colSearchTime,
+                          object$info$colHaul, object$info$colHaulTotal, object$info$colCatchHaul,
+                          object$info$capAnch, object$info$capSar, object$info$capJur, object$info$capCab, object$info$capBon)]
+
+  colnames(dataBase) = c("codeTrip", "storageCapacity", "fleet", "port", "dateStart", "dateOut",
+                         "lat", "lon", "searchTime", "haulNumber", "haulTotal","haulCatch",
+                         "anchoveta", "sardina", "jurel", "caballa", "bonito")
+
+  #Obtencion de variables  para el esfuerzo
+  #travel time (duracion viaje)
+  dataBase = dataBase[!is.na(dataBase$dateStart) & !is.na(dataBase$dateOut), ]
+  dataBase$dateStart  = as.POSIXct(strptime(dataBase$dateStart, format = "%d/%m/%Y %H:%M:%S"))
+  dataBase$dateOut    = as.POSIXct(strptime(dataBase$dateOut, format = "%d/%m/%Y %H:%M:%S"))
+  dataBase$travelTime = as.numeric(dataBase$dateOut - dataBase$dateStart) / 60
+
+  #search time (tiempo busqueda)
+  hours = suppressWarnings(as.numeric(substring(gsub("^\\s+|\\s+$", "", dataBase$searchTime), 1, 2)))
+  mins  = suppressWarnings(as.numeric(substring(gsub("^\\s+|\\s+$", "", dataBase$searchTime), 4, 5)))
+  dataBase$searchTime = hours + mins/60
+
+  # variables time
+  dataBase$year  = as.numeric(format(dataBase$dateStart, "%Y"))
+  dataBase$month = as.numeric(format(dataBase$dateStart, "%m"))
+  dataBase$day   = as.numeric(format(dataBase$dateStart, "%d"))
+  dataBase$dates = as.Date(paste(dataBase$day, dataBase$month, dataBase$year, sep = "/"),
+                           format = "%d/%m/%Y")
+  # code trip haul
+  dataBase = dataBase[!is.na(dataBase$codeTrip) & !is.na(dataBase$haulTotal), ]
+  dataBase$codeTripHaul = paste(dataBase$codeTrip, dataBase$haulTotal, sep = "-")
+
+  return(dataBase)
+}
+
