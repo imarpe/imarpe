@@ -508,15 +508,20 @@
 
   if(species %in% "anchoveta") {
 
-    if(region %in% "norte-centro") {
-      dataBase = dataBase[!is.na(dataBase$lat), ]
-      dataBase = dataBase[which(dataBase$lat > 2 & dataBase$lat <= 15.99), ]
-      dataBase$season = assignAnchovy_season(x = dataBase$dates, region = region) }
+    if(!is.null(region)){
+      if(region %in% "norte-centro") {
+        dataBase = dataBase[!is.na(dataBase$lat), ]
+        dataBase = dataBase[which(dataBase$lat > 2 & dataBase$lat <= 15.99), ]
+        dataBase$season = assignAnchovy_season(x = dataBase$dates, region = region) }
 
-    if(region %in% "sur") {
-      dataBase = dataBase[!is.na(dataBase$lat), ]
-      dataBase = dataBase[which(dataBase$lat >= 16 & dataBase$lat < 18.9), ]
-      dataBase$season = assignAnchovy_season(x = dataBase$dates, region = region) }
+      if(region %in% "sur") {
+        dataBase = dataBase[!is.na(dataBase$lat), ]
+        dataBase = dataBase[which(dataBase$lat >= 16 & dataBase$lat < 18.9), ]
+        dataBase$season = assignAnchovy_season(x = dataBase$dates, region = region) }
+    } else {
+      dataBase$season = dataBase$year
+    }
+
   }
   colnames(dataBase)[13] = "catch"
   rownames(dataBase) = NULL
