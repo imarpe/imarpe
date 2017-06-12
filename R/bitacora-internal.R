@@ -488,3 +488,101 @@
   return(dataBase)
 }
 
+#Funcion para extraer informacion de la especies y la temporada
+.effortSpeciesData.bitacora = function(data, species, region = NULL){
+
+  dataBase = data
+
+  nameSpecies = c("anchoveta", "sardina", "jurel", "caballa", "bonito")
+  nameSpecies = nameSpecies[!nameSpecies %in% species]
+  dataBase = dataBase[, -which(colnames(dataBase) %in% nameSpecies)]
+  dataBase = dataBase[!is.na(dataBase[species]), ]
+
+  catchSpecies = tapply(dataBase[, species], dataBase[, "codeTripHaul"], sum)
+  dataBase = subset(dataBase, !duplicated(subset(dataBase, select=c(codeTripHaul))))
+  dataBase[, species] = catchSpecies[match(dataBase$codeTripHaul, names(catchSpecies)) ]
+
+  #building season by species
+  if(species %in% c("sardina", "jurel", "caballa", "bonito")) {
+    dataBase$season = dataBase$year}
+
+  if(species %in% "anchoveta") {
+
+    if(region %in% "norte-centro") {
+      dataBase = dataBase[!is.na(dataBase$lat), ]
+      dataBase = dataBase[which(dataBase$lat > 2 & dataBase$lat <= 15.99), ]
+      dataBase$season = assignAnchovy_season(x = dataBase$dates, region = region) }
+
+    if(region %in% "sur") {
+      dataBase = dataBase[!is.na(dataBase$lat), ]
+      dataBase = dataBase[which(dataBase$lat >= 16 & dataBase$lat < 18.9), ]
+      dataBase$season = assignAnchovy_season(x = dataBase$dates, region = region) }
+  }
+  colnames(dataBase)[13] = "catch"
+  rownames(dataBase) = NULL
+
+  return(data = dataBase)
+}
+
+#Funcion para obtener el esfuerzo
+getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
+
+  dataBase = data
+
+  #indexacion tipo de flota
+  if(!is.null(fleeType)) {dataBase = dataBase[dataBase$fleet %in% fleeType, ]}
+
+  #remove NAs in efforType
+  dataBase = dataBase[!is.na(dataBase[efforType]), ]
+
+  effort = dataBase[efforType]
+  names(effort) = NULL
+  dataBase["effort"] = effort
+
+  if(effortBy %in% "time") {
+
+    if(timeBy == "days") {effortVector = tapply(X = dataBase$effort, INDEX = list(dataBase$dates), FUN = sum, na.rm = TRUE)}
+    if(timeBy == "months") {effortVector = tapply(X = dataBase$effort, INDEX = list(dataBase$year, dataBase$month), FUN = sum, na.rm = TRUE) }
+    if(timeBy == "years") {effortVector = tapply(X = dataBase$effort, INDEX = dataBase$year, FUN = sum, na.rm = TRUE) }
+    if(timeBy == "seasons") {effortVector = tapply(X = dataBase$effort, INDEX = list(dataBase$season), FUN = sum, na.rm = TRUE) }
+
+  } else {
+    effortVector = tapply(X = dataBase$effort, INDEX = list(dataBase$port), FUN = mean, na.rm = TRUE)
+    effortVector = effortVector[order(match(names(effortVector), portData$name))]
+  }
+
+  return(effort = effortVector)
+}
+
+#Funcion para obtener la captura por unidad de esfuerzo (cpue) relativizada
+getCpue_relativited = function(data, toTons=FALSE, efforType, cpueBy = "time", timeBy, fleeType = NULL) {
+
+  dataBase = data
+  dataBase$catch = dataBase$catch / ifelse(isTRUE(toTons), 1000, 1)
+
+  #indexacion tipo de flota
+  if(!is.null(fleeType)) {dataBase = dataBase[dataBase$fleet %in% fleeType, ]}
+
+  #remove NAs in the dataBase
+  dataBase = dataBase[!is.na(dataBase$catch) & dataBase$catch != 0 &
+                        !is.na(dataBase$storageCapacity) & dataBase$storageCapacity != 0, ]
+  dataBase = dataBase[!is.na(dataBase[efforType]) & dataBase[efforType] != 0, ]
+
+  cpue = dataBase$catch / dataBase$storageCapacity / dataBase[efforType]
+  names(cpue) = NULL
+  dataBase["cpue"] = cpue
+
+  if(cpueBy %in% "time"){
+
+    if(timeBy == "days") {cpueVector = tapply(X = dataBase$cpue, INDEX = list(dataBase$dates), FUN = mean, na.rm = TRUE, i)}
+    if(timeBy == "months") {cpueVector = tapply(X = dataBase$cpue, INDEX = list(dataBase$year, dataBase$month), FUN = mean, na.rm = TRUE) }
+    if(timeBy == "years") {cpueVector = tapply(X = dataBase$cpue, INDEX = dataBase$year, FUN = mean, na.rm = TRUE) }
+    if(timeBy == "seasons") {cpueVector = tapply(X = dataBase$cpue, INDEX = list(dataBase$season), FUN = mean, na.rm = TRUE) }
+
+  } else {
+    cpueVector = tapply(X = dataBase$cpue, INDEX = list(dataBase$port), FUN = mean, na.rm = TRUE)
+    cpueVector = cpueVector[order(match(names(cpueVector), portData$name))]
+  }
+
+  return(cpue = cpueVector)
+}

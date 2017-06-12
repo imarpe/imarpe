@@ -139,3 +139,4 @@ assignAnchovy_season = function(x, region){
   }
   return(seasonVector)
 }
+
