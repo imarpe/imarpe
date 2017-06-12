@@ -115,4 +115,4 @@ pander::pander(spatialCatches, align = "c", keep.line.breaks = TRUE)
 
 \pagebreak
 
-#Esfuerzo pesquero y captura por unidad de esfuerzo
+#Esfuerzo efectivo de pesca por áreas

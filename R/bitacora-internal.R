@@ -591,3 +591,32 @@ getCpue_relativited = function(data, toTons=FALSE, efforType, cpueBy = "time", t
 
   return(cpue = cpueVector)
 }
+
+#Funcion para plotear el esfuerzo por puerto
+.plotEffort.bitacora = function(effort1, effort2, labAxis2, labAxis4, colBar = NULL, colLine = NULL,
+                                legend = NULL, ...) {
+
+  maxAxis2 = ceiling(1.2*max(effort1))
+  maxAxis4 = ceiling(1.2*max(effort2))
+
+  par(mar=c(3.5,4.5,1,4.5))
+  #effort 1
+  barplot(effort1, cex.names = 0.8, ylim = c(0, maxAxis2), axes = FALSE, ylab = labAxis2, col = colBar, ...)
+  axis(side = 2, at = pretty(effort1), las = 1)
+
+  #effort 2
+  vectorEffort2 = barplot(effort2, names.arg = seq(from = 1, to = length(effort2), by = 1), plot = FALSE)
+  lines(vectorEffort2, effort2*maxAxis2/maxAxis4, type="o", pch=19, lwd=1, col = colLine)
+
+  axis(side = 4, at = pretty(effort2)/maxAxis4*maxAxis2, labels = pretty(effort2), las = 2)
+  mtext(text = labAxis4, side = 4, line = 2.5)
+
+  box()
+
+  if(!is.null(legend)){
+    legend("topleft", legend = c(legend[1], legend[2]), bty = "n", lty = c(1,4),
+           cex = 0.8, lwd = c(5, 2), col = c("gray", "black"))
+  }
+
+  return(invisible())
+}
