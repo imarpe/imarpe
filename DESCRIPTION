@@ -3,8 +3,10 @@ Type: Package
 Title: Tools for graphics and summary reports for IMARPE
 Version: 0.1.0
 Date: 2017-05-01
-Authors@R: person("Criscely", "Lujan-Paredes", role = c("aut", "cre"), email = "criscelylujan@gmail.com")
-Maintainer: Wencheng Lau-Medrano <llau@imarpe.gob.pe>
+Authors@R: c(person("Criscely", "Lujan-Paredes", role = c("aut", "cre"), email = "criscelylujan@gmail.com"),
+             person("Josymar", "Torrejon-Magallanes", role = "ctb", email = "ejosymart@gmail.com"),
+             person("Luis", "Lau-Medrano", role = "ctb", email = "luis.laum@gmail.com"))
+Maintainer: Luis Lau-Medrano <luis.laum@gmail.com>
 Description: Tools for graphics and summary reports for IMARPE.
 License: GPL-2
 Encoding: WINDOWS-1252

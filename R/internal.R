@@ -75,10 +75,10 @@
 # Internal function for getData
 .fleetData = function(file, varType, fleeType, sp, efforType, toTons=TRUE,
                       landingFun = sum, effortFun = sum, cpueFun = mean,
-                      start = start, end = end, port = port){
+                      start = start, end = end, port = port, ...){
 
   #Lectura de base
-  dataBase = read.csv(file = file, header = TRUE)
+  dataBase = read.csv(file = file, header = TRUE, ...)
   colnames(dataBase)  = tolower(colnames(dataBase))
   dataBase$especie    = tolower(dataBase$especie)
   dataBase$tipo_flota = tolower(dataBase$tipo_flota)

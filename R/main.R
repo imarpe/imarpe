@@ -93,23 +93,44 @@ NULL
 NULL
 
 
-#' @title Obtener blabla
+#' @title Get from fishing class
 #'
-#' @param file
-#' @param type
-#' @param varType
-#' @param toTons
-#' @param sp
-#' @param start
-#' @param end
-#' @param port
-#' @param efforType
-#' @param fleeType
-#' @param ...
+#' @description This function read the fishing information (landings, effort and catch per unit effor) to
+#'  create a data base which includes a data frame and a list with the main features of the data frame.
+#'  The included data frame object has observations corresponding to rows and variables to columns.
+#'
+#' @param file The name of the file with fishery data. If it does not contain an absolute path,
+#'  the file name is relative to the current working directory, \code{\link{getwd}}.
+#' @param type The type of the information: fisheryInfo with two variables (landing and fishing effort) and
+#' the cpue (catch per unith effort).
+#' @param varType The type of the variable that has been to analyze. This can be: lading, effort and cpue.
+#' @param toTons A logical parameter. \code{TRUE} (dafault) it assume that the fishery information is in kilograms
+#' and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tonnos and don't convert the data.
+#' @param sp The name of the species.
+#' @param start The date to start the analysis. By dafault is \code{NULL}.
+#' @param end The date to end the analysis. By dafault is \code{NULL}.
+#' @param port The specific port to analyze. By dafault is \code{NULL} and analyze all ports.
+#' @param efforType If the varType is effort or cpue (catch per unit effort) this parameter indicate what
+#' type of effort will be used.
+#' \itemize{
+#'   \item "viajes" for the travels number.
+#'   \item "capacidad_bodega" for storage capacity.
+#'   \item "anzuelos" for the hook number.
+#'   \item "embarcaciones" for the number of boats.
+#' }
+#' @param fleeType The fleet type to analyze. By default is \code{NULL}.
+#' @param ... Further arguments passed to \code{.fleetData} function.
 #'
 #' @return
+#' \tabular{ll}{
+#' \code{data} \tab A data frame containing a representation of the data in the file.\cr
+#' \code{info} \tab A list containing the main features of the data. \cr
+#' \code{fleeTable} \tab A data frame with the fishery information by years and months by
+#' each type of fleet.
+#' }
+#' @note If type is not explicitly defined, the function will be equivalent to
+#'  use \code{\link{read.csv}}
 #' @export
-#'
 #' @examples
 getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL, port = NULL,
                            efforType = "viaje", fleeType=NULL, ...){
