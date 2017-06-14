@@ -1,13 +1,13 @@
 Package: imarpe
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Tools for graphics and summary reports for IMARPE
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
-Encoding: UTF-8
+Date: 2017-05-01
+Authors@R: person("Criscely", "Lujan-Paredes", role = c("aut", "cre"), email = "criscelylujan@gmail.com")
+Maintainer: Wencheng Lau-Medrano <llau@imarpe.gob.pe>
+Description: Tools for graphics and summary reports for IMARPE.
+License: GPL-2
+Encoding: WINDOWS-1252
 LazyData: true
 RoxygenNote: 5.0.1
 Depends: reshape2, plyr, rmarkdown, maps, fields, plotrix, sp
