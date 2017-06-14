@@ -26,12 +26,12 @@
   #CPUE by port and by day
   cpuePortDay = baseCpue
   namesPorts = colsplit(string = names(cpuePortDay), pattern="_", names=c("part1", "part2"))[,1]
-  colnames(cpuePortDay) = capitalize(namesPorts)
+  colnames(cpuePortDay) = capitalizeFirstLetter(namesPorts)
   cpuePortDay = data.frame(dataBase[1:3], cpuePortDay)
 
   #CPUE by port (promedio sobre todo el tiempo)
   cpuePort = data.frame(colMeans(baseCpue))
-  rownames(cpuePort) = capitalize(namesPorts)
+  rownames(cpuePort) = capitalizeFirstLetter(namesPorts)
   colnames(cpuePort) = ("Cpue")
 
   ports = rownames(cpuePort)
@@ -113,9 +113,9 @@
   dataBase = x$data
 
   if(unique(daysToPlot %in% "all")){
-    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalize(as.character(dataBase[,2])))
+    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalizeFirstLetter(as.character(dataBase[,2])))
   } else {
-    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalize(as.character(dataBase[,2])))
+    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalizeFirstLetter(as.character(dataBase[,2])))
     daysToPlot = which(as.numeric(dataBase[,3]) %in% daysToPlot)
     daysToPlot = vectorDays[daysToPlot]
     vectorDays[! vectorDays %in% daysToPlot] = NA
@@ -164,7 +164,7 @@
 
   monthPlot = as.vector(as.matrix(dataBase[, colnames(dataBase)]))
   monthPlot = monthPlot[!is.na(monthPlot)]
-  namesMonthPlot = capitalize(rep(rownames(dataBase), length.out = length(monthPlot)))
+  namesMonthPlot = capitalizeFirstLetter(rep(rownames(dataBase), length.out = length(monthPlot)))
 
   if(is.null(main)){
     if(language == "english"){main = "Montly Cpue"} else {main = "Cpue mensual"}}

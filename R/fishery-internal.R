@@ -90,7 +90,7 @@
   }
 
   dataTable = data.frame(apply(ports, 2, sum), row.names = NULL)
-  rownames(dataTable) = capitalize(namesPorts)
+  rownames(dataTable) = capitalizeFirstLetter(namesPorts)
 
   if(object$info$varType == "landing"){
     if(language == "english"){colnames(dataTable) = "Landing"} else {colnames(dataTable) = "Desembarque"}
@@ -165,9 +165,9 @@
   dataBase   = .getSumPorts.fishery(object = x, language = language)
 
   if(unique(daysToPlot %in% "all")){
-    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalize(as.character(dataBase[,2])))
+    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalizeFirstLetter(as.character(dataBase[,2])))
   } else {
-    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalize(as.character(dataBase[,2])))
+    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalizeFirstLetter(as.character(dataBase[,2])))
     daysToPlot = which(as.numeric(dataBase[,3]) %in% daysToPlot)
     daysToPlot = vectorDays[daysToPlot]
     vectorDays[! vectorDays %in% daysToPlot] = NA
@@ -219,7 +219,7 @@
   monthPlot = as.vector(as.matrix(dataBase[,(colnames(dataBase))]))
   monthPlot = monthPlot[!is.na(monthPlot)]
 
-  namesMonthPlot  = capitalize(rep(rownames(dataBase), length.out = length(monthPlot)))
+  namesMonthPlot  = capitalizeFirstLetter(rep(rownames(dataBase), length.out = length(monthPlot)))
 
   if(is.null(main)){
     if(x$info$varType == "landing"){

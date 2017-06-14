@@ -85,7 +85,7 @@ vectorColours = function (n){
 #Function to get the aip
 isopArea.assigner <- function(dataPoints, colLon = "lon", colLat = "lat"){
 
-  referenceShapefile <- AIPShapefile_old
+  referenceShapefile <- AIPShapefile
 
   dataPoints <- switch(class(dataPoints),
                        "data.frame" = as.data.frame(dataPoints[,c(colLon, colLat)]),
