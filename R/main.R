@@ -5,6 +5,7 @@
 #' @import fields
 #' @import sp
 #' @importFrom plotrix pie3D
+#' @importFrom Hmisc monthDays yearDays
 
 #' @title imarpe: R package for the the automation of graphs, tables and reports of the Instituto del Mar del Peru
 #' @author Criscely Lujan-Paredes \email{criscelylujan@gmail.com}, Luis Lau-Medrano \email{luis.laum@gmail.com}.
