@@ -28,7 +28,7 @@
 
   #generacion de bases de datos finales
   puerto    = unique(catch$puerto)
-  newBase   = .getCalendar(unique(catch$anho))
+  newBase   = getCalendar(unique(catch$anho))
 
   #base esfuerzo
   if(efforType == "viaje"){
@@ -171,7 +171,7 @@
 
   actualYear   = sort(unique(as.numeric(substr(as.character(dateVector), 1, 4))))
 
-  dateRange    = as.Date(apply(.getCalendar(actualYear), 1, function(x) paste(x, collapse = "-")))
+  dateRange    = as.Date(apply(getCalendar(actualYear), 1, function(x) paste(x, collapse = "-")))
   dateRange    = dateRange[!is.element(dateRange, unique(dateVector))]
 
   newData = as.data.frame(mat.or.vec(nr = length(dateRange), nc = ncol(output)))
