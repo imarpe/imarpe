@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{getFishingData}
 \alias{getFishingData}
-\title{Get data from fishing class}
+\title{Get data from fishery class}
 \usage{
 getFishingData(file, type, varType, toTons = TRUE, sp, start = NULL,
   end = NULL, port = NULL, efforType = "viaje", fleeType = NULL, ...)
@@ -55,5 +55,33 @@ This function read the fishing information (landings, effort and catch per unit 
 }
 \note{
 If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
+}
+\examples{
+# Read a data base of fishery class
+file.landing = "FisheryData.csv"
+
+# For landing information assuming the analyzed species is 'anchovy', put the name of the species on \\code{sp}:
+landing  = getFishingData(file = file.landing, type = "fisheryinfo", varType = "landing", sp = "anchovy")
+
+# If you can analyzed a period of time you have to use \\code{start} and \\code{end} parameters:
+landing  = getFishingData(file = file.name, type = "fisheryinfo", varType = "landing", sp = "anchovy",
+start = "2009-04-10", end = "2009-08-30")
+
+# If you can analyzed a specific port put the name of the port on \\code{port}:
+landing  = getFishingData(file = file.name, type = "fisheryinfo", varType = "landing", sp = "anchovy",
+start = "2009-04-10", end = "2009-08-30", port = "PAITA")
+
+# Check the class of the landing object, it would be 'fishery'.
+class(landing)
+
+# To get the data of the landing object.
+data = landing$data
+
+# To get the main features of the landing object.
+info = landing$info
+
+# To get the data frame with the landings by each type of fleet.
+fleet = landing$fleeTable
+
 }
 

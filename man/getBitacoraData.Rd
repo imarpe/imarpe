@@ -18,37 +18,37 @@ getBitacoraData(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
 \item{file}{The name of the file with data of the bitacora class. If it does not contain an absolute path,
 the file name is relative to the current working directory, \code{\link{getwd}}.}
 
-\item{colTrip}{Name of travel code column.}
+\item{colTrip}{Name of travel code column. By default is "CODIGO_VIAJE".}
 
-\item{colPort}{Name of the port column.}
+\item{colPort}{Name of the port column. By default is "PUERTO_SALIDA".}
 
-\item{colDateStart}{Name of data column with the start date of the travel.}
+\item{colDateStart}{Name of data column with the start date of the travel. By default is "DIA_SALIDA".}
 
-\item{colDateOut}{Name of data column with the end date of the travel.}
+\item{colDateOut}{Name of data column with the end date of the travel. By default is "DIA_ARRIBO".}
 
-\item{colSearchTime}{Name of the data column with the search time.}
+\item{colSearchTime}{Name of the data column with the search time. By default is "DURACION_BUSQUEDA".}
 
-\item{colStorageCapacity}{Name of the data column with the storage capacity.}
+\item{colStorageCapacity}{Name of the data column with the storage capacity. By default is "CAPACIDAD_BODEGA_REGISTRADA".}
 
-\item{colLat}{Name of the data column with the latitude.}
+\item{colLat}{Name of the data column with the latitude. By default is "LATITUD_INICIAL".}
 
-\item{colLon}{Name of the data column with the longitude.}
+\item{colLon}{Name of the data column with the longitude. By default is "LONGITUD_INICIAL".}
 
-\item{colHaul}{Name of the data column with the fishing haul number.}
+\item{colHaul}{Name of the data column with the fishing haul number. By default is "NUMERO_CALA".}
 
-\item{colHaulTotal}{Name of the data column with the total number of fishing hauls by travel.}
+\item{colHaulTotal}{Name of the data column with the total number of fishing hauls by travel. By default is "TOTAL_CALAS".}
 
-\item{colCatchHaul}{Name of the data column with the catch by fishing haul.}
+\item{colCatchHaul}{Name of the data column with the catch by fishing haul. By default is "CAPTURA_CALA".}
 
-\item{capAnch}{Name of the data column with the anchovy catches.}
+\item{capAnch}{Name of the data column with the anchovy catches. By default is "CAPTURA_ANCHOVETA".}
 
-\item{capSar}{Name of the data column with the sardine catches.}
+\item{capSar}{Name of the data column with the sardine catches. By default is "CAPTURA_SARDINA".}
 
-\item{capJur}{Name of the data column with the jack mackerel catches.}
+\item{capJur}{Name of the data column with the jack mackerel catches. By default is "CAPTURA_JUREL".}
 
-\item{capCab}{Name of the data column with the chub mackerel catches.}
+\item{capCab}{Name of the data column with the chub mackerel catches. By default is "CAPTURA_CABALLA".}
 
-\item{capBon}{Name of the data column with the bonito catches.}
+\item{capBon}{Name of the data column with the bonito catches. By default is "CAPTURA_BONITO".}
 }
 \value{
 \tabular{ll}{
@@ -58,10 +58,25 @@ the file name is relative to the current working directory, \code{\link{getwd}}.
 }
 \description{
 This function read the information from the Programme of Fishery Logbooks (in spanish: Programa de
-Bitacoras de Pesca) and create  a data base which includes a data frame and a list with the main features
+Bitacoras de Pesca - PBP) and create  a data base which includes a data frame and a list with the main features
 of the data frame. The included data frame object has observations corresponding to rows and variables to columns.
 }
 \note{
 If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
+}
+\examples{
+# Read a data base of bitacora class
+file.name = "bitacoraData.csv"
+dataBase  = getBitacoraData(file = file.name)
+
+# Check the class of the data
+class(dataBase)
+
+# To get the data of the bitacora class
+data = dataBase$data
+
+# To get the main features of the data
+info = dataBase$info
+
 }
 

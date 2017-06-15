@@ -93,7 +93,7 @@ NULL
 NULL
 
 
-#' @title Get data from fishing class
+#' @title Get data from fishery class
 #'
 #' @description This function read the fishing information (landings, effort and catch per unit effor) to
 #'  create a data base which includes a data frame and a list with the main features of the data frame.
@@ -129,6 +129,33 @@ NULL
 #' each type of fleet.
 #' }
 #' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
+#' @examples
+#' # Read a data base of fishery class
+#' file.landing = "FisheryData.csv"
+#'
+#' # For landing information assuming the analyzed species is 'anchovy', put the name of the species on \code{sp}:
+#' landing  = getFishingData(file = file.landing, type = "fisheryinfo", varType = "landing", sp = "anchovy")
+#'
+#' # If you can analyzed a period of time you have to use \code{start} and \code{end} parameters:
+#' landing  = getFishingData(file = file.name, type = "fisheryinfo", varType = "landing", sp = "anchovy",
+#' start = "2009-04-10", end = "2009-08-30")
+#'
+#' # If you can analyzed a specific port put the name of the port on \code{port}:
+#' landing  = getFishingData(file = file.name, type = "fisheryinfo", varType = "landing", sp = "anchovy",
+#' start = "2009-04-10", end = "2009-08-30", port = "PAITA")
+#'
+#' # Check the class of the landing object, it would be 'fishery'.
+#' class(landing)
+#'
+#' # To get the data of the landing object.
+#' data = landing$data
+#'
+#' # To get the main features of the landing object.
+#' info = landing$info
+#'
+#' # To get the data frame with the landings by each type of fleet.
+#' fleet = landing$fleeTable
+#'
 #' @export
 getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL, port = NULL,
                            efforType = "viaje", fleeType=NULL, ...){
@@ -150,26 +177,26 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
 #' @title Get data from bitacora class
 #'
 #' @description This function read the information from the Programme of Fishery Logbooks (in spanish: Programa de
-#' Bitacoras de Pesca) and create  a data base which includes a data frame and a list with the main features
+#' Bitacoras de Pesca - PBP) and create  a data base which includes a data frame and a list with the main features
 #' of the data frame. The included data frame object has observations corresponding to rows and variables to columns.
 #' @param file The name of the file with data of the bitacora class. If it does not contain an absolute path,
 #'  the file name is relative to the current working directory, \code{\link{getwd}}.
-#' @param colTrip Name of travel code column.
-#' @param colPort Name of the port column.
-#' @param colDateStart Name of data column with the start date of the travel.
-#' @param colDateOut Name of data column with the end date of the travel.
-#' @param colSearchTime Name of the data column with the search time.
-#' @param colStorageCapacity Name of the data column with the storage capacity.
-#' @param colLat Name of the data column with the latitude.
-#' @param colLon Name of the data column with the longitude.
-#' @param colHaul Name of the data column with the fishing haul number.
-#' @param colHaulTotal Name of the data column with the total number of fishing hauls by travel.
-#' @param colCatchHaul Name of the data column with the catch by fishing haul.
-#' @param capAnch Name of the data column with the anchovy catches.
-#' @param capSar Name of the data column with the sardine catches.
-#' @param capJur Name of the data column with the jack mackerel catches.
-#' @param capCab Name of the data column with the chub mackerel catches.
-#' @param capBon Name of the data column with the bonito catches.
+#' @param colTrip Name of travel code column. By default is "CODIGO_VIAJE".
+#' @param colPort Name of the port column. By default is "PUERTO_SALIDA".
+#' @param colDateStart Name of data column with the start date of the travel. By default is "DIA_SALIDA".
+#' @param colDateOut Name of data column with the end date of the travel. By default is "DIA_ARRIBO".
+#' @param colSearchTime Name of the data column with the search time. By default is "DURACION_BUSQUEDA".
+#' @param colStorageCapacity Name of the data column with the storage capacity. By default is "CAPACIDAD_BODEGA_REGISTRADA".
+#' @param colLat Name of the data column with the latitude. By default is "LATITUD_INICIAL".
+#' @param colLon Name of the data column with the longitude. By default is "LONGITUD_INICIAL".
+#' @param colHaul Name of the data column with the fishing haul number. By default is "NUMERO_CALA".
+#' @param colHaulTotal Name of the data column with the total number of fishing hauls by travel. By default is "TOTAL_CALAS".
+#' @param colCatchHaul Name of the data column with the catch by fishing haul. By default is "CAPTURA_CALA".
+#' @param capAnch Name of the data column with the anchovy catches. By default is "CAPTURA_ANCHOVETA".
+#' @param capSar Name of the data column with the sardine catches. By default is "CAPTURA_SARDINA".
+#' @param capJur Name of the data column with the jack mackerel catches. By default is "CAPTURA_JUREL".
+#' @param capCab Name of the data column with the chub mackerel catches. By default is "CAPTURA_CABALLA".
+#' @param capBon Name of the data column with the bonito catches. By default is "CAPTURA_BONITO".
 #'
 #' @return
 #' \tabular{ll}{
@@ -177,6 +204,19 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
 #' \code{info} \tab A list containing the main features of the data.
 #' }
 #' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
+#' @examples
+#' # Read a data base of bitacora class
+#' file.name = "bitacoraData.csv"
+#' dataBase  = getBitacoraData(file = file.name)
+#'
+#' # Check the class of the data
+#' class(dataBase)
+#'
+#' # To get the data of the bitacora class
+#' data = dataBase$data
+#'
+#' # To get the main features of the data
+#' info = dataBase$info
 #'
 #' @export
 getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
