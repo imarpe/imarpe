@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{getBitacoraData}
 \alias{getBitacoraData}
-\title{Title}
+\title{Get data from bitacora class}
 \usage{
 getBitacoraData(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
   colDateStart = "DIA_SALIDA", colDateOut = "DIA_ARRIBO",
@@ -15,9 +15,53 @@ getBitacoraData(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
   capCab = "CAPTURA_CABALLA", capBon = "CAPTURA_BONITO")
 }
 \arguments{
-\item{capBon}{}
+\item{file}{The name of the file with data of the bitacora class. If it does not contain an absolute path,
+the file name is relative to the current working directory, \code{\link{getwd}}.}
+
+\item{colTrip}{Name of travel code column.}
+
+\item{colPort}{Name of the port column.}
+
+\item{colDateStart}{Name of data column with the start date of the travel.}
+
+\item{colDateOut}{Name of data column with the end date of the travel.}
+
+\item{colSearchTime}{Name of the data column with the search time.}
+
+\item{colStorageCapacity}{Name of the data column with the storage capacity.}
+
+\item{colLat}{Name of the data column with the latitude.}
+
+\item{colLon}{Name of the data column with the longitude.}
+
+\item{colHaul}{Name of the data column with the fishing haul number.}
+
+\item{colHaulTotal}{Name of the data column with the total number of fishing hauls by travel.}
+
+\item{colCatchHaul}{Name of the data column with the catch by fishing haul.}
+
+\item{capAnch}{Name of the data column with the anchovy catches.}
+
+\item{capSar}{Name of the data column with the sardine catches.}
+
+\item{capJur}{Name of the data column with the jack mackerel catches.}
+
+\item{capCab}{Name of the data column with the chub mackerel catches.}
+
+\item{capBon}{Name of the data column with the bonito catches.}
+}
+\value{
+\tabular{ll}{
+\code{data} \tab A data frame containing a representation of the data in the file.\cr
+\code{info} \tab A list containing the main features of the data.
+}
 }
 \description{
-Title
+This function read the information from the Programme of Fishery Logbooks (in spanish: Programa de
+Bitacoras de Pesca) and create  a data base which includes a data frame and a list with the main features
+of the data frame. The included data frame object has observations corresponding to rows and variables to columns.
+}
+\note{
+If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 }
 

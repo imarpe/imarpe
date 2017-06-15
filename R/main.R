@@ -93,7 +93,7 @@ NULL
 NULL
 
 
-#' @title Get from fishing class
+#' @title Get data from fishing class
 #'
 #' @description This function read the fishing information (landings, effort and catch per unit effor) to
 #'  create a data base which includes a data frame and a list with the main features of the data frame.
@@ -128,10 +128,8 @@ NULL
 #' \code{fleeTable} \tab A data frame with the fishery information by years and months by
 #' each type of fleet.
 #' }
-#' @note If type is not explicitly defined, the function will be equivalent to
-#'  use \code{\link{read.csv}}
+#' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 #' @export
-#' @examples
 getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL, port = NULL,
                            efforType = "viaje", fleeType=NULL, ...){
 
@@ -149,30 +147,38 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
   return(output)
 }
 
-#' Title
+#' @title Get data from bitacora class
 #'
-#' @param file
-#' @param colTrip
-#' @param colPort
-#' @param colDateStart
-#' @param colDateOut
-#' @param colSearchTime
-#' @param colStorageCapacity
-#' @param colLat
-#' @param colLon
-#' @param colHaul
-#' @param colHaulTotal
-#' @param colCatchHaul
-#' @param capAnch
-#' @param capSar
-#' @param capJur
-#' @param capCab
-#' @param capBon
+#' @description This function read the information from the Programme of Fishery Logbooks (in spanish: Programa de
+#' Bitacoras de Pesca) and create  a data base which includes a data frame and a list with the main features
+#' of the data frame. The included data frame object has observations corresponding to rows and variables to columns.
+#' @param file The name of the file with data of the bitacora class. If it does not contain an absolute path,
+#'  the file name is relative to the current working directory, \code{\link{getwd}}.
+#' @param colTrip Name of travel code column.
+#' @param colPort Name of the port column.
+#' @param colDateStart Name of data column with the start date of the travel.
+#' @param colDateOut Name of data column with the end date of the travel.
+#' @param colSearchTime Name of the data column with the search time.
+#' @param colStorageCapacity Name of the data column with the storage capacity.
+#' @param colLat Name of the data column with the latitude.
+#' @param colLon Name of the data column with the longitude.
+#' @param colHaul Name of the data column with the fishing haul number.
+#' @param colHaulTotal Name of the data column with the total number of fishing hauls by travel.
+#' @param colCatchHaul Name of the data column with the catch by fishing haul.
+#' @param capAnch Name of the data column with the anchovy catches.
+#' @param capSar Name of the data column with the sardine catches.
+#' @param capJur Name of the data column with the jack mackerel catches.
+#' @param capCab Name of the data column with the chub mackerel catches.
+#' @param capBon Name of the data column with the bonito catches.
 #'
 #' @return
-#' @export
+#' \tabular{ll}{
+#' \code{data} \tab A data frame containing a representation of the data in the file.\cr
+#' \code{info} \tab A list containing the main features of the data.
+#' }
+#' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 #'
-#' @examples
+#' @export
 getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
                            colDateStart = "DIA_SALIDA", colDateOut = "DIA_ARRIBO",
                            colSearchTime = "DURACION_BUSQUEDA", colStorageCapacity = "CAPACIDAD_BODEGA_REGISTRADA",

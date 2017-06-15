@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{getFishingData}
 \alias{getFishingData}
-\title{Get from fishing class}
+\title{Get data from fishing class}
 \usage{
 getFishingData(file, type, varType, toTons = TRUE, sp, start = NULL,
   end = NULL, port = NULL, efforType = "viaje", fleeType = NULL, ...)
@@ -54,7 +54,6 @@ This function read the fishing information (landings, effort and catch per unit 
  The included data frame object has observations corresponding to rows and variables to columns.
 }
 \note{
-If type is not explicitly defined, the function will be equivalent to
- use \code{\link{read.csv}}
+If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 }
 
