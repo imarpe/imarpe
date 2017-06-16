@@ -3,15 +3,15 @@
 \docType{data}
 \name{seasonAnchovyNC}
 \alias{seasonAnchovyNC}
-\title{Peruvian port data.}
-\format{A \code{data.frame} with six columns: the name of the port, the pattern to find the name
- of the port, the longitude and latitude of their names, the area (north, south and central) of
-  ports and the importance of the port according the history of the fishery.}
+\title{Anchovy season for the north-central region.}
+\format{A \code{data.frame} with four columns: year, the start date of the season for the
+year, the end date of the season, and a code for the season.}
 \usage{
 seasonAnchovyNC
 }
 \description{
-Data with a list of ports around peruvian coast.
+Historical records of the opening and closing of anchovy fishing
+seasons in the north-central region of the Peruvian coast.
 }
 \references{
 imarpe package vignette.

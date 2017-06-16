@@ -3,7 +3,7 @@
 \docType{data}
 \name{imarpeColours}
 \alias{imarpeColours}
-\title{Colours for the maps.}
+\title{Colours for the package.}
 \usage{
 imarpeColours
 }

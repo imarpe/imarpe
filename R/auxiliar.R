@@ -55,8 +55,6 @@ engToSpa = function(x){
 #' @param language The language for columns names in the data frame that is returned from the function. By default
 #' is in spanish, but this can be english.
 #' @return A data frame with three columns, the years, months and days.
-#' @export
-#'
 #' @examples
 #' #To get the a data base of dates to the year 2001 in spanish.
 #' getCalendar(year = 2001)
@@ -64,6 +62,7 @@ engToSpa = function(x){
 #' #To get the same data base of dates but with the colnames in englis, change the \code{language} parameter to 'english'.
 #' getCalendar(year = 2001, language = "english")
 #'
+#' @export
 getCalendar = function(year, language = "spanish") {
 
   ndays   = NULL
@@ -99,13 +98,11 @@ getCalendar = function(year, language = "spanish") {
 #' @description Function that capitalize only the first letter of a object and convert the
 #' rest of the object on lower case.
 #' @param x A R object with elements to the character class.
-#'
 #' @return A object with the first letter of each element on capital letter.
-#' @export
-#'
 #' @examples
 #' capitalizeFirstLetter(x = c("the LAsT BOOK", "my favoURIte MOVIe"))
 #'
+#' @export
 capitalizeFirstLetter = function(x) {
   x = paste0(toupper(substr(x, 1, 1)), tolower(substr(x, 2, 9999)))
   return(x)
@@ -120,13 +117,13 @@ capitalizeFirstLetter = function(x) {
 #' @param myPorts A vector of the names of ports.
 #' @return A list, with a list of the information about the ports and a vector with the
 #' positions of the ports given to the function.
-#' @export
-#'
 #' @examples
 #' # The function receive a vector with port names:
 #' ports = getPort(c("T. de mora", "Paita"))
 #' ports$data
 #' ports$position
+#'
+#' @export
 getPort = function(myPorts){
 
   myPorts = tolower(myPorts)
@@ -149,52 +146,96 @@ getPort = function(myPorts){
   return(output)
 }
 
-#Function to use an additional vector of colours (tim.colors(1e3))
+#' Vector colours
+#' @description Function to use an additional vector of colours. This function use the
+#' the function \code{tim.colors} of the fields packages.
+#' @param n Number of color levels.
+#' @return A vector giving the code of colours.
+#' @examples
+#' vectorColours(n = 5)
+#'
+#' @export
 vectorColours = function (n){
   return(colorRampPalette(colors = tim.colors(64))(n))
 }
 
-#Function to get the aip
-isopArea.assigner <- function(dataPoints, colLon = "lon", colLat = "lat"){
+#' Title Get the isoparalitoral area code
+#' @description Using information of the geographical coordinates calculate the
+#' isoparalitoral area code (AIP).
+#' @param dataPoints \code{data.frame} which has longitude and latitude information.
+#' @param colLon Name of column which contains longitude information.
+#' @param colLat Name of column which contains latitude information.
+#' @return A numeric vector indicating the AIP values for each geographical coordinates.
+#' @examples
+#' # Create a data frame with information of geographical coordinates.
+#' exampleCoords = data.frame(lon = runif(n = 10, min = -80, max = -78),
+#'                             lat = runif(n = 10, min = -14, max = -12))
+#'
+#' isopArea.assigner(dataPoints = exampleCoords)
+#'
+#' @export
+isopArea.assigner = function(dataPoints, colLon = "lon", colLat = "lat"){
 
-  referenceShapefile <- AIPShapefile
+  referenceShapefile = AIPShapefile
 
-  dataPoints <- switch(class(dataPoints),
-                       "data.frame" = as.data.frame(dataPoints[,c(colLon, colLat)]),
-                       "numeric" = data.frame(lon = dataPoints[1], lat = dataPoints[2], stringsAsFactors = FALSE))
+  dataPoints = switch(class(dataPoints),
+                      "data.frame" = as.data.frame(dataPoints[,c(colLon, colLat)]),
+                      "numeric" = data.frame(lon = dataPoints[1], lat = dataPoints[2], stringsAsFactors = FALSE))
 
-  output <- rep(NA, nrow(dataPoints))
+  output = rep(NA, nrow(dataPoints))
 
-  index <- complete.cases(dataPoints)
-  dataPoints <- dataPoints[index,]
+  index = complete.cases(dataPoints)
+  dataPoints = dataPoints[index,]
 
-  coordinates(dataPoints) <- dataPoints
+  coordinates(dataPoints) = dataPoints
 
-  proj4string(dataPoints) <- proj4string(referenceShapefile)
+  proj4string(dataPoints) = proj4string(referenceShapefile)
 
-  dataPoints <- over(x = dataPoints, y = referenceShapefile)
+  dataPoints = over(x = dataPoints, y = referenceShapefile)
 
-  output[index] <- dataPoints$code
+  output[index] = dataPoints$code
 
   return(output)
 }
 
-#Function to get the distance to the coast
-getAIPInfo <- function(aipVector){
-  ncharAip <- nchar(aipVector)
+#' Title Extract information from isoparalitoral area code
+#' @description The isoparalitoral area (AIP) code must be written in format DDLLPP,
+#' where DD is value of distance to coast (mn/10), LL are values of latitude (as integer) and
+#' PP is position (up or down).
+#' @param aipVector A vector indicating the AIP code.
+#' @return A \code{data.frame} with variables distance to the coast (dc), latitude (lat)
+#' and position (upDown) in the columns for each AIP code in rows.
+#' @examples
+#' getAIPInfo(c(30073, 1020, 2010))
+#'
+#' @export
+getAIPInfo = function(aipVector){
 
-  dc <- as.numeric(substr(aipVector, 1, ifelse(ncharAip == 4, 1, 2)))*10
-  lat <- as.numeric(substr(aipVector, ifelse(ncharAip == 4, 2, 3), ncharAip - 1))
-  upDown <- as.numeric(substr(aipVector, ncharAip, ncharAip))
+  ncharAip = nchar(aipVector)
 
-  # if(any(!is.element(upDown, c(0, 3)))){
-  #   warning(paste("Values #", paste(which(!is.element(upDown, c(0, 3))), collapse = ", "), "have wrong values for up-down info."))
-  # }
+  dc = as.numeric(substr(aipVector, 1, ifelse(ncharAip == 4, 1, 2)))*10
+  lat = as.numeric(substr(aipVector, ifelse(ncharAip == 4, 2, 3), ncharAip - 1))
+  upDown = as.numeric(substr(aipVector, ncharAip, ncharAip))
 
   return(data.frame(dc, lat, upDown, stringsAsFactors = FALSE))
 }
 
-#Function to assign anchovy season
+#' Title Assing anchovy season
+#' @description Using the historical records of the opening and closing of
+#' anchovy fishing by regions (north-central and south), this function can identify the
+#' anchovy season.
+#' @param x A vector of date (with day, month and year) in the format \code{Date}.
+#' @param region A object indicating if is the north-central region ('norte-centro') or if is
+#' the south region ('sur').
+#' @return A object with the season code.
+#' @examples
+#' # Construct a vector of dates
+#'
+#' exampleDates = as.Date(c("20/01/2013", "30/01/1999"), format = "%d/%m/%Y")
+#'
+#' assignAnchovy_season(exampleDates, region = "norte-centro")
+#'
+#' @export
 assignAnchovy_season = function(x, region){
 
   if(region == "norte-centro") { seasonData = seasonAnchovyNC }

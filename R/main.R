@@ -37,7 +37,7 @@ NULL
 #' @references imarpe package vignette.
 NULL
 
-#' @title Colours for the maps.
+#' @title Colours for the package.
 #' @name imarpeColours
 #' @description Vector of colours to use in the package.
 #' @aliases imarpeColours
@@ -68,27 +68,27 @@ NULL
 #' @references imarpe package vignette.
 NULL
 
-#' @title Peruvian port data.
+#' @title Anchovy season for the north-central region.
 #' @name seasonAnchovyNC
-#' @description Data with a list of ports around peruvian coast.
+#' @description Historical records of the opening and closing of anchovy fishing
+#' seasons in the north-central region of the Peruvian coast.
 #' @aliases seasonAnchovyNC
 #' @docType data
 #' @usage seasonAnchovyNC
-#' @format A \code{data.frame} with six columns: the name of the port, the pattern to find the name
-#'  of the port, the longitude and latitude of their names, the area (north, south and central) of
-#'   ports and the importance of the port according the history of the fishery.
+#' @format A \code{data.frame} with four columns: year, the start date of the season for the
+#' year, the end date of the season, and a code for the season.
 #' @references imarpe package vignette.
 NULL
 
-#' @title Peruvian port data.
+#' @title Anchovy season for the south region.
 #' @name seasonAnchovyS
-#' @description Data with a list of ports around peruvian coast.
+#' @description Historical records of the opening and closing of anchovy fishing
+#' seasons in the south region of the Peruvian coast.
 #' @aliases seasonAnchovyS
 #' @docType data
 #' @usage seasonAnchovyS
-#' @format A \code{data.frame} with six columns: the name of the port, the pattern to find the name
-#'  of the port, the longitude and latitude of their names, the area (north, south and central) of
-#'   ports and the importance of the port according the history of the fishery.
+#' @format A \code{data.frame} with four columns: year, the start date of the season for the
+#' year, the end date of the season, and a code for the season.
 #' @references imarpe package vignette.
 NULL
 
