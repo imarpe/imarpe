@@ -1,4 +1,11 @@
-
+#' @title Print method for bitacora objects
+#' @description Shows main information from bitacora objects, like the origen of the
+#' information, the number of trips, the number of data ports, the number of months
+#' of data, the number of years of data, the types of fleets on the data.
+#' @param x Object of class \code{bitacora}.
+#' @param language The select language to print the outputs.
+#' @export
+#' @method print bitacora
 print.bitacora = function(x, language="spanish") {
 
   if(language == "english") {
@@ -19,7 +26,6 @@ print.bitacora = function(x, language="spanish") {
 
   return(invisible())
 }
-
 
 summary.bitacora = function(object, language = "spanish", latByPort = FALSE) {
 

@@ -142,8 +142,8 @@ plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), tex
 #' @param textAxis4 The text of the y axis.
 #' @export
 #' @method report cpue
-report.cpue = function(x, format = "latex", tangle=FALSE, output = NULL, daysToPlot = c(1,8,15,22),
-                       textAxis2 = NULL, textAxis4 = NULL){
+report.cpue = function(x, format = "latex", tangle=FALSE, output = NULL,
+                       daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){
 
   if(is.null(output)) output = getwd()
   outputName = deparse(substitute(x))
