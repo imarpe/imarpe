@@ -75,6 +75,7 @@ summary.cpue = function(object, language = "spanish"){
 #' @description Shows main information from \code{summary.cpue} objects.
 #' @param x Object of class \code{summary.cpue}.
 #' @param language The select language to print the summary of cpue objects.
+#' @return Each element of \code{summary.cpue} method.
 #' @export
 #' @method print summary.cpue
 print.summary.cpue = function(x, language = "spanish"){

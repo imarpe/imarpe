@@ -51,7 +51,13 @@ summary.bitacora = function(object, language = "spanish", latByPort = FALSE) {
   return(output)
 }
 
-
+#' @title Print method for summary.bitacora
+#' @description Shows main information from \code{summary.bitacora} objects.
+#' @param x Object of class \code{summary.bitacora}.
+#' @param language The select language to print the summary of bitacora objects.
+#' @return Each element of \code{summary.bitacora} method.
+#' @export
+#' @method print summary.bitacora
 print.summary.bitacora = function(x, language = "spanish") {
 
   x2 = x

@@ -11,6 +11,9 @@
 
 \item{language}{The select language to print the summary of fishery objects.}
 }
+\value{
+Each element of \code{summary.fishery} method.
+}
 \description{
 Shows main information from \code{summary.fishery} objects.
 }

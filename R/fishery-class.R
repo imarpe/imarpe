@@ -74,6 +74,7 @@ summary.fishery =  function(object, language = "spanish") {
 #' @description Shows main information from \code{summary.fishery} objects.
 #' @param x Object of class \code{summary.fishery}.
 #' @param language The select language to print the summary of fishery objects.
+#' @return Each element of \code{summary.fishery} method.
 #' @export
 #' @method print summary.fishery
 print.summary.fishery = function(x, language = "spanish") {
