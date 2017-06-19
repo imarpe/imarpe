@@ -234,3 +234,16 @@ getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SAL
                               capAnch = capAnch, capSar = capSar, capJur = capJur, capCab = capCab, capBon = capBon)
   return(dataBase)
 }
+
+
+#' @title Report method
+#' @description This function built a report for each class including on imarpe package.
+#' @param object Object of class \code{fishery}, \code{cpue} and \code{bitacora}.
+#' @param format The format to export the report.
+#' @param output The report.
+#' @param ... Extra arguments passed to \code{\link{report}} function.
+#' @return A report on specific format.
+#' @export
+report = function(object, format, output, ...) {
+  UseMethod("report")
+}

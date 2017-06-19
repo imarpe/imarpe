@@ -1,11 +1,9 @@
-#' @title Print method for fishery objects.
+#' @title Print method for fishery objects
 #' @description Shows main information from fishery objects, like number of records data,
 #' the time period of date (years and months), the number of ports, the analyzed species and
 #' the analyzed variable type.
-#'
 #' @param x Object of class \code{fishery}.
 #' @param language The select language to print the outputs.
-#'
 #' @export
 #' @method print fishery
 print.fishery = function(x, language="spanish") {
@@ -31,12 +29,10 @@ print.fishery = function(x, language="spanish") {
   return(invisible())
 }
 
-#' @title Summary method for fishery Objects.
+#' @title Summary method for fishery objects
 #' @description Get summary information of landing and fishing effort included on \code{fishery} objects.
-
 #' @param object Object of class \code{fishery}.
-#' @param language The select language to print the summary for fishery objects.
-#'
+#' @param language The select language to print the summary of fishery objects.
 #' @export
 #' @method summary fishery
 summary.fishery =  function(object, language = "spanish") {
@@ -66,10 +62,8 @@ summary.fishery =  function(object, language = "spanish") {
 
 #' @title Print method for summary.fishery
 #' @description Shows main information from \code{summary.fishery} objects.
-#'
 #' @param x Object of class \code{summary.fishery}.
-#' @param language The select language to print the summary for fishery objects.
-#'
+#' @param language The select language to print the summary of fishery objects.
 #' @export
 #' @method print summary.fishery
 print.summary.fishery = function(x, language = "spanish") {
@@ -110,13 +104,11 @@ print.summary.fishery = function(x, language = "spanish") {
 }
 
 #' @title Plot method for fishery
-#'
-#' @description This method takes an \code{fishery} object and make useful plots for
+#' @description This method takes a \code{fishery} object and make useful plots for
 #' each variables (lading and fishing effort). The plots can be daily, monthly, yearly or
 #' for north-central and south peruvian region.
-#'
 #' @param x Object of class \code{fishing}.
-#' @param language \code{character}. Define the langauge of text labels in plots.
+#' @param language \code{character}. Define the language of text labels in plots.
 #' @param ploType What type of plot should be draw. Possible types are:
 #' \itemize{
 #'   \item plotDaily for daily plot
@@ -125,12 +117,11 @@ print.summary.fishery = function(x, language = "spanish") {
 #'   \item plotNC to plot the north-central region
 #'   \item plotS to plot the south region
 #' }
-#' @param daysToPlot if is a daily plot by default the x axis plot the first day of the month
+#' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
 #'  (1, 8, 15, 22). This is including in a vector form.
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @param ... Extra arguments.
-#'
 #' @export
 #' @method plot fishery
 plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
@@ -156,19 +147,17 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 
 }
 
-#' @title Report method for fishery objects.
-#' @description Export a report of landing or fishing effort in a pdf document.
+#' @title Report method for fishery objects
+#' @description Export a report of landing or fishing effort.
 #' @param x Object of class \code{fishery}.
-#'
+#' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
+#'  (1, 8, 15, 22). This is including in a vector form.
+#' @param textAxis2 The text of the x axis.
+#' @param textAxis4 The text of the y axis.
 #' @export
 #' @method report fishery
-report = function(x, ...) {
-  UseMethod("report")
-}
-
-
-report.fishery = function(x, format = "latex", tangle=FALSE, output = NULL, daysToPlot = c(1,8,15,22),
-                          textAxis2 = NULL, textAxis4 = NULL){
+report.fishery = function(x, format="latex", tangle=FALSE, output = NULL,
+                          daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){
 
   if(is.null(output)) output = getwd()
   outputName = deparse(substitute(x))

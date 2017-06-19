@@ -1,5 +1,11 @@
-# plot.fishery
-
+#' @title Print method for cpue objects
+#' @description Shows main information from catch per unit effort (cpue) objects, like
+#' number of records data, the time period of date (years and months), the number of
+#' ports, the analyzed species and the type of effort used on the cpue.
+#' @param x Object of class \code{cpue}.
+#' @param language The select language to print the outputs.
+#' @export
+#' @method print cpue
 print.cpue = function(x, language="spanish"){
 
   if(language == "english"){
@@ -23,7 +29,12 @@ print.cpue = function(x, language="spanish"){
   return(invisible())
 }
 
-
+#' @title Summary method for cpue objects
+#' @description Get summary information of catch per unit effort (cpue) object.
+#' @param object Object of class \code{cpue}.
+#' @param language The select language to print the summary of cpue objects.
+#' @export
+#' @method summary cpue
 summary.cpue = function(object, language = "spanish"){
 
   object2 = object
@@ -50,7 +61,12 @@ summary.cpue = function(object, language = "spanish"){
   return(output)
 }
 
-
+#' @title Print method for summary.cpue
+#' @description Shows main information from \code{summary.cpue} objects.
+#' @param x Object of class \code{summary.cpue}.
+#' @param language The select language to print the summary of cpue objects.
+#' @export
+#' @method print summary.cpue
 print.summary.cpue = function(x, language = "spanish"){
 
   x2 = x
@@ -72,7 +88,27 @@ print.summary.cpue = function(x, language = "spanish"){
   return(invisible())
 }
 
-
+#' @title Plot method for cpue
+#' @description This method takes a \code{cpue} object and make useful plots.
+#' The plots can be daily, monthly, yearly or for north-central and south peruvian region.
+#' @param x Object of class \code{cpue}.
+#' @param language \code{character}. Define the language of text labels in plots.
+#' @param ploType What type of plot should be draw. Possible types are:
+#' \itemize{
+#'   \item plotDaily for daily plot
+#'   \item plotMonthly for monthly plot
+#'   \item plotYearly for yearly plot
+#'   \item plotNC to plot the north-central region
+#'   \item plotS to plot the south region
+#' }
+#' @param daysToPlot if is a daily plot by default the x axis plot the first day of the month
+#'  (1, 8, 15, 22). This is including in a vector form.
+#' @param textAxis2 The text of the x axis.
+#' @param textAxis4 The text of the y axis.
+#' @param ... Extra arguments.
+#'
+#' @export
+#' @method plot fishery
 plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL, ...){
 
   if(is.null(ploType)) ploType = "plotDaily"
@@ -97,12 +133,15 @@ plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), tex
   return(invisible())
 }
 
-
-report = function(x, ...) {
-  UseMethod("report")
-}
-
-
+#' @title Report method for cpue objects
+#' @description Export a report of catch per unit effort class.
+#' @param x Object of class \code{cpue}.
+#' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
+#'  (1, 8, 15, 22). This is including in a vector form.
+#' @param textAxis2 The text of the x axis.
+#' @param textAxis4 The text of the y axis.
+#' @export
+#' @method report cpue
 report.cpue = function(x, format = "latex", tangle=FALSE, output = NULL, daysToPlot = c(1,8,15,22),
                        textAxis2 = NULL, textAxis4 = NULL){
 

@@ -9,8 +9,8 @@ Authors@R: c(person("Criscely", "Lujan-Paredes", role = c("aut", "cre"), email =
 Maintainer: Luis Lau-Medrano <luis.laum@gmail.com>
 Description: Tools for graphics and summary reports for IMARPE.
 License: GPL-2
-Encoding: WINDOWS-1252
 LazyData: true
 RoxygenNote: 5.0.1
+Encoding: WINDOWS-1252
 Depends: reshape2, plyr, rmarkdown, maps, fields, plotrix, sp
 Imports: Hmisc

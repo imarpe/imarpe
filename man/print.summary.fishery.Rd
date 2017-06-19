@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{Object of class \code{summary.fishery}.}
 
-\item{language}{The select language to print the summary for fishery objects.}
+\item{language}{The select language to print the summary of fishery objects.}
 }
 \description{
 Shows main information from \code{summary.fishery} objects.

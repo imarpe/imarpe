@@ -10,7 +10,7 @@
 \arguments{
 \item{x}{Object of class \code{fishing}.}
 
-\item{language}{\code{character}. Define the langauge of text labels in plots.}
+\item{language}{\code{character}. Define the language of text labels in plots.}
 
 \item{ploType}{What type of plot should be draw. Possible types are:
 \itemize{
@@ -21,7 +21,7 @@
   \item plotS to plot the south region
 }}
 
-\item{daysToPlot}{if is a daily plot by default the x axis plot the first day of the month
+\item{daysToPlot}{If is a daily plot by default the x axis plot the first day of the month
 (1, 8, 15, 22). This is including in a vector form.}
 
 \item{textAxis2}{The text of the x axis.}
@@ -31,7 +31,7 @@
 \item{...}{Extra arguments.}
 }
 \description{
-This method takes an \code{fishery} object and make useful plots for
+This method takes a \code{fishery} object and make useful plots for
 each variables (lading and fishing effort). The plots can be daily, monthly, yearly or
 for north-central and south peruvian region.
 }

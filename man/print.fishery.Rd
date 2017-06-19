@@ -2,7 +2,7 @@
 % Please edit documentation in R/fishery-class.R
 \name{print.fishery}
 \alias{print.fishery}
-\title{Print method for fishery objects.}
+\title{Print method for fishery objects}
 \usage{
 \method{print}{fishery}(x, language = "spanish")
 }

@@ -2,14 +2,14 @@
 % Please edit documentation in R/fishery-class.R
 \name{summary.fishery}
 \alias{summary.fishery}
-\title{Summary method for fishery Objects.}
+\title{Summary method for fishery objects}
 \usage{
 \method{summary}{fishery}(object, language = "spanish")
 }
 \arguments{
 \item{object}{Object of class \code{fishery}.}
 
-\item{language}{The select language to print the summary for fishery objects.}
+\item{language}{The select language to print the summary of fishery objects.}
 }
 \description{
 Get summary information of landing and fishing effort included on \code{fishery} objects.

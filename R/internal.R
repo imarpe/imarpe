@@ -70,7 +70,6 @@
 
   return(base = output)
 }
-#x = convertBase(file = "perico_row.csv", sp = "perico", fleeType = "artesanal", efforType = "capacidad_bodega")
 
 # Internal function for getData
 .fleetData = function(file, varType, fleeType, sp, efforType, toTons=TRUE,
@@ -156,7 +155,6 @@
 .readSegFile = function(file){
 
   output = file
-  #output = read.csv(file = file, ...)
   monthVector = tolower(substr(output$month, 1, 3))
 
   for(i in seq_along(month.abb_spanish)){
@@ -183,7 +181,7 @@
 
   output = rbind.data.frame(output, newData)
   output = output[order(output$year, word2month(output$month), output$day),]
-  rownames(output) = NULL #
+  rownames(output) = NULL
 
   return(output)
 }
