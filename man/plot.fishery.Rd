@@ -2,15 +2,16 @@
 % Please edit documentation in R/fishery-class.R
 \name{plot.fishery}
 \alias{plot.fishery}
-\title{Plot method for fishery}
+\title{Plot method for fishery objects}
 \usage{
 \method{plot}{fishery}(x, language, ploType = NULL, daysToPlot = c(1, 8, 15,
   22), textAxis2 = NULL, textAxis4 = NULL, ...)
 }
 \arguments{
-\item{x}{Object of class \code{fishing}.}
+\item{x}{Object of \code{fishing} class.}
 
-\item{language}{\code{character}. Define the language of text labels in plots.}
+\item{language}{\code{character}. Define the language of text labels in plots.
+It could be \code{"spanish"} or \code{"english"}.}
 
 \item{ploType}{What type of plot should be draw. Possible types are:
 \itemize{
@@ -29,6 +30,9 @@
 \item{textAxis4}{The text of the y axis.}
 
 \item{...}{Extra arguments.}
+}
+\value{
+A graph of the specified type in \code{ploType}.
 }
 \description{
 This method takes a \code{fishery} object and make useful plots for

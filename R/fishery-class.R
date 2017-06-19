@@ -34,6 +34,7 @@ print.fishery = function(x, language="spanish") {
 #'  \code{fishery} objects.
 #' @param object Object of class \code{fishery}.
 #' @param language The select language to print the summary of fishery objects.
+#' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return A \code{list} of summary.fishery class. This contains:
 #' \itemize{
 #'   \item var The type of the variable that has been to analyze. This can be lading or effort.
@@ -74,6 +75,7 @@ summary.fishery =  function(object, language = "spanish") {
 #' @description Shows main information from \code{summary.fishery} objects.
 #' @param x Object of class \code{summary.fishery}.
 #' @param language The select language to print the summary of fishery objects.
+#' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return Each element of \code{summary.fishery} method.
 #' @export
 #' @method print summary.fishery
@@ -114,12 +116,13 @@ print.summary.fishery = function(x, language = "spanish") {
   return(invisible())
 }
 
-#' @title Plot method for fishery
+#' @title Plot method for fishery objects
 #' @description This method takes a \code{fishery} object and make useful plots for
 #' each variables (lading and fishing effort). The plots can be daily, monthly, yearly or
 #' for north-central and south peruvian region.
-#' @param x Object of class \code{fishing}.
+#' @param x Object of \code{fishing} class.
 #' @param language \code{character}. Define the language of text labels in plots.
+#' It could be \code{"spanish"} or \code{"english"}.
 #' @param ploType What type of plot should be draw. Possible types are:
 #' \itemize{
 #'   \item plotDaily for daily plot
@@ -133,6 +136,7 @@ print.summary.fishery = function(x, language = "spanish") {
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @param ... Extra arguments.
+#' @return A graph of the specified type in \code{ploType}.
 #' @export
 #' @method plot fishery
 plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),

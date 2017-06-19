@@ -76,6 +76,54 @@ print.summary.bitacora = function(x, language = "spanish") {
   return(invisible())
 }
 
+#' @title Plot method for bitacora objects
+#' @description This method takes a \code{bitacora} object and make useful plots.
+#' @param x Object of \code{bitacora} class.
+#' @param language \code{character}. Define the language of text labels in plots.
+#' It could be \code{"spanish"} or \code{"english"}.
+#' @param ploType What type of plot should be draw. By default is \code{plotFishingPoints}
+#' but the possible types are:
+#' \itemize{
+#'   \item plotFishingPoints for a graphic of fishing points
+#'   \item plotFishingPresence for a graphic of non-target species presence by taxonomic group
+#'   \item plotSpeciesComposition for a graphic of species in the catch
+#' }
+#' @param dataType Indicates what species should be plot on plotFishingPoints graphic type. It could
+#' be:
+#' \itemize{
+#'   \item "dataAnch" to graphic fishing points of anchovy
+#'   \item "dataSar" to graphic fishing points of sardine
+#'   \item "dataJur" to graphic fishing points of jack mackerel
+#'   \item "dataCab" to graphic fishing points of chub mackere
+#'   \item "dataBon" to graphic fishing points of bonito
+#' }
+#' @param group Indicates what taxonomic group should be plot on plotFishingPresence graphic type. It
+#' could be: "neritico", "transzonal", "costero", "oceanico", "demersal", "bentonico", "mesopelagico",
+#' "depredador", "elasmobranquio", "cefalopodo", "medusa", "crustaceo", "tunicado", "alga", "copepodo",
+#' "eufausido", "molusco", "equinodermo", "invertebrado", "dinogelado".
+#' @param threshold Parameter of plotSpeciesComposition graphic type. Logical, by default is \code{TRUE}
+#' when the species composition on the catches will be graphic according to a thershold
+#' specified in \code{minPercentage}.
+#' @param minPercentage Parameter of plotSpeciesComposition graphic type. Numeric value,
+#' indicating the minimum percentage that catches must have to be graphic. By default is
+#' 0.2.
+#' @param ... Extra arguments.
+#' @return A graph of the specified type in \code{ploType}.
+#' @export
+#' @method plot bitacora
+plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, group, threshold = TRUE, minPercentage = 0.2, ...) {
+
+  if(is.null(ploType)) ploType = "plotFishingPoints"
+  if(ploType %in% c("plotFishingPoints", "plotFishingPresence")) {dataFishingPoints = .fishingPoints.bitacora(x)}
+  if(ploType %in% "plotSpeciesComposition") {dataSpeciesComposition = .speciesComposition.bitacora(object = x, language = language)}
+
+  switch(ploType,
+         plotFishingPoints      = .plotFishingPoints.bitacora(x = dataFishingPoints, language = language, dataType = dataType, ...),
+         plotFishingPresence    = .plotFishingPresence.bitacora(x = dataFishingPoints, group = group, ...),
+         plotSpeciesComposition = .plotSpeciesComposition.bitacora(x = dataSpeciesComposition, threshold = threshold, minPercentage = minPercentage, ...))
+
+  return(invisible())
+}
 
 report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
 
@@ -98,19 +146,4 @@ report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
 
   return(invisible(file.path(output, outputFile)))
 
-}
-
-
-plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, group, threshold = TRUE, minPercentage = 0.2, ...) {
-
-  if(is.null(ploType)) ploType = "plotFishingPoints"
-  if(ploType %in% c("plotFishingPoints", "plotFishingPresence")) {dataFishingPoints = .fishingPoints.bitacora(x)}
-  if(ploType %in% "plotSpeciesComposition") {dataSpeciesComposition = .speciesComposition.bitacora(object = x, language = language)}
-
-  switch(ploType,
-         plotFishingPoints      = .plotFishingPoints.bitacora(x = dataFishingPoints, language = language, dataType = dataType, ...),
-         plotFishingPresence    = .plotFishingPresence.bitacora(x = dataFishingPoints, group = group, ...),
-         plotSpeciesComposition = .plotSpeciesComposition.bitacora(x = dataSpeciesComposition, threshold = threshold, minPercentage = minPercentage, ...))
-
-  return(invisible())
 }

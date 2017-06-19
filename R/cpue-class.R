@@ -33,6 +33,7 @@ print.cpue = function(x, language="spanish"){
 #' @description Get summary information of catch per unit effort (cpue) object.
 #' @param object Object of class \code{cpue}.
 #' @param language The select language to print the summary of cpue objects.
+#' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return A \code{list} of summary.cpue class. This contains:
 #' \itemize{
 #'   \item effort The type of the effort type that has been to analyze.
@@ -75,6 +76,7 @@ summary.cpue = function(object, language = "spanish"){
 #' @description Shows main information from \code{summary.cpue} objects.
 #' @param x Object of class \code{summary.cpue}.
 #' @param language The select language to print the summary of cpue objects.
+#' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return Each element of \code{summary.cpue} method.
 #' @export
 #' @method print summary.cpue
@@ -99,11 +101,12 @@ print.summary.cpue = function(x, language = "spanish"){
   return(invisible())
 }
 
-#' @title Plot method for cpue
+#' @title Plot method for cpue objects
 #' @description This method takes a \code{cpue} object and make useful plots.
 #' The plots can be daily, monthly, yearly or for north-central and south peruvian region.
-#' @param x Object of class \code{cpue}.
+#' @param x Object of \code{cpue} class.
 #' @param language \code{character}. Define the language of text labels in plots.
+#' It could be \code{"spanish"} or \code{"english"}.
 #' @param ploType What type of plot should be draw. Possible types are:
 #' \itemize{
 #'   \item plotDaily for daily plot
@@ -117,7 +120,7 @@ print.summary.cpue = function(x, language = "spanish"){
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @param ... Extra arguments.
-#'
+#' @return A graph of the specified type in \code{ploType}.
 #' @export
 #' @method plot fishery
 plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL, ...){

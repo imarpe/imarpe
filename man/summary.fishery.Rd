@@ -9,7 +9,8 @@
 \arguments{
 \item{object}{Object of class \code{fishery}.}
 
-\item{language}{The select language to print the summary of fishery objects.}
+\item{language}{The select language to print the summary of fishery objects.
+It could be \code{"spanish"} by default or \code{"english"}.}
 }
 \value{
 A \code{list} of summary.fishery class. This contains:
