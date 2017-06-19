@@ -164,7 +164,7 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 
 #' @title Report method for fishery objects
 #' @description Export a report of landing or fishing effort.
-#' @param x Object of class \code{fishery}.
+#' @param x Object of \code{fishery} class.
 #' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
 #'  (1, 8, 15, 22). This is including in a vector form.
 #' @param textAxis2 The text of the x axis.

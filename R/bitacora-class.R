@@ -125,6 +125,11 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
   return(invisible())
 }
 
+#' @title Report method for bitacora objects
+#' @description Export a report of bitacora.
+#' @param x Object of \code{bitacora} class.
+#' @export
+#' @method report bitacora
 report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
 
   if(is.null(output)) output = getwd()

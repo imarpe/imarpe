@@ -149,7 +149,7 @@ plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), tex
 
 #' @title Report method for cpue objects
 #' @description Export a report of catch per unit effort class.
-#' @param x Object of class \code{cpue}.
+#' @param x Object of \code{cpue} class.
 #' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
 #'  (1, 8, 15, 22). This is including in a vector form.
 #' @param textAxis2 The text of the x axis.
