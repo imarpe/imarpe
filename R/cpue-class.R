@@ -33,6 +33,15 @@ print.cpue = function(x, language="spanish"){
 #' @description Get summary information of catch per unit effort (cpue) object.
 #' @param object Object of class \code{cpue}.
 #' @param language The select language to print the summary of cpue objects.
+#' @return A \code{list} of summary.cpue class. This contains:
+#' \itemize{
+#'   \item effort The type of the effort type that has been to analyze.
+#'   \item portDay A data frame with the cpue by day and port.
+#'   \item day A data frame with the cpue by day.
+#'   \item port A data frame with the cpue by ports.
+#'   \item months A data frame with the cpue by months.
+#'   \item years A data frame with the cpue by years.
+#' }
 #' @export
 #' @method summary cpue
 summary.cpue = function(object, language = "spanish"){
@@ -51,11 +60,12 @@ summary.cpue = function(object, language = "spanish"){
   }
 
   output = list()
-  output$portDay =  object2$dataPortDay
-  output$day     =  object2$data
-  output$port    =  object2$dataPort
-  output$months  =  .getMonth.cpue(object = object, language = language)
-  output$years   =  .getYear.cpue(object = object)
+  output$effort    =  object2$info$efforType
+  output$portDay   =  object2$dataPortDay
+  output$day       =  object2$data
+  output$port      =  object2$dataPort
+  output$months    =  .getMonth.cpue(object = object, language = language)
+  output$years     =  .getYear.cpue(object = object)
 
   class(output) = "summary.cpue"
   return(output)

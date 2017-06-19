@@ -27,6 +27,20 @@ print.bitacora = function(x, language="spanish") {
   return(invisible())
 }
 
+#' @title Summary method for bitacora objects
+#' @description Get summary information of bitacora object.
+#' @param object Object of class \code{bitacora}.
+#' @param language The select language to print the summary of bitacora objects.
+#' @param latByPort \code{logical}. By default (\code{FALSE}) to get the
+#' latitude accoding the log book information, and to get the latitude
+#' according the port (\code{TRUE}).
+#' @return A \code{list} of summary.bitacora class. This contains:
+#' \itemize{
+#'   \item observedTrip The observed trips by port.
+#'   \item fishingHaul The fishing haul by latitude.
+#' }
+#' @export
+#' @method summary bitacora
 summary.bitacora = function(object, language = "spanish", latByPort = FALSE) {
 
   output = list()

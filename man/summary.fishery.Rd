@@ -11,7 +11,19 @@
 
 \item{language}{The select language to print the summary of fishery objects.}
 }
+\value{
+A \code{list} of summary.fishery class. This contains:
+\itemize{
+  \item var The type of the variable that has been to analyze. This can be lading or effort.
+  \item portDay A data frame with the information of the variable analyzed by day and port.
+  \item day A data frame with the information of the variable by day.
+  \item port A data frame with the information of the variable by ports.
+  \item months A data frame with the information of the variable by months.
+  \item years A data frame with the information of the variable by years.
+}
+}
 \description{
-Get summary information of landing and fishing effort included on \code{fishery} objects.
+Get summary information of landing and fishing effort included on
+ \code{fishery} objects.
 }
 
