@@ -544,6 +544,28 @@ effortSpeciesData.bitacora = function(data, species, region = NULL){
 }
 
 #Funcion para obtener el esfuerzo
+#' Get fishing effort
+#' @description Generical function to get the fishing effort. The type of fishing effort could be four.
+#' \itemize{
+#'   \item travelTime for the effort as a function of the travel time.
+#'   \item haulTotal for the effort as a function of the total number of fishing haul.
+#'   \item storageCapacity for the effort as a function of the storage capacity.
+#'   \item searchTime for the effort as a function of the search time to catch the species.
+#' }
+#' @param data A \code{data.frame} with information to estimated the fishing effort (in columns).
+#' This data base have to contain columns of the time (days, months, years, season), ports and the
+#' fleet type.
+#' @param efforType A \code{character}. It could be one of the fishing effort type ("travelTime",
+#' "haulTotal", "storageCapacity", "searchTime").
+#' @param effortBy Parameter to indicate whether the effort will be estimated by
+#' time (\code{effortBy = time}) or by port (\code{effortBy = port}).
+#' @param timeBy If the effort is estimated over the time, it could be by days
+#'  (\code{timeBy = days}), months (\code{timeBy = months}), years (\code{timeBy = years}) or
+#'  by seasons (\code{timeBy = seasons}).
+#' @param fleeType The effort could be estimated for the whole data given or for a data by fleeType.
+#' By default this parameter is \code{NULL}.
+#' @return A \code{vector} with the estimated effort.
+#' @export
 getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
 
   dataBase = data
@@ -565,7 +587,9 @@ getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
     if(timeBy == "years") {effortVector = tapply(X = dataBase$effort, INDEX = dataBase$year, FUN = sum, na.rm = TRUE) }
     if(timeBy == "seasons") {effortVector = tapply(X = dataBase$effort, INDEX = list(dataBase$season), FUN = sum, na.rm = TRUE) }
 
-  } else {
+  }
+
+  if(effortBy %in% "port") {
     effortVector = tapply(X = dataBase$effort, INDEX = list(dataBase$port), FUN = mean, na.rm = TRUE)
     effortVector = effortVector[order(match(names(effortVector), portData$name))]
   }
