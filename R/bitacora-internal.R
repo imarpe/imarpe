@@ -545,7 +545,7 @@ effortSpeciesData.bitacora = function(data, species, region = NULL){
 
 #Funcion para obtener el esfuerzo
 #' Get fishing effort
-#' @description Generical function to get the fishing effort. The type of fishing effort could be four.
+#' @description Generical function to get the fishing effort. The type of fishing effort could be four types:
 #' \itemize{
 #'   \item travelTime for the effort as a function of the travel time.
 #'   \item haulTotal for the effort as a function of the total number of fishing haul.
@@ -598,6 +598,28 @@ getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
 }
 
 #Funcion para obtener la captura por unidad de esfuerzo (cpue) relativizada
+#' Get the relativizated catch per unit effort (cpue)
+#' @details  The relativizated cpue is a index used on bitacora report.
+#' @param data A \code{data.frame} with information about catchs and fishing effort.
+#' @param toTons A logical parameter. \code{TRUE} (dafault) it assume that the catches is in kilograms
+#' and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tons
+#' and don't convert the data.
+#' @param efforType A \code{character} indicating the fishing effort type. It could be four types:
+#' \itemize{
+#'   \item travelTime for the effort as a function of the travel time.
+#'   \item haulTotal for the effort as a function of the total number of fishing haul.
+#'   \item storageCapacity for the effort as a function of the storage capacity.
+#'   \item searchTime for the effort as a function of the search time to catch the species.
+#' }
+#' @param cpueBy Parameter to indicate whether the relativizated cpue will be estimated by
+#' time (\code{cpueBy = time}) or by port (\code{cpueBy = port}).
+#' @param timeBy If the cpue relativizated is estimated over the time, it could be by days
+#'  (\code{timeBy = days}), months (\code{timeBy = months}), years (\code{timeBy = years}) or
+#'  by seasons (\code{timeBy = seasons}).
+#' @param fleeType The relativizated cpue could be estimated for the whole data given or for a data by fleeType.
+#' By default this parameter is \code{NULL}.
+#' @return A \code{vector} with the relativizated cpue.
+#' @export
 getCpue_relativited = function(data, toTons=FALSE, efforType, cpueBy = "time", timeBy, fleeType = NULL) {
 
   dataBase = data
@@ -621,8 +643,9 @@ getCpue_relativited = function(data, toTons=FALSE, efforType, cpueBy = "time", t
     if(timeBy == "months") {cpueVector = tapply(X = dataBase$cpue, INDEX = list(dataBase$year, dataBase$month), FUN = mean, na.rm = TRUE) }
     if(timeBy == "years") {cpueVector = tapply(X = dataBase$cpue, INDEX = dataBase$year, FUN = mean, na.rm = TRUE) }
     if(timeBy == "seasons") {cpueVector = tapply(X = dataBase$cpue, INDEX = list(dataBase$season), FUN = mean, na.rm = TRUE) }
+  }
 
-  } else {
+  if(cpueBy %in% "port") {
     cpueVector = tapply(X = dataBase$cpue, INDEX = list(dataBase$port), FUN = mean, na.rm = TRUE)
     cpueVector = cpueVector[order(match(names(cpueVector), portData$name))]
   }

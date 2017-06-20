@@ -17,7 +17,7 @@ the cpue (catch per unith effort).}
 \item{varType}{The type of the variable that has been to analyze. This can be: lading, effort and cpue.}
 
 \item{toTons}{A logical parameter. \code{TRUE} (dafault) it assume that the fishery information is in kilograms
-and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tonnos and don't convert the data.}
+and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tons and don't convert the data.}
 
 \item{sp}{The name of the species.}
 

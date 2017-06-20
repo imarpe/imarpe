@@ -113,7 +113,7 @@ NULL
 #' the cpue (catch per unith effort).
 #' @param varType The type of the variable that has been to analyze. This can be: lading, effort and cpue.
 #' @param toTons A logical parameter. \code{TRUE} (dafault) it assume that the fishery information is in kilograms
-#' and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tonnos and don't convert the data.
+#' and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tons and don't convert the data.
 #' @param sp The name of the species.
 #' @param start The date to start the analysis. By dafault is \code{NULL}.
 #' @param end The date to end the analysis. By dafault is \code{NULL}.
