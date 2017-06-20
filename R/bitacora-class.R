@@ -152,3 +152,76 @@ report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
   return(invisible(file.path(output, outputFile)))
 
 }
+
+
+#' @title Get main results from bitacora
+#' @description Principal function of bitacora class objects to get principal results.
+#' @param object Object of \code{bitacora} class.
+#' @param observedTrip Parameter to indicate whether the observed trip will be estimated.
+#' By default is \code{NULL} but if it will be estimated receive the logical value of \code{TRUE}.
+#' @param fishingHaul Parameter to indicate whether the fishing haul sampled will be
+#' estimated. By default is \code{NULL} but if it will be estimated receive the
+#' logical value of \code{TRUE}.
+#' @param fishingPoints Parameter to indicate whether the fishing poins will be estimated.
+#' By default is \code{NULL} but if it will be estimated received the logical value of \code{TRUE}.
+#' @param speciesComposition Parameter to indicate whether the species composition will be
+#' estimated. By default is \code{NULL} but if it will estimated received the logical value of \code{TRUE}.
+#' @param distributionCatch Parameter to indicate whether the distribution of catches will be
+#' estimated. By default is \code{NULL} but if it will estimated received the logical value of \code{TRUE}.
+#' @param effortData Parameter to indicate whether the effort data will be
+#' estimated. By default is \code{NULL} but if it will estimated received the logical value of \code{TRUE}.
+#' @param language The select language to print the results. By default is "spanish".
+#' @param latByPort \code{logical}. Parameter of fishingHaul.bitacora function. By
+#' default is \code{FALSE} indicating that latitude information is not get from
+#' port information. When is \code{TRUE}, the latitude is get from port information.
+#' @param specie \code{character}. Parameter of distributionCatch.bitacora function.
+#' Receives the name of the species that is calculated the distribution of the catch.
+#' Default value is "anchoveta" but this could be:
+#' \itemize{
+#'   \item "anchoveta" to estimated the anchovy catches distribution.
+#'   \item "sardina" to estimated the sardine catches distribution.
+#'   \item "jurel" to estimated the jack mackerel catches distribution.
+#'   \item "caballa" to estimated the chub mackerel catches distribution.
+#'   \item "bonito" to estimated the bonito catches distribution.
+#' }
+#' @return A list of \code{bitacora_mainResults} class. The \code{length} of the list is six,
+#' one by each parameter (observedTrip, fishingHaul, fishingPoints, speciesComposition,
+#' distributionCatch, and effortData).
+#' @details If one of the parameter (observedTrip, fishingHaul, fishingPoints, speciesComposition,
+#' distributionCatch, and effortData) is \code{NULL} on \code{getMainResults.bitacora} function
+#' the output of this parameter on the list produced by the function is \code{NULL} too.
+#' @export
+getMainResults.bitacora = function(object, observedTrip = NULL, fishingHaul = NULL, fishingPoints = NULL,
+                                   speciesComposition = NULL, distributionCatch = NULL, effortData = NULL,
+                                   language = "spanish", latByPort = FALSE, specie = "anchoveta") {
+
+  if(is.null(observedTrip) & is.null(fishingHaul) & is.null(fishingPoints) &
+     is.null(speciesComposition) & is.null(distributionCatch) & is.null(effortData)) {
+    message("There is not output to return")
+    return(invisible())
+  }
+
+  #Check the output to return
+  if(isTRUE(observedTrip)) {observedTrip = .observedTrip.bitacora(object, language) }
+
+  if(isTRUE(fishingHaul)) {fishingHaul = .fishingHaul.bitacora(object, language, latByPort)}
+
+  if(isTRUE(fishingPoints)) {fishingPoints = .fishingPoints.bitacora(object)}
+
+  if(isTRUE(speciesComposition)) {speciesComposition = .speciesComposition.bitacora(object, language)}
+
+  if(isTRUE(distributionCatch)) {distributionCatch = .distributionCatch.bitacora(object, language, specie)}
+
+  if(isTRUE(effortData)) {effortData = .effortData.bitacora(object) }
+
+  output = list(observedTrip       = observedTrip,
+                fishingHaul        = fishingHaul,
+                fishingPoints      = fishingPoints,
+                speciesComposition = speciesComposition,
+                distributionCatch  = distributionCatch,
+                effortData         = effortData)
+
+  class(output) = "bitacora_mainResults"
+
+  return(output)
+}
