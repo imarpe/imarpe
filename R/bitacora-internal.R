@@ -489,7 +489,21 @@
 }
 
 #Funcion para extraer informacion de la especies y la temporada
-.effortSpeciesData.bitacora = function(data, species, region = NULL){
+#' Get species effort data
+#' @description Receive an object of bitacora class, indexes the data by species,
+#' estimates the season by species, for anchovy the season depend of region
+#' (north-central and south region) but for other species
+#' (sardine, jack mackerel, chub mackerel and bonito) the season is annual.
+#' @param data A \code{data.frame} obtained from effortData.bitacora function (internal function
+#' of bitacora class). This data frame could be obtained from
+#' getMainResults.bitacora function too.
+#' @param species A \code{character} with the common name of anchovy ("anchoveta"),
+#' sardine ("sardina"), jack mackerel ("jurel"), chub mackerel ("caballa") and bonito ("bonito").
+#' @param region If the species is anchovy (\code{anchoveta}) is necessary
+#' indicate for each region the effort data is going to be calculate. By default is \code{NULL}.
+#' @return A \code{data.frame} with effort data for a given species.
+#' @export
+effortSpeciesData.bitacora = function(data, species, region = NULL){
 
   dataBase = data
 

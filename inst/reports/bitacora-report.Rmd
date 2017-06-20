@@ -116,7 +116,7 @@ pander::pander(spatialCatches, align = "c", keep.line.breaks = TRUE)
 #Esfuerzo efectivo de pesca por áreas: región norte - centro
 ```{r, echo=FALSE, cache=TRUE, message=FALSE, warning= FALSE, fig.height=6, fig.width=11.5}
 dataEsfuerzo = .effortData.bitacora(object = x)
-dataEsfuerzoNC = .effortSpeciesData.bitacora(data = dataEsfuerzo, species = "anchoveta", region = "norte-centro")
+dataEsfuerzoNC = effortSpeciesData.bitacora(data = dataEsfuerzo, species = "anchoveta", region = "norte-centro")
 
 esfuerzoAnchNC_tt = getEffort(data = dataEsfuerzoNC, efforType = "travelTime", effortBy = "port")
 esfuerzoAnchNC_hn = getEffort(data = dataEsfuerzoNC, efforType = "haulTotal", effortBy = "port")
