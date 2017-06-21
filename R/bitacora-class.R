@@ -125,6 +125,67 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
   return(invisible())
 }
 
+
+#' @title Plot for fishing points
+#' @description This method takes a \code{bitacora} object and plots fishing points
+#' @param x Object of \code{bitacora} class.
+#' @param language \code{character}. Define the language of text labels in plots.
+#' @param dataType To indicate the fishing points of the species to be graphed. This could be:
+#' \itemize{
+#'   \item "dataAnch" to graphic fishing points of anchovy
+#'   \item "dataSar" to graphic fishing points of sardine
+#'   \item "dataJur" to graphic fishing points of jack mackerel
+#'   \item "dataCab" to graphic fishing points of chub mackere
+#'   \item "dataBon" to graphic fishing points of bonito
+#'   \item "dataGroups" to graphic fishing points for other species differences to the five mentioned
+#'   \item "dataTotal" to graphic fishing points of all species
+#' }
+#' @param colMap Assigns the color to the land domain. By default is \code{khaki1}.
+#' @param cexPointCatch \code{logical}. To plot the size of the fishing points according the catch size
+#' \code{TRUE} or to plot the fishing points without considering the size of the catch \code{FALSE}
+#' (by default).
+#' @param cexPoint The size of the fishing points on the map.
+#' @param colFleet A vector. Colouts assigned to each fleet type.
+#' \itemize{
+#'   \item "red" for artisanal type fleet (boats with storage capacity between 0 and 10 tons).
+#'   \item "blue" for smaller scale type fleet (boats with storage capacity between 10 and 32.5 tons).
+#'   \item "green" for industrial wood fleet (boats with storage capacity between 32.5 and 110 tons).
+#'   \item "black" for industrial fleet (boats with storage capacity greather than 110 tons).
+#' }
+#' @param cex.axis The size of the axis on the map.
+#' @param cexPorts The size of the port names on the map.
+#' @param ... Extra arguments.
+#'
+#' @return A map for fishing points of the data type selected on \code{dataType}.
+#' @export
+plotFishingPoints.bitacora = function(x, language, dataType,
+                                      colMap = "khaki1", cexPointCatch = FALSE, cexPoint = 0.8,
+                                      colFleet = c("red", "blue", "green", "black"),
+                                      cex.axis = 1.2, cexPorts = 0.9, ...) {
+
+  #get data to plot
+  dataToPlot = .fishingPoints.bitacora(x)
+
+  #use internal function to plot the fishing point
+  .plotFishingPoints.bitacora(x, language, dataType,
+                              colMap = colMap, cexPointCatch = cexPointCatch, cexPoint = cexPoint,
+                              colFleet = colFleet, cex.axis = cex.axis, cexPorts = cexPorts, ...)
+
+  return(invisible())
+}
+
+
+#' @title PlotFishignPoints method
+#' @description Method for plotFishingPoins.bitacora function.
+#' @param x Object of \code{bitacora} class.
+#' @param ... Extra arguments passed to \code{plotFishingPoints.bitacora} function.
+#' @details For more details read the help of \code{\link{plotFishingPoints.bitacora}}.
+#' @export
+plotFishingPoints = function(x, laguage, dataType, ...) {
+  UseMethod(generic = "plotFishingPoints", object = x)
+}
+
+
 #' @title Report method for bitacora objects
 #' @description Export a report of bitacora.
 #' @param x Object of \code{bitacora} class.

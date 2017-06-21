@@ -231,10 +231,8 @@
 
 #Funcion para plotear los mapas con puntos de pesca
 .plotFishingPoints.bitacora = function(x, language, dataType,
-                                       colMap = "khaki1",
-                                       cexPointCatch = FALSE, cexPoint = 0.8,
-                                       colFleet = c("red", "blue", "green", "black"),
-                                       cex.axis = 1.2, cexPorts = 0.9, ...){
+                                       colMap = colMap, cexPointCatch = cexPointCatch, cexPoint = cexPoint,
+                                       colFleet = colFleet, cex.axis = cex.axis, cexPorts = cexPorts, ...){
 
   dataBase = x[[dataType]]
   ports    = portData[portData$importance == 1, ]
