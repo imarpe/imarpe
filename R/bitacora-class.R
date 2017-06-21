@@ -129,7 +129,7 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
 #' @title Plot for fishing points
 #' @description This method takes a \code{bitacora} object and plots fishing points
 #' @param x Object of \code{bitacora} class.
-#' @param language \code{character}. Define the language of text labels in plots.
+#' @param language \code{character}. Define the language of text labels in plots, by default is \code{"spanish"}.
 #' @param dataType To indicate the fishing points of the species to be graphed. This could be:
 #' \itemize{
 #'   \item "dataAnch" to graphic fishing points of anchovy
@@ -158,7 +158,7 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
 #'
 #' @return A map for fishing points of the data type selected on \code{dataType}.
 #' @export
-plotFishingPoints.bitacora = function(x, language, dataType,
+plotFishingPoints.bitacora = function(x, language = "spanish", dataType,
                                       colMap = "khaki1", cexPointCatch = FALSE, cexPoint = 0.8,
                                       colFleet = c("red", "blue", "green", "black"),
                                       cex.axis = 1.2, cexPorts = 0.9, ...) {
@@ -167,7 +167,7 @@ plotFishingPoints.bitacora = function(x, language, dataType,
   dataToPlot = .fishingPoints.bitacora(x)
 
   #use internal function to plot the fishing point
-  .plotFishingPoints.bitacora(x, language, dataType,
+  .plotFishingPoints.bitacora(x = dataToPlot, language = language, dataType = dataType,
                               colMap = colMap, cexPointCatch = cexPointCatch, cexPoint = cexPoint,
                               colFleet = colFleet, cex.axis = cex.axis, cexPorts = cexPorts, ...)
 
