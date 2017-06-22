@@ -133,9 +133,9 @@ plotFishingPoints.bitacora = function(x, language = "spanish", dataType,
 #' by taxonomic group (\code{TRUE}), but to
 #' @param group Indicates what taxonomic group should be graph on the map of fishing presence.
 #' By defaul is \code{NULL} when \code{byGroup = FALSE}, but when \code{byGroup = TRUE} this parameter receives
-#' the name of the taxonomic group. These might be: "neritico", "transzonal", "costero", "oceanico", "demersal", "bentonico", "mesopelagico",
-#' "depredador", "elasmobranquio", "cefalopodo", "medusa", "crustaceo", "tunicado", "alga", "copepodo",
-#' "eufausido", "molusco", "equinodermo", "invertebrado", "dinogelado".
+#' the name of the taxonomic group. These might be: "neritico", "transzonal", "costero", "oceanico", "demersal",
+#' "bentonico", "mesopelagico", "depredador", "elasmobranquio", "cefalopodo", "medusa", "crustaceo", "tunicado",
+#'  "alga", "copepodo", "eufausido", "molusco", "equinodermo", "invertebrado", "dinogelado".
 #' @param colMap Assigns the color to the land domain. By default is \code{khaki1}.
 #' @param colSpecies A vector with colours that represent the non-tarjet species. By defaul is \code{NULL} and
 #' use a internal \code{\link{vectorColours}}.

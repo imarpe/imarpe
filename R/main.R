@@ -362,3 +362,14 @@ plotFishingPresence = function(x, ...) {
 plotSpeciesComposition = function(x, ...) {
   UseMethod(generic = "plotSpeciesComposition", object = x)
 }
+
+
+#' @title PlotEffort method
+#' @description Method for plotEffort.numeric function.
+#' @param x Object of \code{bitacora} class.
+#' @param ... Extra arguments passed to \code{plotEffort.numeric} function.
+#' @details For more details read the help of \code{\link{plotEffort.numeric}}.
+#' @export
+plotEffort = function(effort1, effort2, ...) {
+  UseMethod(generic = "plotEffort", object = c(effort1, effort2))
+}

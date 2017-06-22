@@ -595,8 +595,8 @@ getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
 }
 
 #Funcion para obtener la captura por unidad de esfuerzo (cpue) relativizada
-#' Get the relativizated catch per unit effort (cpue)
-#' @details  The relativizated cpue is a index used on bitacora report.
+#' Get the relative catch per unit effort (cpue)
+#' @details  The relative cpue is a index used on bitacora report.
 #' @param data A \code{data.frame} with information about catchs and fishing effort.
 #' @param toTons A logical parameter. \code{TRUE} (dafault) it assume that the catches is in kilograms
 #' and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tons
@@ -608,16 +608,16 @@ getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
 #'   \item storageCapacity for the effort as a function of the storage capacity.
 #'   \item searchTime for the effort as a function of the search time to catch the species.
 #' }
-#' @param cpueBy Parameter to indicate whether the relativizated cpue will be estimated by
+#' @param cpueBy Parameter to indicate whether the relative cpue will be estimated by
 #' time (\code{cpueBy = time}) or by port (\code{cpueBy = port}).
-#' @param timeBy If the cpue relativizated is estimated over the time, it could be by days
+#' @param timeBy If the relative cpue is estimated over the time, it could be by days
 #'  (\code{timeBy = days}), months (\code{timeBy = months}), years (\code{timeBy = years}) or
 #'  by seasons (\code{timeBy = seasons}).
-#' @param fleeType The relativizated cpue could be estimated for the whole data given or for a data by fleeType.
+#' @param fleeType The relative cpue could be estimated for the whole data given or for a data by fleeType.
 #' By default this parameter is \code{NULL}.
-#' @return A \code{vector} with the relativizated cpue.
+#' @return A \code{vector} with the relative cpue.
 #' @export
-getCpue_relativited = function(data, toTons=FALSE, efforType, cpueBy = "time", timeBy, fleeType = NULL) {
+getCpue_relative = function(data, toTons=FALSE, efforType, cpueBy = "time", timeBy, fleeType = NULL) {
 
   dataBase = data
   dataBase$catch = dataBase$catch / ifelse(isTRUE(toTons), 1000, 1)
@@ -650,9 +650,23 @@ getCpue_relativited = function(data, toTons=FALSE, efforType, cpueBy = "time", t
   return(cpue = cpueVector)
 }
 
-#Funcion para plotear el esfuerzo por puerto
-.plotEffort.bitacora = function(effort1, effort2, labAxis2, labAxis4, colBar = NULL, colLine = NULL,
-                                legend = NULL, ...) {
+
+#' Plot series of fishing effort by ports
+#' @description This method take a series of fishing effort by ports and produces a graph
+#' that is useful for the PBP program.
+#' @param effort1 A vector of the first serie of fishing effort.
+#' @param effort2 A vector of the second serie of fishing effort.
+#' @param labAxis2 Text to be included on the left vertical axis of the graph
+#' @param labAxis4 Text to be included on the right vertical axis of the graph
+#' @param colBar The colour of the barplot. Sea \code{\link{barplot}}.
+#' @param colLine The colour of the line on the graph.
+#' @param legend The names to include on the legend of the graph.
+#' @param ... Extra arguments.
+#' @return A graph for two types of fishing effort by ports. One type is on the left
+#'  vertical axis and the other on the right vertical axis, the ports are on the horizontal axis.
+#' @export
+plotEffort.numeric = function(effort1, effort2, labAxis2, labAxis4, colBar = NULL,
+                               colLine = NULL, legend = NULL, ...) {
 
   maxAxis2 = ceiling(1.2*max(effort1))
   maxAxis4 = ceiling(1.2*max(effort2))
