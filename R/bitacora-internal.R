@@ -231,8 +231,8 @@
 
 #Funcion para plotear los mapas con puntos de pesca
 .plotFishingPoints.bitacora = function(x, language, dataType,
-                                       colMap = colMap, colFleet = colFleet,
-                                       cexPointCatch = cexPointCatch, cexPoint = cexPoint, cex.axis = cex.axis, cexPorts = cexPorts, ...){
+                                       colMap, colFleet,
+                                       cexPointCatch, cexPoint, cex.axis, cexPorts, ...){
 
   dataBase = x[[dataType]]
   ports    = portData[portData$importance == 1, ]
@@ -377,7 +377,7 @@
 }
 
 #Funcion para plotear el pie de composicion de especies
-.plotSpeciesComposition.bitacora = function(x, threshold = TRUE, minPercentage = 0.2, ...) {
+.plotSpeciesComposition.bitacora = function(x, threshold, minPercentage, ...) {
 
   dataBase = x
   dataBase = dataBase[- dim(dataBase)[1],]

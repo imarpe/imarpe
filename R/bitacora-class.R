@@ -214,6 +214,31 @@ plotFishingPresence.bitacora = function(x, byGroup = TRUE, group = NULL,
 }
 
 
+#' @title Plot for species composition of catch
+#' @description This method takes a \code{bitacora} object and do a pie graph.
+#' @param x Object of \code{bitacora} class.
+#' @param threshold Logical, by default is \code{TRUE} when the species composition on the
+#' catches will be graphic according to a thershold specified in \code{minPercentage}.
+#' When is \code{FALSE}, the pie graph uses all the species catches which are greather than zero.
+#' @param minPercentage  Numeric value indicating the minimum percentage that catches must have
+#'  to be graphic. By default is 0.2.
+#' @param ... Extra arguments.
+#'
+#' @return A pie graph.
+#' @export
+plotSpeciesComposition.bitacora = function(x, threshold = TRUE, minPercentage = 0.2, ...) {
+
+  #get data to plot
+  dataToPlot = .speciesComposition.bitacora(object = x, language = "spanish")
+
+  #use internal function to plot the species composition
+  .plotSpeciesComposition.bitacora(x = dataToPlot,
+                                   threshold = threshold, minPercentage = minPercentage, ...)
+
+  return(invisible())
+}
+
+
 #' @title Report method for bitacora objects
 #' @description Export a report of bitacora.
 #' @param x Object of \code{bitacora} class.

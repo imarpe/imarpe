@@ -351,3 +351,14 @@ plotFishingPoints = function(x, laguage, dataType, ...) {
 plotFishingPresence = function(x, ...) {
   UseMethod(generic = "plotFishingPresence", object = x)
 }
+
+
+#' @title PlotSpeciesComposition method
+#' @description Method for plotSpeciesComposition.bitacora function.
+#' @param x Object of \code{bitacora} class.
+#' @param ... Extra arguments passed to \code{plotSpeciesComposition.bitacora} function.
+#' @details For more details read the help of \code{\link{plotSpeciesComposition.bitacora}}.
+#' @export
+plotSpeciesComposition = function(x, ...) {
+  UseMethod(generic = "plotSpeciesComposition", object = x)
+}
