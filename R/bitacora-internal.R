@@ -231,8 +231,8 @@
 
 #Funcion para plotear los mapas con puntos de pesca
 .plotFishingPoints.bitacora = function(x, language, dataType,
-                                       colMap = colMap, cexPointCatch = cexPointCatch, cexPoint = cexPoint,
-                                       colFleet = colFleet, cex.axis = cex.axis, cexPorts = cexPorts, ...){
+                                       colMap = colMap, colFleet = colFleet,
+                                       cexPointCatch = cexPointCatch, cexPoint = cexPoint, cex.axis = cex.axis, cexPorts = cexPorts, ...){
 
   dataBase = x[[dataType]]
   ports    = portData[portData$importance == 1, ]
@@ -276,10 +276,9 @@
 }
 
 #Funcion para plotear la presencia de otras especies por grupo taxonomico
-.plotFishingPresence.bitacora = function(x, byGroup = TRUE, group = NULL,
-                                         cexPoint = 1, colMap = "khaki1",
-                                         cex.axis = 1.2, cexPorts = 0.9,
-                                         colSpecies = NULL, colLegend = NULL, cexLegend = 1, ...){
+.plotFishingPresence.bitacora = function(x, byGroup, group,
+                                         colMap, colSpecies, colLegend,
+                                         cexPoint, cex.axis, cexPorts, cexLegend, ...){
 
   dataBase = x$dataGroups
 

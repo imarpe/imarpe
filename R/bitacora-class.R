@@ -127,7 +127,7 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
 
 
 #' @title Plot for fishing points
-#' @description This method takes a \code{bitacora} object and plots fishing points
+#' @description This method takes a \code{bitacora} object and plots fishing points.
 #' @param x Object of \code{bitacora} class.
 #' @param language \code{character}. Define the language of text labels in plots, by default is \code{"spanish"}.
 #' @param dataType To indicate the fishing points of the species to be graphed. This could be:
@@ -141,10 +141,6 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
 #'   \item "dataTotal" to graphic fishing points of all species
 #' }
 #' @param colMap Assigns the color to the land domain. By default is \code{khaki1}.
-#' @param cexPointCatch \code{logical}. To plot the size of the fishing points according the catch size
-#' \code{TRUE} or to plot the fishing points without considering the size of the catch \code{FALSE}
-#' (by default).
-#' @param cexPoint The size of the fishing points on the map.
 #' @param colFleet A vector. Colouts assigned to each fleet type.
 #' \itemize{
 #'   \item "red" for artisanal type fleet (boats with storage capacity between 0 and 10 tons).
@@ -152,37 +148,69 @@ plot.bitacora = function(x, language = "spanish", ploType = NULL, dataType, grou
 #'   \item "green" for industrial wood fleet (boats with storage capacity between 32.5 and 110 tons).
 #'   \item "black" for industrial fleet (boats with storage capacity greather than 110 tons).
 #' }
-#' @param cex.axis The size of the axis on the map.
-#' @param cexPorts The size of the port names on the map.
+#' @param cexPointCatch \code{logical}. To plot the size of the fishing points according the catch size
+#' \code{TRUE} or to plot the fishing points without considering the size of the catch \code{FALSE}
+#' (by default).
+#' @param cexPoint The size of the fishing points on the map. By default is 0.8.
+#' @param cex.axis The size of the axis on the map. By default is 1.2.
+#' @param cexPorts The size of the port names on the map. By default is 0.9.
 #' @param ... Extra arguments.
 #'
 #' @return A map for fishing points of the data type selected on \code{dataType}.
 #' @export
 plotFishingPoints.bitacora = function(x, language = "spanish", dataType,
-                                      colMap = "khaki1", cexPointCatch = FALSE, cexPoint = 0.8,
-                                      colFleet = c("red", "blue", "green", "black"),
-                                      cex.axis = 1.2, cexPorts = 0.9, ...) {
+                                      colMap = "khaki1", colFleet = c("red", "blue", "green", "black"),
+                                      cexPointCatch = FALSE, cexPoint = 0.8, cex.axis = 1.2, cexPorts = 0.9, ...) {
 
   #get data to plot
   dataToPlot = .fishingPoints.bitacora(x)
 
   #use internal function to plot the fishing point
   .plotFishingPoints.bitacora(x = dataToPlot, language = language, dataType = dataType,
-                              colMap = colMap, cexPointCatch = cexPointCatch, cexPoint = cexPoint,
-                              colFleet = colFleet, cex.axis = cex.axis, cexPorts = cexPorts, ...)
+                              colMap = colMap, colFleet = colFleet,
+                              cexPointCatch = cexPointCatch, cexPoint = cexPoint, cex.axis = cex.axis, cexPorts = cexPorts, ...)
 
   return(invisible())
 }
 
 
-#' @title PlotFishignPoints method
-#' @description Method for plotFishingPoins.bitacora function.
+#' @title Plot for fishing presence points
+#' @description This method takes a \code{bitacora} object and plot on a map the presence of the
+#' non-tarjet species for the fishery.
 #' @param x Object of \code{bitacora} class.
-#' @param ... Extra arguments passed to \code{plotFishingPoints.bitacora} function.
-#' @details For more details read the help of \code{\link{plotFishingPoints.bitacora}}.
+#' @param byGroup \code{logical}. To indicate if the fishing presence points will be plotted
+#' by taxonomic group (\code{TRUE}), but to
+#' @param group Indicates what taxonomic group should be graph on the map of fishing presence.
+#' By defaul is \code{NULL} when \code{byGroup = FALSE}, but when \code{byGroup = TRUE} this parameter receives
+#' the name of the taxonomic group. These might be: "neritico", "transzonal", "costero", "oceanico", "demersal", "bentonico", "mesopelagico",
+#' "depredador", "elasmobranquio", "cefalopodo", "medusa", "crustaceo", "tunicado", "alga", "copepodo",
+#' "eufausido", "molusco", "equinodermo", "invertebrado", "dinogelado".
+#' @param colMap Assigns the color to the land domain. By default is \code{khaki1}.
+#' @param colSpecies A vector with colours that represent the non-tarjet species. By defaul is \code{NULL} and
+#' use a internal \code{\link{vectorColours}}.
+#' @param colLegend By default (\code{colLegend = NULL}) receives the vector with colours of \code{colSpecies}.
+#' But this parameter could be changed including a vector of colour by each species.
+#' @param cexPoint The size of the fishing points on the map. By default is 1.
+#' @param cex.axis The size of the axis on the map. By default is 1.2.
+#' @param cexPorts The size of the port names on the map. By default is 0.9.
+#' @param cexLegend The size of the common name of species.
+#' @param ... Extra arguments.
+#'
+#' @return A map for fishing presence points by taxonomic group or in general (for all species if the data).
 #' @export
-plotFishingPoints = function(x, laguage, dataType, ...) {
-  UseMethod(generic = "plotFishingPoints", object = x)
+plotFishingPresence.bitacora = function(x, byGroup = TRUE, group = NULL,
+                                        colMap = "khaki1", colSpecies = NULL, colLegend = NULL,
+                                        cexPoint = 1, cex.axis = 1.2, cexPorts = 0.9, cexLegend = 1, ...) {
+
+  #get data to plot
+  dataToPlot = .fishingPoints.bitacora(x)
+
+  #use internal function to plot the fishing presence
+  .plotFishingPresence.bitacora(x = dataToPlot, byGroup = byGroup, group = group,
+                                colMap = colMap, colSpecies = colSpecies, colLegend = colLegend,
+                                cexPoint = cexPoint, cex.axis = cex.axis, cexPorts = cexPorts, cexLegend = cexLegend, ...)
+
+  return(invisible())
 }
 
 

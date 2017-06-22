@@ -329,3 +329,25 @@ getMainResults.bitacora = function(object, observedTrip = NULL, fishingHaul = NU
 
   return(output)
 }
+
+
+#' @title PlotFishignPoints method
+#' @description Method for plotFishingPoins.bitacora function.
+#' @param x Object of \code{bitacora} class.
+#' @param ... Extra arguments passed to \code{plotFishingPoints.bitacora} function.
+#' @details For more details read the help of \code{\link{plotFishingPoints.bitacora}}.
+#' @export
+plotFishingPoints = function(x, laguage, dataType, ...) {
+  UseMethod(generic = "plotFishingPoints", object = x)
+}
+
+
+#' @title PlotFishingPresence method
+#' @description Method for plotFishingPresence.bitacora function.
+#' @param x Object of \code{bitacora} class.
+#' @param ... Extra arguments passed to \code{plotFishingPresence.bitacora} function.
+#' @details For more details read the help of \code{\link{plotFishingPresence.bitacora}}.
+#' @export
+plotFishingPresence = function(x, ...) {
+  UseMethod(generic = "plotFishingPresence", object = x)
+}
