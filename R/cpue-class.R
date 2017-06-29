@@ -122,7 +122,7 @@ print.summary.cpue = function(x, language = "spanish"){
 #' @param ... Extra arguments.
 #' @return A graph of the specified type in \code{ploType}.
 #' @export
-#' @method plot fishery
+#' @method plot cpue
 plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL, ...){
 
   if(is.null(ploType)) ploType = "plotDaily"
