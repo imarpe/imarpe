@@ -156,13 +156,10 @@ plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), tex
 #' @param textAxis4 The text of the y axis.
 #' @export
 #' @method report cpue
-report.cpue = function(x, format = "latex", tangle=FALSE, output = NULL,
+report.cpue = function(x, format = "latex", tangle=FALSE, output = NULL, open = TRUE,
                        daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){
 
   if(is.null(output)) output = getwd()
-
-  cacheDirs = list.dirs(path = ".", recursive = FALSE, full.names = TRUE)
-  unlink(x = cacheDirs[grepl(x = basename(cacheDirs), pattern = "(_cache) | (_files)")], recursive = TRUE)
 
   outputName = deparse(substitute(x))
 

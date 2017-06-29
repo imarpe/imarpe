@@ -170,8 +170,7 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 #' @param textAxis4 The text of the y axis.
 #' @export
 #' @method report fishery
-report.fishery = function(x, format="latex", tangle=FALSE, output = NULL,
-                          open = TRUE,
+report.fishery = function(x, format="latex", tangle=FALSE, output = NULL, open = TRUE,
                           daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){
 
   if(is.null(output)) output = getwd()
@@ -189,8 +188,7 @@ report.fishery = function(x, format="latex", tangle=FALSE, output = NULL,
   }
 
   outputFile = paste0(outputName, "_output.pdf")
-  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output,
-         encoding = "latin1")
+  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output, encoding = "latin1")
 
   if(isTRUE(open)) shell.exec(outputFile)
 
