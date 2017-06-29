@@ -146,8 +146,7 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
   if(ploType %in% c("plotNC", "plotS")){dataRegion = .getRegionData(x = x)}
 
   switch(ploType,
-         plotDaily   = .plotDays.fishery(x=x, language=language, daysToPlot = daysToPlot,
-                                         textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
+         plotDaily   = .plotDays.fishery(x=x, language=language, daysToPlot = daysToPlot, ...),
 
          plotMonthly = .plotMonths.fishery(x=x, language=language, ...),
 
@@ -172,9 +171,11 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 #' @export
 #' @method report fishery
 report.fishery = function(x, format="latex", tangle=FALSE, output = NULL,
+                          open = TRUE,
                           daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){
 
   if(is.null(output)) output = getwd()
+
   outputName = deparse(substitute(x))
 
   varType = x$info$varType

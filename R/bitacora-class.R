@@ -198,6 +198,10 @@ plotSpeciesComposition.bitacora = function(x, threshold = TRUE, minPercentage = 
 report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
 
   if(is.null(output)) output = getwd()
+
+  cacheDirs = list.dirs(path = ".", recursive = FALSE, full.names = TRUE)
+  unlink(x = cacheDirs[grepl(x = basename(cacheDirs), pattern = "(_cache) | (_files)")], recursive = TRUE)
+
   outputName = deparse(substitute(x))
 
   skeleton = system.file("reports", "bitacora-report.Rmd", package = "imarpe")

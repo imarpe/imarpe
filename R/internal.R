@@ -222,12 +222,20 @@
   dataS  = dataBase[dataBase$region %in% "Sur", ]
 
   #Ordering data from the NC region
-  dataNC = aggregate(value ~ year + month + day, dataNC, sum)
-  dataNC = dataNC[order(dataNC$year, word2month(dataNC$month), dataNC$day),]
+  if(dim(dataNC)[1] != 0){
+    dataNC = aggregate(value ~ year + month + day, dataNC, sum)
+    dataNC = dataNC[order(dataNC$year, word2month(dataNC$month), dataNC$day),]
+  } else {
+    dataNC = NULL
+  }
 
   #Ordering data from the S region
-  dataS = aggregate(value ~ year + month + day, dataS, sum)
-  dataS = dataS[order(dataS$year, word2month(dataS$month), dataS$day),]
+  if(dim(dataS)[1] != 0){
+    dataS = aggregate(value ~ year + month + day, dataS, sum)
+    dataS = dataS[order(dataS$year, word2month(dataS$month), dataS$day),]
+  } else {
+    dataS = NULL
+  }
 
   #dataNC = .trimData(x = dataNC, start = start, end = end) ; rownames(dataNC) = NULL
   #dataS  = .trimData(x = dataS, start = start, end = end) ; rownames(dataS) = NULL
@@ -242,93 +250,99 @@
 .plotRegion = function(x, region, byAxis2="default", milesTons=TRUE, textAxis2, textAxis4, cexLab=1.2,
                        daysToPlot, cexAxis24 = 1.1, cexAxis1 = 0.9, cexLegend = 1){
 
-  if(region == "NC"){dataBase = x$regionNC} else {dataBase = x$regionS}
+  if(region == "NC"){dataBase = x$regionNC}
+  if(region == "S" ){dataBase = x$regionS}
 
-  dataBase$dates = paste(sapply(dataBase$day, function(x) paste0(ifelse(x < 10, 0, ""), x)),
-                         sapply(word2month(dataBase$month), function(x) paste0(ifelse(x < 10, 0, ""), x)),
-                         dataBase$year, sep = "/")
-  xValues = as.Date(paste(dataBase$day, word2month(dataBase$month), dataBase$year, sep="/"), format = "%d/%m/%Y")
-  yValues = dataBase$value
-  xLim    = range(xValues)
+  if(!is.null(dataBase)){
+    dataBase$dates = paste(sapply(dataBase$day, function(x) paste0(ifelse(x < 10, 0, ""), x)),
+                           sapply(word2month(dataBase$month), function(x) paste0(ifelse(x < 10, 0, ""), x)),
+                           dataBase$year, sep = "/")
+    xValues = as.Date(paste(dataBase$day, word2month(dataBase$month), dataBase$year, sep="/"), format = "%d/%m/%Y")
+    yValues = dataBase$value
+    xLim    = range(xValues)
 
-  maxY1 = max(yValues, na.rm = TRUE)
-  yLim1 = c(0, maxY1)
-  maxY2 = sum(yValues, na.rm = TRUE)
-  yLim2 = c(0, maxY2)
+    maxY1 = max(yValues, na.rm = TRUE)
+    yLim1 = c(0, maxY1)
+    maxY2 = sum(yValues, na.rm = TRUE)
+    yLim2 = c(0, maxY2)
 
-  #plot
-  par(oma = c(4, 1, 1, 1))
+    #plot
+    par(oma = c(4, 1, 1, 1))
 
-  par(mar = c(5, 5, 1, 5), yaxs = "i")
-  plot(1, 1, pch = NA, axes = FALSE, xlim = xLim, ylim = yLim1, xlab = NA, ylab = NA)
+    par(mar = c(5, 5, 1, 5), yaxs = "i")
+    plot(1, 1, pch = NA, axes = FALSE, xlim = xLim, ylim = yLim1, xlab = NA, ylab = NA)
 
-  vectorYear = unique(dataBase$year) #code for the polygon
-  for(j in seq_along(vectorYear)){
-    for(i in seq(2, 12, 2)){
-      tempDates = seq(from = as.Date(paste(vectorYear[j], i, "1", sep = "-")), by = "mon", length.out = 2) + c(-1, 1)
-      polygon(x = c(tempDates, rev(tempDates)), y = c(-40, -40, 10e7, 10e7), border = NA, col = "gray90") }}
+    vectorYear = unique(dataBase$year) #code for the polygon
+    for(j in seq_along(vectorYear)){
+      for(i in seq(2, 12, 2)){
+        tempDates = seq(from = as.Date(paste(vectorYear[j], i, "1", sep = "-")), by = "mon", length.out = 2) + c(-1, 1)
+        polygon(x = c(tempDates, rev(tempDates)), y = c(-40, -40, 10e7, 10e7), border = NA, col = "gray90") }}
 
-  lines(xValues, yValues, type = "o", pch = 19)
-  lines(xValues, cumsum(yValues)/yLim2[2]*yLim1[2], lty = "dashed")
-  abline(h = mean(yValues), lty = "dotted", lwd = 2, col = "red")
+    lines(xValues, yValues, type = "o", pch = 19)
+    lines(xValues, cumsum(yValues)/yLim2[2]*yLim1[2], lty = "dashed")
+    abline(h = mean(yValues), lty = "dotted", lwd = 2, col = "red")
 
-  #Axis 2 and 4
-  if(byAxis2 == "default"){atAxis2 = pretty(dataBase$value)} else {atAxis2 = seq(0, maxY1, byAxis2)}
-  axis(side = 2, at = atAxis2, las = 2, cex.axis=cexAxis24)
+    #Axis 2 and 4
+    if(byAxis2 == "default"){atAxis2 = pretty(dataBase$value)} else {atAxis2 = seq(0, maxY1, byAxis2)}
+    axis(side = 2, at = atAxis2, las = 2, cex.axis=cexAxis24)
 
-  yLabs2 = seq(from = 0, to = maxY2, length.out = 10) / ifelse(isTRUE(milesTons), 1e3, 1e6)
-  axis(side = 4, at = seq(from = 0, to = maxY1, length.out = length(yLabs2)), labels = round(yLabs2,2), las = 2, cex.axis = cexAxis24)
-  box()
+    yLabs2 = seq(from = 0, to = maxY2, length.out = 10) / ifelse(isTRUE(milesTons), 1e3, 1e6)
+    axis(side = 4, at = seq(from = 0, to = maxY1, length.out = length(yLabs2)), labels = round(yLabs2,2), las = 2, cex.axis = cexAxis24)
+    box()
 
-  if(is.null(textAxis2) & is.null(textAxis4)){
+    if(is.null(textAxis2) & is.null(textAxis4)){
 
-    if(x$varType == "landing"){
-      textAxis2="Desembarque diario (t)" ; textAxis4=expression(paste("Desembarque acumulado ( ", 10^3, " t)"))}
+      if(x$varType == "landing"){
+        textAxis2="Desembarque diario (t)" ; textAxis4=expression(paste("Desembarque acumulado ( ", 10^3, " t)"))}
 
-    if(x$varType == "effort"){
-      efforType = x$efforType
-      if(efforType == "viaje"){
-        textAxis2 = "Esfuerzo diario (viajes)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " viajes)")) }
-      if(efforType == "capacidad_bodega"){
-        textAxis2 = expression(paste("Esfuerzo diario ( ", m^3, ")")) ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, m^3, ")")) }
-      if(efforType == "anzuelos"){
-        textAxis2 = "Esfuerzo diario (anzuelos)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " anzuelos)")) }
-      if(efforType == "embarcaciones"){
-        textAxis2 = "Esfuerzo diario (embarcaciones)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " embarcaciones)")) }}
+      if(x$varType == "effort"){
+        efforType = x$efforType
+        if(efforType == "viaje"){
+          textAxis2 = "Esfuerzo diario (viajes)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " viajes)")) }
+        if(efforType == "capacidad_bodega"){
+          textAxis2 = expression(paste("Esfuerzo diario ( ", m^3, ")")) ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, m^3, ")")) }
+        if(efforType == "anzuelos"){
+          textAxis2 = "Esfuerzo diario (anzuelos)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " anzuelos)")) }
+        if(efforType == "embarcaciones"){
+          textAxis2 = "Esfuerzo diario (embarcaciones)" ; textAxis4 = expression(paste("Esfuerzo acumulado ( ", 10^3, " embarcaciones)")) }}
 
-    if(x$varType == "cpue"){
-      efforType = x$efforType
-      if(efforType == "viaje"){
-        textAxis2 = expression(paste("Cpue diario ("," t ", viajes^-1,")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", viajes^-1, 10^3, ")")) }
-      if(efforType == "capacidad_bodega"){
-        textAxis2 = expression(paste("Cpue diario ("," t ", m^-3, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", m^-3, 10^3, ")")) }
-      if(efforType == "anzuelos"){
-        textAxis2 = expression(paste("Cpue diario ("," t ", anzuelos^-1, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", anzuelos^-1, 10^3, ")")) }
-      if(efforType == "embarcaciones"){
-        textAxis2 = expression(paste("Cpue diario ("," t ", embarcaciones^-1, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", embarcaciones^-1, 10^3, ")")) }}
+      if(x$varType == "cpue"){
+        efforType = x$efforType
+        if(efforType == "viaje"){
+          textAxis2 = expression(paste("Cpue diario ("," t ", viajes^-1,")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", viajes^-1, 10^3, ")")) }
+        if(efforType == "capacidad_bodega"){
+          textAxis2 = expression(paste("Cpue diario ("," t ", m^-3, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", m^-3, 10^3, ")")) }
+        if(efforType == "anzuelos"){
+          textAxis2 = expression(paste("Cpue diario ("," t ", anzuelos^-1, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", anzuelos^-1, 10^3, ")")) }
+        if(efforType == "embarcaciones"){
+          textAxis2 = expression(paste("Cpue diario ("," t ", embarcaciones^-1, ")")) ; textAxis4 = expression(paste("Cpue acumulado ("," t ", embarcaciones^-1, 10^3, ")")) }}
 
     } else {
       textAxis2 = textAxis2
       textAxis4 = textAxis4}
 
-  mtext(text = textAxis2, side = 2, line = 4, cex = cexLab)
-  mtext(text = textAxis4, side = 4, line = 4, cex = cexLab)
+    mtext(text = textAxis2, side = 2, line = 4, cex = cexLab)
+    mtext(text = textAxis4, side = 4, line = 4, cex = cexLab)
 
-  #Axis1
-  if(unique(daysToPlot %in% "all")){index = dataBase$day} else {index = which(dataBase$day %in% daysToPlot)}
-  xLabs = dataBase$dates
-  index = xLabs[index]
-  xLabs[!xLabs %in% index] = NA
+    #Axis1
+    if(unique(daysToPlot %in% "all")){index = dataBase$day} else {index = which(dataBase$day %in% daysToPlot)}
+    xLabs = dataBase$dates
+    index = xLabs[index]
+    xLabs[!xLabs %in% index] = NA
 
-  axis(side = 1, at = xValues, labels = xLabs, las = 2, cex.axis = cexAxis1)
+    axis(side = 1, at = xValues, labels = xLabs, las = 2, cex.axis = cexAxis1)
 
-  #legend
-  par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
-  plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
-  legend("bottom", c("Diario", "Acumulado", "Promedio"), xpd = TRUE,
-         horiz = TRUE, inset = c(0, 0), bty = "n",text.width=c(0.25,0.25,0.25),
-         lty = c("solid", "dashed", "dotted"), pch = c(19, NA, NA),
-         col = c("black", "black", "red"), lwd = c(1, 1, 2), cex = cexLegend)
+    #legend
+    par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
+    plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+    legend("bottom", c("Diario", "Acumulado", "Promedio"), xpd = TRUE,
+           horiz = TRUE, inset = c(0, 0), bty = "n",text.width=c(0.25,0.25,0.25),
+           lty = c("solid", "dashed", "dotted"), pch = c(19, NA, NA),
+           col = c("black", "black", "red"), lwd = c(1, 1, 2), cex = cexLegend)
+  } else {
+    return(invisible())
+  }
+
 
   return(invisible())
 }

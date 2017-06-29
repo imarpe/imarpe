@@ -11,6 +11,5 @@ Description: Tools for graphics and summary reports for IMARPE.
 License: GPL-2
 LazyData: true
 RoxygenNote: 5.0.1
-Encoding: WINDOWS-1252
 Depends: reshape2, plyr, rmarkdown, maps, fields, plotrix, sp
 Imports: Hmisc
