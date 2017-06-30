@@ -129,8 +129,8 @@ plotFishingPoints.bitacora = function(x, language = "spanish", dataType,
 #' @description This method takes a \code{bitacora} object and plot on a map the presence of the
 #' non-tarjet species for the fishery.
 #' @param x Object of \code{bitacora} class.
-#' @param byGroup \code{logical}. To indicate if the fishing presence points will be plotted
-#' by taxonomic group (\code{TRUE}), but to
+#' @param byGroup \code{logical}. To indicate if the fishing presence points will be plotted by species that
+#'  make up a taxonomic group (\code{TRUE}), or to plot the taxonomic group in general (\code{FALSE}).
 #' @param group Indicates what taxonomic group should be graph on the map of fishing presence.
 #' By defaul is \code{NULL} when \code{byGroup = FALSE}, but when \code{byGroup = TRUE} this parameter receives
 #' the name of the taxonomic group. These might be: "neritico", "transzonal", "costero", "oceanico", "demersal",
