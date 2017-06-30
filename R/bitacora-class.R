@@ -195,12 +195,9 @@ plotSpeciesComposition.bitacora = function(x, threshold = TRUE, minPercentage = 
 #' @param x Object of \code{bitacora} class.
 #' @export
 #' @method report bitacora
-report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
+report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL, open = TRUE) {
 
   if(is.null(output)) output = getwd()
-
-  cacheDirs = list.dirs(path = ".", recursive = FALSE, full.names = TRUE)
-  unlink(x = cacheDirs[grepl(x = basename(cacheDirs), pattern = "(_cache) | (_files)")], recursive = TRUE)
 
   outputName = deparse(substitute(x))
 
@@ -213,8 +210,7 @@ report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL) {
   }
 
   outputFile = paste0(outputName, "_output.pdf")
-  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output,
-         encoding = "latin1")
+  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output, encoding = "latin1")
 
   if(isTRUE(open)) shell.exec(outputFile)
 
