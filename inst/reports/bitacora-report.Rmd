@@ -35,54 +35,56 @@ pander::pander(fishingHaul, align = "c", keep.line.breaks = TRUE, split.table = 
 
 # Distribucion espacial de anchoveta 
 ```{r, echo=FALSE, message=FALSE, fig.height=9, fig.width=7.5}
-plot(x, language = "spanish", ploType = "plotFishingPoints", dataType = "dataAnch")
+plotFishingPoints(x, language = "spanish", dataType = "dataAnch")
 ```
 
 \pagebreak
 
 # Presencia de otras especies
 ```{r, echo=FALSE, message=FALSE, fig.height=10.5, fig.width=8}
-dataSpecies = .fishingPoints.bitacora(object = x)
+dataSpecies = getMainResults.bitacora(object = x, fishingPoints = TRUE)
 
 par(mfrow = c(2,2), oma = c(0,0,1,0))
 
-if(dim(dataSpecies[[2]])[1] != 0){
-  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataSar", language = "spanish")
+if(dim(dataSpecies$fishingPoints[[2]])[1] != 0){
+  plotFishingPoints(x, language = "spanish", dataType = "dataSar")
   mtext(text = "SARDINA", side = 3, line = 0.5) }
 
-if(dim(dataSpecies[[3]])[1] != 0){
-  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataJur", language = "spanish")
+if(dim(dataSpecies$fishingPoints[[3]])[1] != 0){
+  plotFishingPoints(x, language = "spanish", dataType = "dataJur")
   mtext(text = "JUREL", side = 3, line = 0.5) }
 
-if(dim(dataSpecies[[4]])[1] != 0){
-  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataCab", language = "spanish")
+if(dim(dataSpecies$fishingPoints[[4]])[1] != 0){
+  plotFishingPoints(x, language = "spanish", dataType = "dataCab")
   mtext(text = "CABALLA", side = 3, line = 0.5) }
 
-if(dim(dataSpecies[[5]])[1] != 0){
-  .plotFishingPoints.bitacora(dataSpecies, dataType = "dataBon", language = "spanish")
+if(dim(dataSpecies$fishingPoints[[5]])[1] != 0){
+  plotFishingPoints(x, language = "spanish", dataType = "dataBon")
   mtext(text = "BONITO", side = 3, line = 0.5) }
 ```
 
+\pagebreak
+
 # Incidencia de otros especies
 ```{r, echo=FALSE, message=FALSE, fig.height=10.5, fig.width=8}
-dataGroups = .fishingPoints.bitacora(object = x)
+dataGroups = dataSpecies$fishingPoints$dataGroups
 
 par(mfrow = c(2,2), oma = c(0,0,1,0))
 
-if(dim(dataGroups[[6]][dataGroups[[6]]$group == "neritico",])[1] != 0){
-  .plotFishingPresence.bitacora(x = dataGroups, group = "neritico")
+if(dim(dataGroups[dataGroups$group == "neritico",])[1] != 0) {
+  plotFishingPresence(x, byGroup = TRUE, group = "neritico")
   mtext(text = "NERITICO", side = 3, line = 0.5) }
 
-if(dim(dataGroups[[6]][dataGroups[[6]]$group == "transzonal",])[1] != 0){
-  .plotFishingPresence.bitacora(x = dataGroups, group = "transzonal")
+if(dim(dataGroups[dataGroups$group == "transzonal",])[1] != 0) {
+  plotFishingPresence(x, byGroup = TRUE, group = "transzonal")
   mtext(text = "TRANSZONAL", side = 3, line = 0.5) }
 
-if(dim(dataGroups[[6]][dataGroups[[6]]$group == "oceanico",])[1] != 0){
-  .plotFishingPresence.bitacora(x = dataGroups, group = "oceanico")
+if(dim(dataGroups[dataGroups$group == "oceanico",])[1] != 0) {
+  plotFishingPresence(x, byGroup = TRUE, group = "oceanico")
   mtext(text = "OCEANICO", side = 3, line = 0.5) }
 
-if(dim(dataGroups[[6]][dataGroups[[6]]$group == "demersal",])[1] != 0){
-  .plotFishingPresence.bitacora(x = dataGroups, group = "demersal")
+if(dim(dataGroups[dataGroups$group == "demersal",])[1] != 0) {
+  plotFishingPresence(x, byGroup = TRUE, group = "demersal")
   mtext(text = "DEMERSAL", side = 3, line = 0.5) }
 ```
 
@@ -90,8 +92,7 @@ if(dim(dataGroups[[6]][dataGroups[[6]]$group == "demersal",])[1] != 0){
 
 #Incidencia de otros grupos taxonómicos
 ```{r, echo=FALSE, message=FALSE, fig.height=9, fig.width=7.5}
-dataGroups = .fishingPoints.bitacora(object = x)
-.plotFishingPresence.bitacora(x = dataGroups, byGroup = FALSE)
+plotFishingPresence(x, byGroup = FALSE)
 ```
 
 \pagebreak
@@ -103,7 +104,7 @@ pander::pander(catchComposition, align = "c", keep.line.breaks = TRUE)
 ```
 
 ```{r, echo=FALSE, message=FALSE, fig.height=6.5, fig.width=6.5}
-plot(x, language = "spanish", ploType = "plotSpeciesComposition", minPercentage = 0.2)
+plotSpeciesComposition(x = bitacoraData, minPercentage = 0.2)
 ```
 
 \pagebreak
@@ -122,6 +123,6 @@ dataEsfuerzoNC = effortSpeciesData.bitacora(data = dataEsfuerzo, species = "anch
 esfuerzoAnchNC_tt = getEffort(data = dataEsfuerzoNC, efforType = "travelTime", effortBy = "port")
 esfuerzoAnchNC_hn = getEffort(data = dataEsfuerzoNC, efforType = "haulTotal", effortBy = "port")
 
-.plotEffort.bitacora(effort1 = esfuerzoAnchNC_tt, effort2 = esfuerzoAnchNC_hn, labAxis2 = "Horas de viaje", labAxis4 = "N\u{00FA}mero de calas", colBar="gray", colLine = "black", legend = c("Duracion del viaje", "N\u{00FA}mero de calas"))
+plotEffort(effort1 = esfuerzoAnchNC_tt, effort2 = esfuerzoAnchNC_hn, labAxis2 = "Horas de viaje", labAxis4 = "N\u{00FA}mero de calas", colBar="gray", colLine = "black", legend = c("Duracion del viaje", "N\u{00FA}mero de calas"))
 
 ```
