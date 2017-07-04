@@ -552,12 +552,30 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
 
   directorioTrabajo <- getwd()
 
-  archivoSalida <- "datosIntegrados.RData"
-  save(directorioTrabajo, catchData, allMarks, a, b, updatedTo, surveyVector, outputByWeek, outputByDay,
-       getInfo, ylimList, ylimList2, axisParamsCuota, outputByDayAll, fechaInicio, fechaFinal, fechaInicio_exploratoria,
-       fechaFinal_exploratoria, fechaInicio_temporada, fechaFinal_temporada, allDates,
-       file = archivoSalida)
+  output = list(directorioTrabajo = directorioTrabajo,
+                catchData = catchData,
+                allMarks = allMarks,
+                a = a,
+                b = b,
+                updatedTo = updatedTo,
+                surveyVector = surveyVector,
+                outputByWeek = outputByWeek,
+                outputByDay = outputByDay,
+                getInfo = getInfo,
+                ylimList = ylimList,
+                ylimList2 = ylimList2,
+                axisParamsCuota = axisParamsCuota,
+                outputByDayAll = outputByDayAll,
+                fechaInicio = fechaInicio,
+                fechaFinal = fechaFinal,
+                fechaInicio_exploratoria = fechaInicio_exploratoria,
+                fechaFinal_exploratoria = fechaFinal_exploratoria,
+                fechaInicio_temporada = fechaInicio_temporada,
+                fechaFinal_temporada = fechaFinal_temporada,
+                allDates = allDates)
 
+  class(output) = "fishingMonitoring"
+  save(output, file = "output.RData")
 
-  return(archivoSalida)
+  return(output)
 }
