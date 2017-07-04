@@ -6,7 +6,8 @@
 #' @import sp
 #' @importFrom plotrix pie3D
 #' @importFrom Hmisc monthDays yearDays
-
+#' @importFrom RCurl url.exists
+#' @importFrom XLConnect loadWorkbook readWorksheet
 
 #' @title imarpe: R package for the the automation of graphs, tables and reports of the Instituto del Mar del Peru
 #' @author Criscely Lujan-Paredes \email{criscelylujan@gmail.com}, Luis Lau-Medrano \email{luis.laum@gmail.com}.
@@ -98,6 +99,16 @@ NULL
 #' @format A \code{data.frame} with four columns: year, the start date of the season for the
 #' year, the end date of the season, and a code for the season.
 #' @references imarpe package vignette.
+NULL
+
+
+#' @title Lista de puertos
+#' @name harborData
+NULL
+
+
+#' @title Lista de especies
+#' @name species
 NULL
 
 
@@ -372,4 +383,181 @@ plotSpeciesComposition = function(x, ...) {
 #' @export
 plotEffort = function(effort1, effort2, ...) {
   UseMethod(generic = "plotEffort", object = c(effort1, effort2))
+}
+
+
+#' Title
+#'
+#' @param directorio
+#' @param URLporcentas
+#' @param fechaInicio
+#' @param fechaFinal
+#' @param fechaInicio_exploratoria
+#' @param fechaFinal_exploratoria
+#' @param axisParamsCuota
+#' @param tallasSimple
+#' @param datosCrucero
+#' @param umbral
+#' @param especie
+#' @param a
+#' @param b
+#' @param officialBiomass
+#' @param k
+#' @param Linf
+#' @param sizeM
+#' @param vectorM
+#' @param catchFactor
+#'
+#' @return
+#' @export
+getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
+                          fechaInicio_exploratoria, fechaFinal_exploratoria, axisParamsCuota,
+                          tallasSimple, datosCrucero, umbral, especie, a, b,
+                          officialBiomass, k, Linf, sizeM, vectorM, catchFactor){
+
+  # COMPILAR PORCENTAS
+  cat("\n-------COMPILING DAILY REPORTS-------\n")
+
+  if(is.null(directorio) || !dir.exists(directorio)){
+    directorio <- tempdir()
+    dir.create(path = directorio, showWarnings = FALSE)
+  }
+
+  # Downloading daily reports
+  # descarga los porcenta
+  DownloadPorcenta(directorio = directorio, dirUrl = URLporcentas, inicio = fechaInicio, fin = fechaFinal)
+
+  # Leer porcentaes
+  porcentasSalida <- ReadPorcenta(directorio = directorio, inicio = fechaInicio, fin = fechaFinal)
+
+  # Escribir tabla compilada
+  porcentasArchivo <- paste0("data/desembarque_UpTo", format(as.Date(fechaFinal, "%Y-%m-%d"), "%d%m%Y"),".csv")
+  write.csv(x = porcentasSalida$desembarque, file = porcentasArchivo, row.names = FALSE)
+
+
+  # PONDERAR DATOS DE FRECUENCIAS SIMPLES Y DESEMBARQUES
+  cat("\n-------WEIGHTING SIMPLE FREQUENCY DATA AND LANDINGS-------\n")
+
+  # Leer frecuencias simples
+  datosPonderacion <- leerData(muestreo = tallasSimple, desembarque = porcentasArchivo)
+
+  # Hacer ponderaciones
+  surveyData <- get(load(datosCrucero))
+
+  # Si el objeto proviene de TBE, obtener valores de a y b
+  if(!is.null(object$info$a_b)){
+    a <- object$info$a_b$a
+    b <- object$info$a_b$b
+  }
+
+  DatosPonderados <- LC_ponderada(data = datosPonderacion, tallas = seq(5, 20, 0.5), especie = especie,
+                                  umbral = umbral, a = a, b = b)
+
+  # Guardar datos ponderados
+  ponderadosArchivo <- paste0("data/ponderados_UpTo", format(as.Date(fechaFinal, "%Y-%m-%d"), "%d%m%Y"),".csv")
+  guardarPonderacion(data = DatosPonderados, filename = ponderadosArchivo)
+
+
+  # GENERAR DATOS PARA REPORTE
+  cat("\n-------GENERATE DATA FOR REPORTING-------\n")
+
+  sp <- tolower(especie)
+  allMarks <- seq(2, 20, 0.5)
+
+  catchData <- readAtLength(file = ponderadosArchivo, sp = sp, check.names = FALSE)
+
+  index <- as.Date(colnames(catchData))
+  index <- index >= as.Date(fechaInicio) & index <= as.Date(fechaFinal)
+  catchData <- catchData[,index]
+
+  if(is.null(officialBiomass)){
+    officialBiomass <- surveyData$results$nc$biomass$total
+  }
+
+  surveyVector <- as.numeric(surveyData$results$nc$biomass$length)
+  surveyVector <- surveyVector/sum(surveyVector)*officialBiomass
+  surveyVector <- surveyVector/(a*allMarks^b)
+
+  allDates <- as.Date(colnames(catchData),
+                      format = ifelse(grepl(pattern = "-", x = colnames(catchData)[1]), "%Y-%m-%d", "%d/%m/%Y"))
+
+
+  # BY WEEK
+  index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
+  index <- index[!duplicated(index)]
+  index <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
+
+  catchVector <- t(aggregate(t(catchData), by = list(index), FUN = sum))[-1,]
+
+  output <- as.matrix(surveyVector)
+  for(i in seq(ncol(catchVector))){
+
+    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*catchFactor,
+                              a = a, b = b, k = k, Linf = Linf, sizeM = sizeM, vectorM = vectorM,
+                              freq = 52, sp = sp, Ts = 1)
+
+    output <- cbind(output, tempOutput$N[2,])
+  }
+
+  colnames(output) <- c("Crucero", paste("Semana", seq(1, ncol(output) - 1)))
+  colnames(catchVector) <- paste("Semana", 1:ncol(catchVector))
+
+  outputByWeek <- cbind(allMarks, output)
+
+
+  # BY DAY (LAST WEEK)
+  index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
+  index <- index[!duplicated(index)]
+  index <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
+
+  index <- index == max(index)
+
+  catchVector <- as.matrix(catchData[,index])
+
+  output <- as.matrix(outputByWeek[,ncol(outputByWeek) - 1])
+  for(i in seq(sum(index))){
+
+    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*catchFactor,
+                              a = a, b = b, k = k, Linf = Linf, sizeM = sizeM, vectorM = vectorM,
+                              freq = 365, sp = sp, Ts = 1)
+
+    output <- cbind(output, tempOutput$N[2,])
+  }
+
+  colnames(output) <- c(ifelse(ncol(outputByWeek) > 3, paste("Semana", ncol(outputByWeek) - 3), "Crucero"),
+                        paste("Día", seq_len(ncol(output) - 1)))
+  colnames(catchVector) <- paste("Día", 1:ncol(catchVector))
+
+  ylimList <- list(c(0, 3e+05, 5e4), c(0, 20e3, 5e3), c(0, 3e+05, 5e4))
+  ylimList2 <- list(c(0, 1e+06, 2e5), c(0, 5e5, 1e5), c(0, 1e+06, 2e5))
+
+  outputByDay <- cbind(allMarks, output)
+  outputByDay <- outputByDay[,-2]
+
+
+  # BY DAY (all season)
+  outputByDayAll <- as.matrix(surveyVector)
+  for(i in seq(ncol(catchData))){
+
+    tempOutput <- projectPOPE(N = cbind(outputByDayAll[,i], outputByDayAll[,i]), catch = catchData[,i],
+                              a = a, b = b, k = k, Linf = Linf, sizeM = sizeM, vectorM = vectorM,
+                              freq = 365, sp = sp, Ts = 1)
+
+    outputByDayAll <- cbind(outputByDayAll, tempOutput$N[2,])
+  }
+
+  dimnames(outputByDayAll) <- list(allMarks, c("crucero", as.character(allDates)))
+
+  updatedTo <- allDates[match(as.Date(fechaFinal, format = "%Y-%m-%d"), as.Date(colnames(catchData)))]
+
+  directorioTrabajo <- getwd()
+
+  archivoSalida <- "datosIntegrados.RData"
+  save(directorioTrabajo, catchData, allMarks, a, b, updatedTo, surveyVector, outputByWeek, outputByDay,
+       getInfo, ylimList, ylimList2, axisParamsCuota, outputByDayAll, fechaInicio, fechaFinal, fechaInicio_exploratoria,
+       fechaFinal_exploratoria, fechaInicio_temporada, fechaFinal_temporada, allDates,
+       file = archivoSalida)
+
+
+  return(archivoSalida)
 }
