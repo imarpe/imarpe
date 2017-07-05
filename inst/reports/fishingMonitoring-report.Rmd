@@ -256,3 +256,60 @@ axis(side = 4, at = seq(ylim[1], yMax1, length.out = 6),
 box()
 
 ```
+
+<!-- Plot 3 -->
+```{r, echo=FALSE, message=FALSE, fig.height=4.5, fig.width=8, cache=FALSE}
+output <- cbind(x$allMarks, x$surveyVector, rowSums(x$catchData), x$outputByWeek[,ncol(x$outputByWeek)])
+colnames(output) <- c("Talla", "Crucero", "Capturas", "Sobrevivientes")
+
+output[output < 1e-5] <- NA
+
+allMarks <- output[,1]
+
+cols <- c("red3", "blue3", "green4")
+
+par(mar = rep(0, 4), oma = c(4, 6.5, 1, 5), xaxs = "i", yaxs = "i", mfrow = c(3, 1))
+
+for(i in seq(2, ncol(output))){
+  
+  xlim <- range(allMarks)
+  ylim <- x$ylimList[[i - 1]]
+  ylim2 <- x$ylimList2[[i - 1]]
+  
+  plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim[1:2], xlab = NA, ylab = NA)
+  
+  lines(allMarks, output[,i], col = cols[i - 1], lwd = 2)
+  lines(allMarks, output[,i]*x$a*x$allMarks^x$b*(ylim[2]/ylim2[2]), col = cols[i - 1], lwd = 2, lty = "dashed")
+  
+  abline(v = 12, col = "red", lwd = 2, lty = "dotted")
+  
+  mtext(text = colnames(output)[i], side = 3, line = -1.5, adj = 0.01)
+  
+  index <- allMarks < 12
+  
+  juvValue <- round(sum(output[index, i], na.rm = TRUE)/sum(output[,i], na.rm = TRUE)*100, 0)
+  mtext(text = paste("JuvN =", juvValue, "%"), side = 3, line = -1.5, adj = 0.99)
+  
+  juvValue <- round(sum((output[,i]*x$a*x$allMarks^x$b)[index], na.rm = TRUE)/sum(output[,i]*x$a*x$allMarks^x$b, na.rm = TRUE)*100, 0)
+  mtext(text = paste("JuvB =", juvValue, "%"), side = 3, line = -3, adj = 0.99)
+  
+  if(i == ncol(output)){
+    axis(side = 1, at = allMarks, labels = NA, tcl = -0.25)
+    axis(side = 1, at = seq(xlim[1], xlim[2]))
+  }else if(i == 2){
+    legend("bottomright", legend = c("Abundancia", "Biomasa"), col = cols[i - 1], lty = c("solid", "dashed"), 
+           lwd = 2, pch = NA, bty = "n")
+  }
+  
+  axis(side = 2, at = seq(ylim[1], ylim[2], ylim[3]), las = 2)
+  
+  ylabs2 <- seq(ylim2[1], ylim2[2], ylim2[3])/1e6
+  axis(side = 4, at = seq(ylim[1], ylim[2], length.out = length(ylabs2)), labels = ylabs2, las = 2)
+  
+  box()
+}
+
+mtext(text = "Longitud total (cm)", side = 1, outer = TRUE, line = 3)
+mtext(text = "Abundancia (millones ind)", side = 2, outer = TRUE, line = 4.5)
+mtext(text = "Biomasa (millones t)", side = 4, outer = TRUE, line = 3)
+```
