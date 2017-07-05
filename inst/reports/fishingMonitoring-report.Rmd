@@ -203,3 +203,56 @@ colnames(outputTable) <- c(paste0("Pesca día\n", format(x$updatedTo, "%d/%m/%Y")
 
 pander::pander(outputTable, justify = "center", keep.line.breaks = TRUE, split.table = 140)
 ```
+
+
+<!-- Plot 2 -->
+```{r, echo=FALSE, message=FALSE, fig.height=3, fig.width=8, cache=FALSE}
+
+index <- match(as.Date(x$fechaFinal, format = "%Y-%m-%d"), as.Date(colnames(x$catchData)))
+output <- cbind(x$allMarks, x$catchData[,index], x$catchData[,index]*x$a*x$allMarks^x$b)
+colnames(output) <- c("Talla", "Abundancia", "Biomasa")
+
+xlim <- range(x$allMarks)
+
+par(mar = c(3, 5, 1, 4), xaxs = "i", yaxs = "i")
+
+yInterval1 <- 10^(nchar(floor(max(output[,2], na.rm = TRUE))) - 1)/2
+yMax1 <- ceiling(max(output[,2], na.rm = TRUE)/yInterval1)*yInterval1
+
+ylim <- c(0, yMax1)
+plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim, xlab = NA, ylab = NA)
+
+tempLines <- output[,2]
+tempLines[tempLines < 0.001] <- NA
+lines(x$allMarks, tempLines, lwd = 2, col = "blue4")
+abline(v = 12, lty = "dotted", col = "red", lwd = 2)
+
+axis(side = 2, at = seq(ylim[1], yMax1, yInterval1), las = 2, cex.axis = 0.8)
+mtext(text = "Abundancia (millones ind)", side = 2, line = 3)
+
+box()
+
+yInterval2 <- 10^(nchar(floor(max(output[,3], na.rm = TRUE))) - 1)/2
+yMax2 <- ceiling(max(output[,3], na.rm = TRUE)/yInterval2)*yInterval2
+
+tempLines <- output[,3]/yMax2*yMax1
+tempLines[tempLines < 0.001] <- NA
+lines(x$allMarks, tempLines, type = "o", lwd = 2, col = "red4", pch = 16)
+abline(v = 12, lty = "dotted", col = "red", lwd = 2)
+
+legend("topleft", legend = c("Abundancia", "Peso"), col = c("blue4", "red4"), 
+       pch = c(NA, 16), lty = rep("solid", 2), lwd = 2)
+
+mtext(text = format(x$updatedTo, "%d/%m/%Y"), side = 3, line = -2, adj = .99)
+
+mtext(text = "Peso (t)", side = 4, line = 3)
+
+mtext(text = "Longitud total (cm)", side = 1, line = 2, outer = TRUE)
+
+axis(side = 1, at = x$allMarks, labels = NA, tcl = -0.25)
+axis(side = 1, at = seq(xlim[1], xlim[2]), cex.axis = 0.8)
+axis(side = 4, at = seq(ylim[1], yMax1, length.out = 6), 
+     labels = seq(ylim[1], yMax2, length.out = 6), las = 2, cex.axis = 0.8)
+box()
+
+```
