@@ -8,6 +8,7 @@
 #' @importFrom Hmisc monthDays yearDays
 #' @importFrom RCurl url.exists
 #' @importFrom XLConnect loadWorkbook readWorksheet
+#' @importFrom lubridate day
 
 #' @title imarpe: R package for the the automation of graphs, tables and reports of the Instituto del Mar del Peru
 #' @author Criscely Lujan-Paredes \email{criscelylujan@gmail.com}, Luis Lau-Medrano \email{luis.laum@gmail.com}.
