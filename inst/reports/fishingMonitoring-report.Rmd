@@ -1,0 +1,205 @@
+---
+title: "Reporte diario de Pesquería Anchoveta NC"
+author: "IMARPE - Dirección General de Investigaciones de Recursos Pelágicos"
+header-includes:
+  - \usepackage{fancyhdr}
+  - \fancyfoot[LE,RO]{DGIRP}
+  - \usepackage[spanish]{babel}
+fontsize: 10pt
+geometry: margin=2mm
+keep_tex: yes
+output: pdf_document
+---
+
+\pagenumbering{gobble}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- PARÁMETROS DE TABLA -->
+
+<!-- Tabla 1 -->
+```{r, echo=FALSE, cache=FALSE}
+fechaInicio_exploratoria <- as.Date(x$fechaInicio_exploratoria, format = "%d/%m/%Y")
+fechaFinal_exploratoria <- as.Date(x$fechaFinal_exploratoria, format = "%d/%m/%Y")
+
+allDates <- as.Date(colnames(x$catchData))
+
+index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
+index <- index[!duplicated(index)]
+weekIndex <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
+
+weekIndex[seq(which(allDates > fechaFinal_exploratoria)[1] - 1)] <- 1
+
+catchData <- cbind(survey = x$surveyVector, x$catchData)
+weekIndex <- c(0, weekIndex)
+
+output <- NULL
+allIndex <- seq(0, max(weekIndex))
+for(i in seq(length(allIndex) + 1)){
+  
+  if(i == (length(allIndex) + 1)){
+    tempData <- catchData[,ncol(catchData)]
+  }else{
+    tempData <- catchData[,weekIndex == allIndex[i]]  
+  }
+  
+  if(is.null(dim(tempData))){
+    tempJuvs <- tempData[x$allMarks < 12]
+  }else{
+    tempJuvs <- rowSums(tempData[x$allMarks < 12,])
+    tempData <- rowSums(tempData)
+  }
+  
+  tempJuvs <- c(sum(tempJuvs), sum(tempJuvs)/sum(tempData)*100, 
+                sum(x$a*x$allMarks[x$allMarks < 12]^x$b*tempJuvs), sum(x$a*x$allMarks[x$allMarks < 12]^x$b*tempJuvs)/sum(x$a*x$allMarks^x$b*tempData)*100)
+  tempJuvs <- round(tempJuvs, 0)
+  
+  output <- rbind(output, tempJuvs)
+}
+
+exploratoriaLabel <- tapply(allDates, weekIndex[-1], function(x) paste(format(range(x), format = "%d/%m"), collapse = " - "))
+firstTable <- matrix(data = NA, nrow = nrow(output), ncol = 6, 
+                     dimnames = list(c("Crucero", exploratoriaLabel, colnames(catchData)[ncol(catchData)]), 
+                                     c("$N (x10~^6)$", "Biomasa (t)", "$Juv N (x10~^6)$", "%juvN", "Juv Peso (t)", "%juv peso (t)")))
+firstTable[1, 1] <- sum(x$surveyVector)
+firstTable[1, 2] <- sum(x$a*x$allMarks^b*x$surveyVector)
+firstTable[1:nrow(output), 3:ncol(firstTable)] <- output
+
+pander::pander(firstTable, align = "c", keep.line.breaks = TRUE, split.table = 120, missing = "")
+```
+
+
+<!-- Tabla 2 -->
+```{r, message=FALSE, echo=FALSE, cache=FALSE}
+
+secondTable <- matrix(data = character(), nrow = 2, ncol = 6, 
+                      dimnames = list(c("", paste("Al", format(x$updatedTo, format = "%d/%m/%y"))), 
+                                      c("Pesca acum N", "Pesca acum P", "Juv N", "Juv Peso", "Población---", "---remanente")))
+
+secondTable[1,] <- c("$N (x10~^6)$", "Peso (t)", "En N (%)", "En peso (%)", "$N (x10~^6)$", "B (millones t)")
+
+sobrevivientes <- x$outputByWeek[,ncol(x$outputByWeek)]
+
+catchInfo <- x$getInfo(x = rowSums(x$catchData[,-1]), millionT = FALSE, allMarks = x$allMarks, a = x$a, b = x$b)
+
+secondTable[2, 1:4] <- c(round(catchInfo[c(1, 2)], 0), round(catchInfo[c(5, 6)], 2))
+
+secondTable[2, 5] <- as.character(round(sum(sobrevivientes), 0))
+secondTable[2, 6] <- as.character(round(sum(x$a*x$allMarks^x$b*sobrevivientes)/1e6, 2))
+
+pander::pander(secondTable, keep.line.breaks = TRUE, split.table = 220)
+```
+
+
+<!-- Plot 1 -->
+```{r, echo=FALSE, message=FALSE, fig.height=6.2, fig.width=8, cache=FALSE}
+
+# Plot 1
+index <- c(1, grep(x = weekdays(x$allDates), pattern = "lunes|monday"), length(x$allDates) + 1)
+index <- index[!duplicated(index)]
+weekIndex <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
+
+biomassData <- cbind(x$surveyVector, x$outputByWeek[,seq(3, ncol(x$outputByWeek) - 1)], x$outputByDay[,-1])
+biomassData <- sweep(x = biomassData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")
+
+colnames(biomassData) <- as.character(c(as.Date("2017-4-1"), x$allDates[!duplicated(weekIndex)][-(ncol(x$outputByWeek) - 2)], 
+                                        x$allDates[seq(length(x$allDates) - ncol(x$outputByDay) + 2, length(x$allDates))]))
+
+fechaInicio_temporada <- as.Date(x$fechaInicio_temporada, format = "%d/%m/%Y")
+fechaFinal_temporada <- as.Date(x$fechaFinal_temporada, format = "%d/%m/%Y")
+
+xlim <- c(fechaInicio_temporada, fechaFinal_temporada)
+ylim <- c(0, ((sum(x$a*x$allMarks^x$b*x$surveyVector) %/% 1e6) + 1)*1e6)
+ylim2 <- c(x$axisParamsCuota[1], x$axisParamsCuota[2])
+
+colnames(x$catchData)[1] <- colnames(biomassData)[1]
+
+# layout(matrix(c(1, 1, 2, 3), nrow = 2, byrow = TRUE))
+par(mar = c(0, 0, 0, 0), oma = c(6, 4, 1, 4), yaxs = "i", xaxs = "i", mfrow = c(3, 1))
+
+plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim)
+abline(v = fechaInicio_temporada, lty = "dashed", col = "gray50")
+
+lines(x$allDates, cumsum(colSums(sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")))*ylim[2]/ylim2[2],
+      col = "blue", lwd = 2)
+lines(as.Date(colnames(biomassData)), colSums(biomassData), col = "red", lwd = 2)
+
+mtext(text = "Biomasa (millones t)", side = 2, line = 2.5)
+mtext(text = "Captura (millones t)", side = 4, line = 3)
+
+legend("topright", legend = c("Biomasa", "Captura"), bty = "n", col = c("red", "blue"), lwd = 2, cex = 1.2)
+
+yLabs <- seq(ylim[1], ylim[2], 1e6)
+axis(side = 2, at = yLabs, labels = yLabs/1e6, las = 2)
+
+yLabs2 <- seq(ylim2[1], ylim2[2], x$axisParamsCuota[3])
+axis(side = 4, at = seq(ylim[1], ylim[2], length.out = length(yLabs2)), labels = yLabs2/1e6, las = 2)
+box()
+
+
+# Plot 2
+juvN <- apply(x$catchData, 2, function(z) sum(z[x$allMarks < 12])/sum(z))*100
+
+juvB <- sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")
+juvB <- apply(juvB, 2, function(z) sum(z[x$allMarks < 12])/sum(z))*100
+
+xValues <- as.Date(colnames(x$catchData))
+xValues2 <- c(min(xValues) - 1e3, xValues, max(xValues) + 1e3)
+
+xlim <- c(fechaInicio_temporada, fechaFinal_temporada)
+ylim1 <- c(0, 80)
+ylim2 <- c(0, 60)
+
+
+plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim1)
+polygon(x = c(xValues2, rev(xValues2)), y = rep(c(24, 33), each = length(xValues2)), border = FALSE, col = "gray80")
+abline(v = fechaInicio_temporada, lty = "dashed", col = "gray50")
+abline(h = 28.5, lty = "dotted")
+lines(xValues, juvN, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
+
+mtext(text = "% juveniles (número)", side = 3, line = -2, adj = 0.99)
+axis(side = 4, at = seq(ylim1[1], ylim1[2], 10), labels = paste(seq(ylim1[1], ylim1[2], 10), "%"), las = 2)
+box()
+
+plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim2)
+polygon(x = c(xValues2, rev(xValues2)), y = rep(c(12, 18), each = length(xValues2)), border = FALSE, col = "gray80")
+abline(v = fechaInicio_temporada, lty = "dashed", col = "gray50")
+abline(h = 15, lty = "dotted")
+lines(xValues, juvB, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
+mtext(text = "% juveniles (peso)", side = 3, line = -2, adj = 0.99)
+axis(side = 2, at = seq(ylim2[1], ylim2[2], 10), labels = paste(seq(ylim2[1], ylim2[2], 10), "%"), las = 2)
+box()
+
+xValues <- seq(xlim[1], xlim[2], by = "day")
+axis(side = 1, at = xValues, labels = NA, las = 2, tcl = -0.25)
+xValues2 <- xValues[is.element(day(xValues), seq(0, 30, 5))]
+axis(side = 1, at = xValues2, labels = as.character(format(xValues2, format = "%d/%m/%Y")), las = 2)
+
+```
+
+\pagebreak
+
+<!-- Tabla 3 -->
+# Captura y proyecciones
+```{r, echo=FALSE, cache=FALSE}
+
+# Tabla diaria
+index <- match(as.Date(x$fechaFinal, format = "%Y-%m-%d"), as.Date(colnames(x$catchData)))
+output <- x$getInfo(x = x$catchData[,index], allMarks = x$allMarks, a = x$a, b = x$b, nDecimalsBiomass = 3)
+dailyTable <- matrix(data = output, ncol = 1, 
+                     dimnames = list(names(output), format(x$updatedTo, "%d/%m/%Y")))
+
+# Tabla de datos acumulados
+output <- cbind(x$allMarks, x$surveyVector, rowSums(x$catchData), x$outputByWeek[,ncol(x$outputByWeek)])
+
+weeklyTable <- apply(output[,-1], 2, x$getInfo, allMarks = output[,1], a = x$a, b = x$b)
+
+# Bind tables
+outputTable <- cbind.data.frame(dailyTable, weeklyTable[,c(2, 1, 3)])
+colnames(outputTable) <- c(paste0("Pesca día\n", format(x$updatedTo, "%d/%m/%Y")), 
+                           "Acumulado\nPesca", "Población inicio\nCrucero", "\nSobrevivientes")
+
+pander::pander(outputTable, justify = "center", keep.line.breaks = TRUE, split.table = 140)
+```
