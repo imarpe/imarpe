@@ -152,6 +152,9 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 
          plotYearly  = .plotYears.fishery(x=x, language=language, ...),
 
+         plotPERU    = .plotRegion(x = dataRegion, region = "PERU", daysToPlot = daysToPlot,
+                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
+
          plotNC      = .plotRegion(x = dataRegion, region = "NC", daysToPlot = daysToPlot,
                                    textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
 

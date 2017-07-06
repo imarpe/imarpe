@@ -221,6 +221,14 @@
   dataNC = dataBase[dataBase$region %in% c("Norte", "Centro"), ]
   dataS  = dataBase[dataBase$region %in% "Sur", ]
 
+  #Ordering database (without separation by regions)
+  if(dim(dataBase)[1] != 0){
+    dataBase = aggregate(value ~ year + month + day, dataBase, sum)
+    dataBase = dataBase[order(dataBase$year, word2month(dataBase$month), dataBase$day),]
+  } else {
+    dataBase = NULL
+  }
+
   #Ordering data from the NC region
   if(dim(dataNC)[1] != 0){
     dataNC = aggregate(value ~ year + month + day, dataNC, sum)
@@ -237,10 +245,8 @@
     dataS = NULL
   }
 
-  #dataNC = .trimData(x = dataNC, start = start, end = end) ; rownames(dataNC) = NULL
-  #dataS  = .trimData(x = dataS, start = start, end = end) ; rownames(dataS) = NULL
-
-  output = list(regionNC = dataNC, regionS = dataS, varType = x$info$varType, efforType = x$info$efforType)
+  output = list(data = dataBase, regionNC = dataNC, regionS = dataS,
+                varType = x$info$varType, efforType = x$info$efforType)
 
   return(output)
 
@@ -250,8 +256,9 @@
 .plotRegion = function(x, region, byAxis2="default", milesTons=TRUE, textAxis2, textAxis4, cexLab=1.2,
                        daysToPlot, cexAxis24 = 1.1, cexAxis1 = 0.9, cexLegend = 1){
 
-  if(region == "NC"){dataBase = x$regionNC}
-  if(region == "S" ){dataBase = x$regionS}
+  if(region == "PERU") {dataBase = x$data}
+  if(region == "NC") {dataBase = x$regionNC}
+  if(region == "S" ) {dataBase = x$regionS}
 
   if(!is.null(dataBase)){
     dataBase$dates = paste(sapply(dataBase$day, function(x) paste0(ifelse(x < 10, 0, ""), x)),
