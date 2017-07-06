@@ -143,7 +143,7 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
                         textAxis2 = NULL, textAxis4 = NULL, ...) {
 
   if(is.null(ploType)) ploType = "plotDaily"
-  if(ploType %in% c("plotNC", "plotS")){dataRegion = .getRegionData(x = x)}
+  if(ploType %in% c("plotPERU", "plotNC", "plotS")){dataRegion = .getRegionData(x = x)}
 
   switch(ploType,
          plotDaily   = .plotDays.fishery(x=x, language=language, daysToPlot = daysToPlot, ...),
