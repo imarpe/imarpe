@@ -28,6 +28,8 @@ rownames(monthTable) = c(rowNamesTable, "Total")
 monthTable = cbind(monthTable, apply(monthTable, 1, sum, na.rm = TRUE))
 colnames(monthTable) = c(colNamesTable, "Total")
 
+monthTable = round(x = monthTable, digits = 2)
+
 pander::pander(monthTable, align = "c", keep.line.breaks = TRUE)
 ```
 
@@ -42,6 +44,8 @@ rownames(fleeTable) = c(rowNamesTable, "Total")
 
 fleeTable = cbind(fleeTable, apply(fleeTable, 1, sum, na.rm = TRUE))
 colnames(fleeTable) = c(colNamesTable, "Total")
+
+fleeTable = round(x = fleeTable, digits = 2)
 
 pander::pander(fleeTable, align = "c", keep.line.breaks = TRUE)
 ```
@@ -66,22 +70,44 @@ plot(x, language = "spanish", ploType = "plotYearly", col = "gray", main = "")
 # Esfuerzo por puerto
 ```{r, echo=FALSE, message=FALSE}
 portTable = x$data
+yearsTable = sort(unique(portTable$year), decreasing = FALSE)
 
 portTable = melt(portTable, id.vars= names(portTable[ , c(1:3)]))
 portTable = tapply(portTable$value, list(portTable[, 1], portTable[, 4]), sum)
 
 portInfo = getPort(colnames(portTable))
-
 colnames(portTable) = portInfo$data$name
-portTable = portTable[, order(portInfo$data$lat, decreasing = TRUE)]
-portTable = t(portTable)
-rowNamesTable = rownames(portTable)
-colNamesTable = colnames(portTable)
 
-portTable = rbind(portTable, apply(portTable, 2, sum, na.rm = TRUE))
-rownames(portTable) = c(rowNamesTable, "Total")
-portTable = cbind(portTable, apply(portTable, 1, sum, na.rm = TRUE))
-colnames(portTable) = c(colNamesTable, "Total")
+if(dim(portTable)[2] == 1){
+  rowNamesTable = rownames(portTable)
+  portTable = rbind(portTable, apply(portTable, 2, sum, na.rm = TRUE))
+  rownames(portTable) = c(rowNamesTable, "Total")
+  
+} else {
+  portTable = portTable[, order(portInfo$data$lat, decreasing = TRUE)]
+  portTable = as.data.frame(portTable)
+  
+  if(dim(portTable)[2] == 1){
+    colnames(portTable) = yearsTable
+    rowNamesTable = rownames(portTable)
+    
+    portTable = rbind(portTable, apply(portTable, 2, sum, na.rm = TRUE))
+    rownames(portTable) = c(rowNamesTable, "Total")
+    
+  } else {
+    portTable = t(portTable)
+    
+    colNamesTable = yearsTable
+    rowNamesTable = rownames(portTable)
+    
+    portTable = rbind(portTable, apply(portTable, 2, sum, na.rm = TRUE))
+    rownames(portTable) = c(rowNamesTable, "Total")
+    portTable = cbind(portTable, apply(portTable, 1, sum, na.rm = TRUE))
+    colnames(portTable) = c(colNamesTable, "Total")
+    
+  }
+}
+portTable = round(x = portTable, digits = 2)
 
 pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
 ```
@@ -90,7 +116,6 @@ pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
 ```{r, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
 plot(x, language = "spanish", ploType = "plotPERU", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
 ```
-
 
 # Esfuerzo acumulado en la región Norte-Centro
 ```{r, echo=FALSE, message=FALSE, fig.height=5.5, fig.width=9.5, dpi=72}
