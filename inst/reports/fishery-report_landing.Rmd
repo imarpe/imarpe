@@ -17,6 +17,20 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Desembarque total
+```{r, echo=FALSE, message=FALSE}
+monthTable = .getMonth.fishery(object=x, language="spanish")
+rowNamesTable = rownames(monthTable)
+colNamesTable = colnames(monthTable)
+
+monthTable = rbind(monthTable, apply(monthTable, 2, sum, na.rm = TRUE))
+rownames(monthTable) = c(rowNamesTable, "Total")
+monthTable = cbind(monthTable, apply(monthTable, 1, sum, na.rm = TRUE))
+colnames(monthTable) = c(colNamesTable, "Total")
+
+pander::pander(monthTable, align = "c", keep.line.breaks = TRUE)
+```
+
 # Desembarque por tipo de flota
 ```{r, echo=FALSE, message=FALSE}
 fleeTable = x$fleeTable
@@ -31,33 +45,19 @@ colnames(fleeTable) = c(colNamesTable, "Total")
 
 pander::pander(fleeTable, align = "c", keep.line.breaks = TRUE)
 ```
-
-# Desembarque diario
-```{r, echo=FALSE, message=FALSE, fig.height=4.5, fig.width=8}
-plot(x, language = "spanish", ploType = "plotDaily", col = "black", main = "", daysToPlot = daysToPlot)
-```
-
 \pagebreak
 
-# Desembarque mensual y anual
-```{r, echo=FALSE, message=FALSE}
-monthTable = .getMonth.fishery(object=x, language="spanish")
-rowNamesTable = rownames(monthTable)
-colNamesTable = colnames(monthTable)
+# Desembarque diario, mensual y anual
 
-monthTable = rbind(monthTable, apply(monthTable, 2, sum, na.rm = TRUE))
-rownames(monthTable) = c(rowNamesTable, "Total")
-monthTable = cbind(monthTable, apply(monthTable, 1, sum, na.rm = TRUE))
-colnames(monthTable) = c(colNamesTable, "Total")
-
-pander::pander(monthTable, align = "c", keep.line.breaks = TRUE)
+```{r, echo=FALSE, message=FALSE, fig.height=4, fig.width=8}
+plot(x, language = "spanish", ploType = "plotDaily", col = "black", main = "", daysToPlot = daysToPlot)
 ```
 
 ```{r, echo=FALSE, message=FALSE, fig.height= 3.5, fig.width=7.5}
 plot(x, language = "spanish", ploType = "plotMonthly", col = "gray", main = "")
 ```
 
-```{r, echo=FALSE, message=FALSE, fig.height=3, fig.width=3.5}
+```{r, echo=FALSE, message=FALSE, fig.height=2, fig.width=3}
 plot(x, language = "spanish", ploType = "plotYearly", col = "gray", main = "")
 ```
 
