@@ -126,7 +126,7 @@ print.summary.cpue = function(x, language = "spanish"){
 plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL, ...){
 
   if(is.null(ploType)) ploType = "plotDaily"
-  if(ploType %in% c("plotNC", "plotS")){
+  if(ploType %in% c("plotPERU", "plotNC", "plotS")){
     x2 = list()
     x2$data = x$dataPortDay
     x2$info$varType = x$info$varType
@@ -140,6 +140,9 @@ plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), tex
          plotMonthly = .plotMonths.cpue(x=x, language=language, ...),
 
          plotYearly  = .plotYears.cpue(x=x, language=language, ...),
+
+         plotPERU    = .plotRegion(x = dataRegion, region = "PERU", daysToPlot = daysToPlot,
+                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
 
          plotNC      = .plotRegion(x = dataRegion, region = "NC", daysToPlot = daysToPlot,
                                    textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
