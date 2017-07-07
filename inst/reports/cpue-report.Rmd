@@ -28,6 +28,8 @@ rownames(monthTable) = c(rowNamesTable, "Total")
 monthTable = cbind(monthTable, apply(monthTable, 1, mean, na.rm = TRUE))
 colnames(monthTable) = c(colNamesTable, "Total")
 
+monthTable = round(x = monthTable, digits = 3)
+
 pander::pander(monthTable, align = "c", keep.line.breaks = TRUE)
 ```
 
@@ -42,6 +44,8 @@ rownames(fleeTable) = c(rowNamesTable, "Total")
 
 fleeTable = cbind(fleeTable, apply(fleeTable, 1, mean, na.rm = TRUE))
 colnames(fleeTable) = c(colNamesTable, "Total")
+
+fleeTable = round(x = fleeTable, digits = 3)
 
 pander::pander(fleeTable, align = "c", keep.line.breaks = TRUE)
 ```
@@ -82,6 +86,8 @@ portTable = rbind(portTable, apply(portTable, 2, mean, na.rm = TRUE))
 rownames(portTable) = c(rowNamesTable, "Total")
 portTable = cbind(portTable, apply(portTable, 1, mean, na.rm = TRUE))
 colnames(portTable) = c(colNamesTable, "Total")
+
+portTable = round(x = portTable, digits = 3)
 
 pander::pander(portTable, align = "c", keep.line.breaks = TRUE)
 ```
