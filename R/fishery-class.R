@@ -140,7 +140,7 @@ print.summary.fishery = function(x, language = "spanish") {
 #' @export
 #' @method plot fishery
 plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
-                        textAxis2 = NULL, textAxis4 = NULL, ...) {
+                        textAxis2 = NULL, textAxis4 = NULL, colBar = "gray", colLine = "red", ...) {
 
   if(is.null(ploType)) ploType = "plotDaily"
   if(ploType %in% c("plotPERU", "plotNC", "plotS")){dataRegion = .getRegionData(x = x)}
@@ -160,7 +160,8 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 
          plotS       = .plotRegion(x = dataRegion, region = "S", daysToPlot = daysToPlot,
                                    textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
-         plotJoined  = .plotDaysJoined.fishery(x = x, language = langua, daysToPlot = daysToPlot, ...))
+         plotJoined  = .plotDaysJoined.fishery(x = x, language = language, daysToPlot = daysToPlot,
+                                               colBar = colBar, colLine = colLine, ...))
   return(invisible())
 
 }

@@ -42,6 +42,10 @@ colnames(fleeTable) = c(gsub("_", " ", rep(colnames(fleeTableLanding), each = 2)
 
 pander::pander(fleeTable, align = "c", split.table = Inf)
 ```
-\pagebreak
 
-# Desembarque diario
+
+# Desembarque y esfuerzo diario
+```{r, echo=FALSE, message=FALSE, fig.height=5, fig.width=8}
+plot(x, language = "spanish", ploType = "plotJoined", daysToPlot = daysToPlot,
+     colBar = "black")
+```

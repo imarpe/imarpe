@@ -305,8 +305,15 @@
                                    language, colBar, colLine, daysToPlot,
                                    cex.axis = 0.8, cex.names=0.7, cex.main = 1, ...) {
 
-  dataBaseLanding = .getSumPorts.fishery(object = x$landing, language = language)
-  dataBaseEffort  = .getSumPorts.fishery(object = x$effort , language = language)
+  #Landing
+  dataBaseLanding = x$landing$data
+  dataBaseLanding = data.frame(dataBaseLanding[, c(1:3)],
+                               apply(cbind(dataBaseLanding[, seq(4, length(colnames(dataBaseLanding)))]), 1, sum))
+
+  #Effort
+  dataBaseEffort  = x$effort$data
+  dataBaseEffort  = data.frame(dataBaseEffort[, c(1:3)],
+                               apply(cbind(dataBaseEffort[, seq(4, length(colnames(dataBaseEffort)))]), 1, sum))
 
   dataBase = data.frame(years  = dataBaseLanding[, 1],
                         months = dataBaseLanding[, 2],
@@ -357,12 +364,12 @@
 
   par(new= TRUE)
   plot(dataBase[, 5], col = colLine, ylim = c(0, yliMax*1.1), yaxs="i", type = "l",
-       axes = FALSE, xlab = "", ylab = ylab2)
+       axes = FALSE, xlab = "", ylab = "")
   yLabs4 = seq(from = 0, to = max(dataBase[,5]), length.out = length(pretty(dataBase[,4])))
   axis(side = 4, at = seq(from = 0, to = yliMax, length.out = length(yLabs4)),
        labels = round(yLabs4, 2), las = 2, cex.axis = cex.axis)
 
-  mtext(text = labAxis4, side = 4, line = 4)
+  mtext(text = ylab2, side = 4, line = 4)
 
   #legend
   par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0),
