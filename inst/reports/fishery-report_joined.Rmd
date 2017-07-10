@@ -6,7 +6,7 @@ header-includes:
   - \fancyfoot[LE,RO]{DGIRP}
   - \usepackage[spanish]{babel}
 fontsize: 10pt
-geometry: margin=1cm
+geometry: margin=0.5cm
 keep_tex: yes
 output: pdf_document
 ---
@@ -34,13 +34,14 @@ colNamesTable = colnames(fleeTable)
 fleeTable = rbind(fleeTable, apply(fleeTable, 2, sum, na.rm = TRUE))
 rownames(fleeTable) = c(rowNamesTable, "Total")
 
-fleeTable = cbind(fleeTable, apply(fleeTable, 1, sum, na.rm = TRUE))
-colnames(fleeTable) = c(colNamesTable, "Total")
+fleeTable = cbind(fleeTable,
+                  Desembarque = apply(fleeTable[,seq(from = 1, by = 2, to = dim(fleeTable)[2])], 1, sum, na.rm = TRUE),
+                  Esfuerzo = apply(fleeTable[,seq(from = 2, by = 2, to = dim(fleeTable)[2])], 1, sum, na.rm = TRUE))
 
 fleeTable = rbind(colnames(fleeTable), fleeTable)
-colnames(fleeTable) = c(gsub("_", " ", rep(colnames(fleeTableLanding), each = 2) ), "")
+colnames(fleeTable) = c(gsub("_", " ", rep(colnames(fleeTableLanding), each = 2)), "Total", "Total")
 
-pander::pander(fleeTable, align = "c", split.table = Inf)
+pander::pander(fleeTable, align = "c", split.table = Inf, )
 ```
 
 
@@ -49,3 +50,49 @@ pander::pander(fleeTable, align = "c", split.table = Inf)
 plot(x, language = "spanish", ploType = "plotJoined", daysToPlot = daysToPlot,
      colBar = "black")
 ```
+
+# Desembarque y esfuerzo por puerto
+```{r, echo=FALSE, message=FALSE}
+#Landing
+portTableLanding = x$landing$data
+portTableLanding = melt(portTableLanding, id.vars= names(portTableLanding[ , c(1:3)]))
+portTableLanding = tapply(portTableLanding$value, list(portTableLanding[, 1], portTableLanding[, 4]), sum)
+
+portInfoLanding = getPort(colnames(portTableLanding))
+colnames(portTableLanding) = portInfoLanding$data$name
+portTableLanding = round(t(portTableLanding[, order(portInfoLanding$data$lat, decreasing = TRUE)]), digits = 2)
+
+#Effort
+portTableEffort  = x$effort$data
+portTableEffort  = melt(portTableEffort, id.vars= names(portTableEffort[ , c(1:3)]))
+portTableEffort  = tapply(portTableEffort$value, list(portTableEffort[, 1], portTableEffort[, 4]), sum)
+
+portInfoEffort = getPort(colnames(portTableEffort))
+colnames(portTableEffort) = portInfoEffort$data$name
+portTableEffort = round(t(portTableEffort[, order(portInfoEffort$data$lat, decreasing = TRUE)]), digits = 2)
+
+#years
+yearsTable = sort(colnames(portTableLanding), decreasing = FALSE)
+
+porTable = NULL
+for(i in seq_len(dim(portTableLanding)[2])){
+  columns = cbind(Desembarque = portTableLanding[, i], Esfuerzo = portTableEffort[, i])
+  porTable = cbind(porTable, columns)
+}
+
+porTable = cbind(porTable,
+                 Desembarque = apply(porTable[, seq(from = 1, by = 2, to = dim(porTable)[2])], 1, sum, na.rm = TRUE),
+                 Esfuerzo = apply(porTable[, seq(from = 2, by = 2, to = dim(porTable)[2])], 1, sum, na.rm = TRUE))
+
+rowNamesTable = rownames(porTable)
+colNamesTable = colnames(porTable)
+
+porTable = rbind(porTable, apply(porTable, 2, sum, na.rm = TRUE))
+rownames(porTable) = c(rowNamesTable, "Total")
+
+porTable = rbind(colnames(porTable), porTable)
+colnames(porTable) = c(rep(yearsTable, each = 2), "Total", "Total")
+
+pander::pander(porTable, align = "c", split.table = Inf)
+```
+
