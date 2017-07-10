@@ -41,7 +41,7 @@ fleeTable = cbind(fleeTable,
 fleeTable = rbind(colnames(fleeTable), fleeTable)
 colnames(fleeTable) = c(gsub("_", " ", rep(colnames(fleeTableLanding), each = 2)), "Total", "Total")
 
-pander::pander(fleeTable, align = "c", split.table = Inf, )
+pander::pander(fleeTable, align = "c", split.table = Inf)
 ```
 
 
@@ -50,6 +50,8 @@ pander::pander(fleeTable, align = "c", split.table = Inf, )
 plot(x, language = "spanish", ploType = "plotJoined", daysToPlot = daysToPlot,
      colBar = "black")
 ```
+
+\pagebreak
 
 # Desembarque y esfuerzo por puerto
 ```{r, echo=FALSE, message=FALSE}
@@ -96,3 +98,38 @@ colnames(porTable) = c(rep(yearsTable, each = 2), "Total", "Total")
 pander::pander(porTable, align = "c", split.table = Inf)
 ```
 
+# Desembarque acumulado en el dominio peruano
+```{r, echo=FALSE, message=FALSE, fig.height=6, fig.width=9, dpi=72}
+plot(x$landing, language = "spanish", ploType = "plotPERU", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
+```
+
+\pagebreak
+
+# Desembarque acumulado en la región Norte-Centro
+```{r, echo=FALSE, message=FALSE, fig.height=5.5, fig.width=9.5, dpi=72}
+plot(x$landing, language = "spanish", ploType = "plotNC", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
+```
+
+# Desembarque acumulado en la región Sur
+```{r, echo=FALSE, message=FALSE, fig.height=5.5, fig.width=9.5, dpi=72}
+plot(x$landing, language = "spanish", ploType = "plotS", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
+```
+
+\pagebreak
+
+# Esfuerzo acumulado en el dominio peruano
+```{r, echo=FALSE, message=FALSE, fig.height=5.5, fig.width=9.5, dpi=72}
+plot(x$effort, language = "spanish", ploType = "plotPERU", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
+```
+
+# Esfuerzo acumulado en la región Norte-Centro
+```{r, echo=FALSE, message=FALSE, fig.height=5.5, fig.width=9.5, dpi=72}
+plot(x$effort, language = "spanish", ploType = "plotNC", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
+```
+
+\pagebreak
+
+# Esfuerzo acumulado en la región Sur
+```{r, echo=FALSE, message=FALSE, fig.height=5.5, fig.width=9.5, dpi=72}
+plot(x$effort, language = "spanish", ploType = "plotS", daysToPlot = daysToPlot, textAxis2 = textAxis2, textAxis4 = textAxis4)
+```
