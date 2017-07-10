@@ -1,0 +1,47 @@
+---
+title: "Reporte de Desembarque y Esfuerzo"
+author: "IMARPE - DGIRP"
+header-includes:
+  - \usepackage{fancyhdr}
+  - \fancyfoot[LE,RO]{DGIRP}
+  - \usepackage[spanish]{babel}
+fontsize: 10pt
+geometry: margin=1cm
+keep_tex: yes
+output: pdf_document
+---
+
+\pagenumbering{gobble}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Desembarque y esfuerzo por tipo de flota
+```{r, echo=FALSE, message=FALSE}
+fleeTableLanding = round(x = x$landing$fleeTable, digits = 2)
+fleeTableEffort  = round(x = x$effort$fleeTable, digits = 2)
+
+fleeTable = NULL
+for(i in seq_len(dim(fleeTableLanding)[2])){
+  columns = cbind(Desembarque = fleeTableLanding[, i], Esfuerzo = fleeTableEffort[, i])
+  fleeTable = cbind(fleeTable, columns)
+}
+
+rowNamesTable = rownames(fleeTableLanding)
+colNamesTable = colnames(fleeTable)
+
+fleeTable = rbind(fleeTable, apply(fleeTable, 2, sum, na.rm = TRUE))
+rownames(fleeTable) = c(rowNamesTable, "Total")
+
+fleeTable = cbind(fleeTable, apply(fleeTable, 1, sum, na.rm = TRUE))
+colnames(fleeTable) = c(colNamesTable, "Total")
+
+fleeTable = rbind(colnames(fleeTable), fleeTable)
+colnames(fleeTable) = c(gsub("_", " ", rep(colnames(fleeTableLanding), each = 2) ), "")
+
+pander::pander(fleeTable, align = "c", split.table = Inf)
+```
+\pagebreak
+
+# Desembarque diario

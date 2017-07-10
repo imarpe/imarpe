@@ -299,3 +299,79 @@
   return(invisible())
 
 }
+
+#Funcion para plotear desembarque y esfuerzo diario
+.plotDaysJoined.fishery = function(x, main = NULL, xlab=NULL, ylab1 = NULL, ylab2 = NULL,
+                                   language, colBar, colLine, daysToPlot,
+                                   cex.axis = 0.8, cex.names=0.7, cex.main = 1, ...) {
+
+  dataBaseLanding = .getSumPorts.fishery(object = x$landing, language = language)
+  dataBaseEffort  = .getSumPorts.fishery(object = x$effort , language = language)
+
+  dataBase = data.frame(years  = dataBaseLanding[, 1],
+                        months = dataBaseLanding[, 2],
+                        days   = dataBaseLanding[, 3],
+                        landing = dataBaseLanding[, 4],
+                        effort  = dataBaseEffort[, 4])
+
+  if(unique(daysToPlot %in% "all")){
+    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalizeFirstLetter(as.character(dataBase[,2])))
+  } else {
+    vectorDays = paste0(as.character(dataBase[,3]),"-", capitalizeFirstLetter(as.character(dataBase[,2])))
+    daysToPlot = which(as.numeric(dataBase[,3]) %in% daysToPlot)
+    daysToPlot = vectorDays[daysToPlot]
+    vectorDays[! vectorDays %in% daysToPlot] = NA
+  }
+
+  efforType = x$effort$info$efforType
+  if(efforType == "viaje") {
+    if(language == "spanish") {labAxis4 = "Numero de viajes" } else {labAxis4 = "Number of travels"}}
+  if(efforType == "capacidad_bodega") {
+    if(language == "spanish") {labAxis4 = expression(paste("Capacidad bodega (", m^3, ")")) } else {labAxis4 = expression(paste("Hold storage (", m^3, ")"))}}
+  if(efforType == "anzuelos") {
+    if(language == "spanish") {labAxis4 = "Numero de anzuelos)" } else {labAxis4 = "Number of fish hook"}}
+  if(efforType == "embarcaciones") {
+    if(language == "spanish") {labAxis4 = "Numero de embarcaciones)" } else {labAxis4 = "Number of boats"}}
+
+  landingType = x$landing$info$varType
+  if(landingType == "landing") {
+    if(language == "english") {labAxis2 = "Landing (t)"}
+    if(language == "spanish") {labAxis2 = "Desembarque (t)"}}
+
+  if(is.null(ylab1)){ylab1 = labAxis2} else {ylab1 = ylab1}
+  if(is.null(ylab2)){ylab2 = labAxis4} else {ylab2 = ylab2}
+
+  yliMax = max(dataBase[, 4], dataBase[, 5])
+
+  par(oma = c(2.5, 0, 0, 0.5))
+
+  par(mar = c(4,4.5,2,4.5))
+  barplot(dataBase[, 4], main=main, xlab=xlab, ylab=ylab1, col=colBar, names.arg = FALSE,
+          ylim=c(0, max(dataBase[, 4])*1.2), cex.names=cex.names, axes=FALSE,
+          cex.main = cex.main, ...)
+  AxisDate = seq(0.7, by=1.2, length.out=length(vectorDays))
+  NonNa =! is.na(vectorDays)
+  axis(1, at=AxisDate[NonNa], labels=vectorDays[NonNa], las=2, cex.axis=cex.axis)
+  axis(2, las=2, cex.axis=cex.axis, at = pretty(dataBase[,4]))
+  box()
+
+  par(new= TRUE)
+  plot(dataBase[, 5], col = colLine, ylim = c(0, yliMax*1.1), yaxs="i", type = "l",
+       axes = FALSE, xlab = "", ylab = ylab2)
+  yLabs4 = seq(from = 0, to = max(dataBase[,5]), length.out = length(pretty(dataBase[,4])))
+  axis(side = 4, at = seq(from = 0, to = yliMax, length.out = length(yLabs4)),
+       labels = round(yLabs4, 2), las = 2, cex.axis = cex.axis)
+
+  mtext(text = labAxis4, side = 4, line = 4)
+
+  #legend
+  par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0),
+      new = TRUE)
+  plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+  legend("bottom", c("Desembarque", "Esfuerzo"), xpd = TRUE, horiz = TRUE,
+         bty = "n", lty = 1, col = c(colBar, colLine), cex = 0.9,
+         text.width = c(0.4, 0.4), lwd = 3)
+
+  return(invisible())
+
+}

@@ -159,7 +159,8 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
                                    textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
 
          plotS       = .plotRegion(x = dataRegion, region = "S", daysToPlot = daysToPlot,
-                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...))
+                                   textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
+         plotJoined  = .plotDaysJoined.fishery(x = x, language = langua, daysToPlot = daysToPlot, ...))
   return(invisible())
 
 }
@@ -167,22 +168,29 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 #' @title Report method for fishery objects
 #' @description Export a report of landing or fishing effort.
 #' @param x Object of \code{fishery} class.
+#' @param type Complete this.
 #' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
 #'  (1, 8, 15, 22). This is including in a vector form.
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @export
 #' @method report fishery
-report.fishery = function(x, format="latex", tangle=FALSE, output = NULL, open = TRUE,
+report.fishery = function(x, type = "singled", format="latex", tangle=FALSE, output = NULL, open = TRUE,
                           daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){
 
   if(is.null(output)) output = getwd()
 
   outputName = deparse(substitute(x))
 
-  varType = x$info$varType
-  if(varType == "landing"){skeleton = system.file("reports", "fishery-report_landing.Rmd", package = "imarpe")
-  } else {skeleton = system.file("reports", "fishery-report_effort.Rmd", package = "imarpe")}
+  if(type == "singled"){
+    varType = x$info$varType
+    if(varType == "landing"){skeleton = system.file("reports", "fishery-report_landing.Rmd", package = "imarpe")}
+    if(varType == "effort") {skeleton = system.file("reports", "fishery-report_effort.Rmd", package = "imarpe")}
+  }
+
+  if(type == "joined"){
+    skeleton = system.file("reports", "fishery-report_joined.Rmd", package = "imarpe")
+  }
 
   if(isTRUE(tangle)) {
     knit(skeleton, tangle=TRUE, encoding = "latin1")
@@ -197,4 +205,21 @@ report.fishery = function(x, format="latex", tangle=FALSE, output = NULL, open =
 
   return(invisible(file.path(output, outputFile)))
 
+}
+
+#' Combine fishery variables
+#' @description Function to combine two fishery class outputs (landings and effort)
+#' into a only list.
+#' @param landing List of landings with the class fishery.
+#' @param effort List of efforts with the class fishery.
+#' @return A list of the class fishery with information about the two lists.
+#' @export
+combineFisheryVar = function(landing, effort){
+
+  x = list(landing = landing,
+           effort  = effort)
+
+  class(x) = "fishery"
+
+  return(x)
 }
