@@ -139,18 +139,18 @@ print.summary.fishery = function(x, language = "spanish") {
 #' @return A graph of the specified type in \code{ploType}.
 #' @export
 #' @method plot fishery
-plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
+plot.fishery = function(x, language = "spanish", ploType = NULL, daysToPlot = c(1,8,15,22),
                         textAxis2 = NULL, textAxis4 = NULL, colBar = "gray", colLine = "red", ...) {
 
   if(is.null(ploType)) ploType = "plotDaily"
   if(ploType %in% c("plotPERU", "plotNC", "plotS")){dataRegion = .getRegionData(x = x)}
 
   switch(ploType,
-         plotDaily   = .plotDays.fishery(x=x, language=language, daysToPlot = daysToPlot, ...),
+         plotDaily   = .plotDays.fishery(x=x, language=language, daysToPlot = daysToPlot, colBar = colBar, ...),
 
-         plotMonthly = .plotMonths.fishery(x=x, language=language, ...),
+         plotMonthly = .plotMonths.fishery(x=x, language=language, colBar = colBar, ...),
 
-         plotYearly  = .plotYears.fishery(x=x, language=language, ...),
+         plotYearly  = .plotYears.fishery(x=x, language=language, colBar = colBar, ...),
 
          plotPERU    = .plotRegion(x = dataRegion, region = "PERU", daysToPlot = daysToPlot,
                                    textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
@@ -160,6 +160,7 @@ plot.fishery = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22),
 
          plotS       = .plotRegion(x = dataRegion, region = "S", daysToPlot = daysToPlot,
                                    textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
+
          plotJoined  = .plotDaysJoined.fishery(x = x, language = language, daysToPlot = daysToPlot,
                                                colBar = colBar, colLine = colLine, ...))
   return(invisible())

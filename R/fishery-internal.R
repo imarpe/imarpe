@@ -159,8 +159,8 @@
 
 #GRAFICAS
 #Funcion para plotear el desembarque o esfuerzo diario
-.plotDays.fishery = function(x, main = NULL, xlab=NULL, ylab = NULL, language, col = "blue",
-                             daysToPlot, cex.axis = 0.8, cex.names=0.7, cex.main = 1, ...) {
+.plotDays.fishery = function(x, main = NULL, xlab=NULL, ylab = NULL, language, colBar,
+                             daysToPlot, cex.axis = 0.7, cex.names=0.7, cex.main = 1, ...) {
 
   dataBase   = .getSumPorts.fishery(object = x, language = language)
 
@@ -197,7 +197,7 @@
     } else {ylab = labUnits}}
 
   par(mar = c(4,4.5,2,0.5))
-  barplot(dataBase[,4], main=main, xlab=xlab, ylab=ylab, col=col, names.arg = FALSE,
+  barplot(dataBase[,4], main=main, xlab=xlab, ylab=ylab, col=colBar, names.arg = FALSE,
           ylim=c(0,max(dataBase[,4])*1.2), cex.names=cex.names, axes=FALSE, cex.main = cex.main, ...)
   AxisDate = seq(0.7, by=1.2, length.out=length(vectorDays))
   NonNa =! is.na(vectorDays)
@@ -210,8 +210,8 @@
 }
 
 #Funcion para plotear el desembarque mensual
-.plotMonths.fishery = function(x, main = NULL, xlab = NULL, ylab = NULL, language, col = "blue",
-                               cex.axis = 0.8, cex.names=0.7, cex.main =  1,...) {
+.plotMonths.fishery = function(x, main = NULL, xlab = NULL, ylab = NULL, language, colBar,
+                               cex.axis = 0.7, cex.names=0.7, cex.main =  1,...) {
 
   dataBase = .getMonth.fishery(object = x, language = language)
   vectorYears = as.numeric(colnames(dataBase))
@@ -244,8 +244,8 @@
       if(language == "english"){ylab = "Landing (t)"} else {ylab = "Desembarque (t)"}
     } else {ylab = labUnits}}
 
-  par(mar = c(4,4.5,2,0.5))
-  barplot(monthPlot, main=main, xlab=xlab, ylab=ylab, col=col, names.arg=FALSE,
+  par(mar = c(4,5,2,0.5))
+  barplot(monthPlot, main=main, xlab=xlab, ylab=ylab, col=colBar, names.arg=FALSE,
           ylim=c(0, max(monthPlot)*1.2), cex.names=cex.names, axes=FALSE, cex.main=cex.main, ...)
   axis(1, at=seq(0.7, by=1.2, length.out=length(monthPlot)), labels=namesMonthPlot,
        las=1, cex.axis=cex.axis, line=0)
@@ -259,8 +259,8 @@
 }
 
 #Funcion para plotear el desembarque anual
-.plotYears.fishery = function(x, main=NULL, xlab=NULL, ylab=NULL, language, col = "blue",
-                              cex.axis = 0.8, cex.names=0.7, cex.main = 1, ...) {
+.plotYears.fishery = function(x, main=NULL, xlab=NULL, ylab=NULL, language, colBar,
+                              cex.axis = 0.7, cex.names=0.7, cex.main = 1, ...) {
 
   dataBase = .getYear.fishery(object = x, language = language)
   years = as.numeric(rownames(dataBase))
@@ -288,8 +288,8 @@
       if(language == "english"){ylab = "Landing (t)"} else {ylab = "Desembarque (t)"}
     } else {ylab = labUnits}}
 
-  par(mar = c(2.5,4.5,2,0.5))
-  barplot(dataBase[,1], main=main, xlab=xlab, ylab=ylab, col=col, names.arg=FALSE,
+  par(mar = c(2.5,5.5,2,0.5))
+  barplot(dataBase[,1], main=main, xlab=xlab, ylab=ylab, col=colBar, names.arg=FALSE,
           ylim=c(0,max(dataBase)*1.2), cex.names=cex.names, axes=FALSE, cex.main = cex.main, ...)
   axis(1, at=seq(0.7, by=1.2, length.out=length(years)), labels=years, las=1,
        cex.axis=cex.axis)
@@ -303,7 +303,7 @@
 #Funcion para plotear desembarque y esfuerzo diario
 .plotDaysJoined.fishery = function(x, main = NULL, xlab=NULL, ylab1 = NULL, ylab2 = NULL,
                                    language, colBar, colLine, daysToPlot,
-                                   cex.axis = 0.8, cex.names=0.7, cex.main = 1, ...) {
+                                   cex.axis = 0.7, cex.names=0.7, cex.main = 1, ...) {
 
   #Landing
   dataBaseLanding = x$landing$data
