@@ -123,7 +123,8 @@ print.summary.cpue = function(x, language = "spanish"){
 #' @return A graph of the specified type in \code{ploType}.
 #' @export
 #' @method plot cpue
-plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL, ...){
+plot.cpue = function(x, language = "spanish", ploType = NULL, daysToPlot = c(1,8,15,22),
+                     textAxis2 = NULL, textAxis4 = NULL, colBar = "gray", ...){
 
   if(is.null(ploType)) ploType = "plotDaily"
   if(ploType %in% c("plotPERU", "plotNC", "plotS")){
@@ -135,11 +136,11 @@ plot.cpue = function(x, language, ploType = NULL, daysToPlot = c(1,8,15,22), tex
     dataRegion = .getRegionData(x = x2)}
 
   switch(ploType,
-         plotDaily   = .plotDays.cpue(x=x, language=language, daysToPlot = daysToPlot, ...),
+         plotDaily   = .plotDays.cpue(x=x, language=language, daysToPlot = daysToPlot, colBar = colBar, ...),
 
-         plotMonthly = .plotMonths.cpue(x=x, language=language, ...),
+         plotMonthly = .plotMonths.cpue(x=x, language=language, colBar = colBar, ...),
 
-         plotYearly  = .plotYears.cpue(x=x, language=language, ...),
+         plotYearly  = .plotYears.cpue(x=x, language=language, colBar = colBar, ...),
 
          plotPERU    = .plotRegion(x = dataRegion, region = "PERU", daysToPlot = daysToPlot,
                                    textAxis2 = textAxis2, textAxis4 = textAxis4, ...),
