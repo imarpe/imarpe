@@ -1,7 +1,7 @@
 ---
-title: "**Imarpe**: un paquete para la automatización de gráficos, tablas y reportes usando R"
+title: "**imarpe**: un paquete para la automatización de gráficos, tablas y reportes usando R"
 author: "Criscely Luján-Paredes"
-date: "3 de abril de 2017"
+date: "24 de Julio de 2017"
 output: pdf_document
 ---
 
@@ -10,14 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Resumen
-Este documento es una introducción al uso del paquete ***Imarpe***, el cuál proporciona herramientas para la elaboración de gráficas, tablas y reportes que se realizan de manera rutinaria en las investigaciones producidas por el Instituto del Mar del Perú (IMARPE). El objetivo principal de ***Imarpe*** es que los usuarios trabajen en R sin requerir conocimientos avanzados de programación, ahorrando tiempo en el procesamiento de información. 
+Este documento es una introducción al uso del paquete ***imarpe***, el cuál proporciona herramientas para la elaboración de gráficas, tablas y reportes que se realizan de manera rutinaria en las investigaciones producidas por el Instituto del Mar del Perú (IMARPE). El objetivo principal de ***imarpe*** es que los usuarios trabajen en R sin requerir conocimientos avanzados de programación, ahorrando tiempo en el procesamiento de información. 
 
 Palabras clave: R, imarpe, automatización, reportes, figuras, tablas.
 
 # Introducción
-***Imarpe*** es un paquete implementado en R cuya principal función es automatizar el procesamiento de información así como automatizar la elaboración de gráficas, tablas, y reportes que son necesarias en el trabajo rutinario para el personal del Instituto del Mar del Perú (IMARPE). El diseño de este paquete es flexible, permitiendo al usuario realizar cambios sobre los parámetros de los resultados ya tendrán a su disposición el código en R que genera los productos; adicionalmente, el diseño de este paquete permite trabajar con funciones genéricas (e.g. plot, summary, print) sobre cada clase de datos, facilitando de esta manera su utilización incluso con conocimientos mínimos de R. 
+***imarpe*** es un paquete implementado en R cuya principal función es automatizar el procesamiento de información así como automatizar la elaboración de gráficas, tablas, y reportes que son necesarios en el trabajo rutinario para el personal del Instituto del Mar del Perú (IMARPE). El diseño de este paquete es flexible, permitiendo al usuario realizar cambios sobre los parámetros de los resultados ya tendrán a su disposición el código en R que genera los productos; adicionalmente, el diseño de este paquete permite trabajar con funciones genéricas (e.g. plot, summary, print) sobre cada clase de datos, facilitando de esta manera su utilización incluso con conocimientos mínimos de R. 
  
-Dentro de las principales ventajas que proporciona ***Imarpe*** están:
+Dentro de las principales ventajas que proporciona ***imarpe*** están:
 
  * No requiere que el usuario posea conocimientos avanzados de programación y/o R, 
  
@@ -29,43 +29,48 @@ Dentro de las principales ventajas que proporciona ***Imarpe*** están:
 
  * Proporciona gráficas de buena calidad así como la capacidad de realizar análisis reproducibles.
 
-# Instalación de ***Imarpe***
-Para usar ***Imarpe*** se debe tener instalado R, y se recomienda usar la interface gráfica de R Studio. La instalación de ambos softwares está descrito en el Anexo (hacer anexo).
+### Programación orientada a objetos
+R tiene tres sistemas orientados a objetos (S3, S4 y R5), y todos trabajan con los conceptos "clase" y "método". Una clase se define como un tipo de objeto, describiendo que propiedades posee, como funciona y como este objeto se puede relacionar con otros tipos de objetos; de esta manera, cada objeto debe poseer una clase. Por otro lado, un método se define como aquella función que está asociada a un tipo particular de objetos.
 
-Así mismo, ***Imarpe*** requiere la instalación de paquetes los cuales usa internamente y deberán ser instalados sólo una vez. Estos serán instalados ejecutando el código:
+S3 implementa un estilo de programación orientada a objetos llamada función genérica OO (o en inglés, generic-function OO). En el funcionamiento de este sistema se realizan cálculos a través de métodos y a través de un tipo especial de función llamada "función genérica", la cual decide qué método llamar. 
+
+El uso principal de S3 en R es a través de los métodos print, summary and plot. Estos métodos permiten tener una función genérica por ejemplo de print, que mostraría el objeto de una manera especial.
+
+# Instalación de ***imarpe***
+Para usar ***imarpe*** se debe tener instalado R, y se recomienda usar la interface gráfica de R Studio.
+Para la instalación de todo paquete de R se require contar con internet y luego de verificar esto, desde R Studio se debe intalar y cargar el paquete devtools, de la siguiente manera:
 
 ```{r, eval = FALSE}
 install.packages("devtools")
-install.packages("Hmisc")
-install.packages("R.utils")
-```
-Usando el comando **library** se cargarán los paquetes anteriormente instalados:
-
-```{r, eval = FALSE}
 library("devtools")
-library("Hmisc")
-library("R.utils")
 ```
 
-Finalmente, se procederá a instalar ***Imarpe*** directamente de la cuenta github del Instituto del Mar del Peru (IMARPE), donde se trabaja en la mejora del paquete. Esta línea de código debe ser corrida por única vez, sin embargo, cada vez que se haga una actualización del parquete, se deberá correr esta línea nuevamente para cargar de manera automática la nueva versión de ***Imarpe***. 
+La instalación de ***imarpe*** se realizará directamente de la cuenta github del Instituto del Mar del Peru (IMARPE) [link] (https://github.com/imarpe), lugar donde se trabaja en las mejoras y actualizaciones  de los paquetes en R desarrollados por el personal del IMARPE. 
+
+En esta web también se encuentra ***imarpe***, y su instalación se realizará usando las siguientes líneas de código. La primera línea de código instala el paquete y debe ser corrida por única vez, sin embargo, cada vez que se haga una actualización del paquete, se deberá correr nuevamente para cargar de manera automática la nueva versión de ***imarpe***. La segunda línea de código se encargará de cargar el paquete la instalado, esta debe ser ejecutada cada vez que se quiera usar el paquete. 
 
 ```{r, eval = FALSE}
-install_github("imarpe/Imarpe")
-library(Imarpe)
+install_github("imarpe/imarpe")
+library(imarpe)
 ```
 
-# Estructura de ***Imarpe***
-***Imarpe*** cuenta con cuatro modulos de trabajo: pesquería, biología, oceanografía y cruceros hidroacústicos.
+# Estructura de ***imarpe***
+***imarpe*** cuenta con el desarrollo del módulo de pesquería. Sin embargo, el objetivo es extender el desarrollo del paquete a tres módulos más, los cuales estén conformados por los modulos de biología, oceanografía y cruceros hidroacústicos.
 
-## 1. Modulo Pesquería:
-Esta sección trabaja sobre información pesquera, orientada al análisis de las variables: captura, esfuerzo y captura por unidad de esfuerzo (CPUE). 
+## Módulo Pesquería:
+Esta sección trabaja sobre información pesquera, orientada al análisis de las variables: captura y desembarque, esfuerzo y captura por unidad de esfuerzo (cpue), reproduciendo tablas, gráficas y reportes de manera automatizada. Así mismo, el Programa de Observadores a Bordo (Programa de Bitácoras de Pesca) del IMARPE también cuenta un subsección de trabajo dentro del módulo de pesquería, el cual permite obtener las principales gráficas y tablas que son requeridas en los reportes periódicos que emiten.
 
-## 2. Modulo Biología:
-notas: incluir paquetes hechos para biología reproductiva, reportes, curvas, plots y series de tiempo.
+Las principales funciones con las que cuenta ***imarpe*** son 4 y las abordaremos una a una mediante sub-secciones que describan las clases de objetos.
 
-## 3. Modulo Oceanografía:
-notas: incluir código para los perfiles de las clinas y a los niveles de referencia.
+```{r, eval = FALSE}
+getFishingData
+getBitacoraData
+getMainResults.bitacora
+getDailyReport
+```
 
-## 4. Modulo Cruceros hidroacústicos:
-notas: incluir código para producir las figuras que se hacen en los informes de crucero, así como código para sistematizar la información oceanográfica.
+### 1. Get the fishing data:
+La primera función principal es usada para dos tipos de clases de datos: fishery y cpue. La primera clase (fishery) contiene variables pesqueras que en este caso incluye a los desembarques (landing) y al esfuerzo (effort). La segunda clase de datos incluye a la captura por unidad de esfuerzo y corresponde a la clase cpue.
+
+Esta función lee información pesquera para crear una base de datos que incluye i) un data.frame (o marco de datos) y ii) una lista con las principales características de dicho data.frame. 
 
