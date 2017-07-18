@@ -4,8 +4,9 @@
 \alias{plot.fishery}
 \title{Plot method for fishery objects}
 \usage{
-\method{plot}{fishery}(x, language, ploType = NULL, daysToPlot = c(1, 8, 15,
-  22), textAxis2 = NULL, textAxis4 = NULL, ...)
+\method{plot}{fishery}(x, language = "spanish", ploType = NULL,
+  daysToPlot = c(1, 8, 15, 22), textAxis2 = NULL, textAxis4 = NULL,
+  colBar = "gray", colLine = "red", ...)
 }
 \arguments{
 \item{x}{Object of \code{fishing} class.}

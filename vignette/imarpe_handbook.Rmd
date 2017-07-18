@@ -45,7 +45,7 @@ install.packages("devtools")
 library("devtools")
 ```
 
-La instalación de ***imarpe*** se realizará directamente de la cuenta github del Instituto del Mar del Peru (IMARPE) [link] (https://github.com/imarpe), lugar donde se trabaja en las mejoras y actualizaciones  de los paquetes en R desarrollados por el personal del IMARPE. 
+La instalación de ***imarpe*** se realizará directamente de la cuenta github del Instituto del Mar del Peru (IMARPE) \url{https://github.com/imarpe}, lugar donde se trabaja en las mejoras y actualizaciones  de los paquetes en R desarrollados por el personal del IMARPE. 
 
 En esta web también se encuentra ***imarpe***, y su instalación se realizará usando las siguientes líneas de código. La primera línea de código instala el paquete y debe ser corrida por única vez, sin embargo, cada vez que se haga una actualización del paquete, se deberá correr nuevamente para cargar de manera automática la nueva versión de ***imarpe***. La segunda línea de código se encargará de cargar el paquete la instalado, esta debe ser ejecutada cada vez que se quiera usar el paquete. 
 

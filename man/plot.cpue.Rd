@@ -4,8 +4,9 @@
 \alias{plot.cpue}
 \title{Plot method for cpue objects}
 \usage{
-\method{plot}{cpue}(x, language, ploType = NULL, daysToPlot = c(1, 8, 15,
-  22), textAxis2 = NULL, textAxis4 = NULL, ...)
+\method{plot}{cpue}(x, language = "spanish", ploType = NULL,
+  daysToPlot = c(1, 8, 15, 22), textAxis2 = NULL, textAxis4 = NULL,
+  colBar = "gray", ...)
 }
 \arguments{
 \item{x}{Object of \code{cpue} class.}

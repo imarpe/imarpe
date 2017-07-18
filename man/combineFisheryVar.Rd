@@ -2,19 +2,20 @@
 % Please edit documentation in R/fishery-class.R
 \name{combineFisheryVar}
 \alias{combineFisheryVar}
-\title{Combine variables for fishery class}
+\title{Combine fishery variables}
 \usage{
 combineFisheryVar(landing, effort)
 }
 \arguments{
-\item{landing}{complete this.}
+\item{landing}{List of landings with the class fishery.}
 
-\item{effort}{complete this}
+\item{effort}{List of efforts with the class fishery.}
 }
 \value{
-x object.
+A list of the class fishery with information about the two lists.
 }
 \description{
-complete this.
+Function to combine two fishery class outputs (landings and effort)
+into a only list.
 }
 
