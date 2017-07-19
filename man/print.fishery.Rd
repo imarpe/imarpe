@@ -17,7 +17,7 @@ like number of records data, the time period of date (years and months),
 the number of ports, the analyzed species and the analyzed variable type.
 }
 \examples{
-# Read a data base of fishery class
+# Read a example of a data base
 fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 
 # Produce a object of fishery class

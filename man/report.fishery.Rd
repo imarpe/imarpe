@@ -13,8 +13,9 @@
 
 \item{type}{Complete this.}
 
-\item{daysToPlot}{If is a daily plot by default the x axis plot the first day of the month
-(1, 8, 15, 22). This is including in a vector form.}
+\item{daysToPlot}{If is a daily plot by default the x-axis show the first day of a week
+(1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
+data with \code{all}. This is including in a vector form.}
 
 \item{textAxis2}{The text of the x axis.}
 
@@ -22,5 +23,20 @@
 }
 \description{
 Export a report of landing or fishing effort.
+}
+\examples{
+# Read a example of a data base
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Produce a object of fishery class
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+class(landing)
+
+#Produce the report showing all days on the x-axis (by default)
+report(landing)
+
+#Produce the report showing only the day 15 on the x-axis
+report(landing, daysToPlot = "15")
+
 }
 

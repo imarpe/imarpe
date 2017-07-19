@@ -26,4 +26,16 @@ A \code{list} of summary.cpue class. This contains:
 \description{
 Get summary information of catch per unit effort (cpue) object.
 }
+\examples{
+# Read a example of a data base
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Produce a object of cpue class
+cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+class(cpue)
+
+# Produce the summary of the cpue class object
+summary(cpue)
+
+}
 

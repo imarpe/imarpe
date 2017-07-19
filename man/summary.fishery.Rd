@@ -28,7 +28,7 @@ Get summary information of landing and fishing effort included on
 objects of the class \code{fishery} .
 }
 \examples{
-# Read a data base of fishery class
+# Read a example of a data base
 fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 
 # Produce a object of fishery class

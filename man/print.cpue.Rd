@@ -12,8 +12,21 @@
 \item{language}{The select language to print the outputs.}
 }
 \description{
-Shows main information from catch per unit effort (cpue) objects, like
-number of records data, the time period of date (years and months), the number of
+Shows main information from objects of the catch per unit effort (cpue) class,
+like number of records data, the time period of date (years and months), the number of
 ports, the analyzed species and the type of effort used on the cpue.
+}
+\examples{
+# Read a example of a data base
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Produce a object of cpue class
+cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+class(cpue)
+
+# Show main information of the cpue class object
+print(cpue)
+print(cpue, language = "english")
+
 }
 

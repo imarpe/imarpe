@@ -1,10 +1,23 @@
 #' @title Print method for cpue objects
-#' @description Shows main information from catch per unit effort (cpue) objects, like
-#' number of records data, the time period of date (years and months), the number of
-#' ports, the analyzed species and the type of effort used on the cpue.
+#' @description Shows main information from objects of the catch per unit effort
+#' (cpue) class, like number of records data, the time period of dates
+#' (years and months), the number of ports, the analyzed species and the
+#' type of effort used on the cpue.
 #' @param x Object of class \code{cpue}.
 #' @param language The select language to print the outputs.
 #' @export
+#' @examples
+#' # Read a example of a data base
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of cpue class
+#' cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+#' class(cpue)
+#'
+#' # Show main information of the cpue class object
+#' print(cpue)
+#' print(cpue, language = "english")
+#'
 #' @method print cpue
 print.cpue = function(x, language="spanish"){
 
@@ -30,7 +43,8 @@ print.cpue = function(x, language="spanish"){
 }
 
 #' @title Summary method for cpue objects
-#' @description Get summary information of catch per unit effort (cpue) object.
+#' @description Get summary information included on objects of catch
+#' per unit effort (cpue) class.
 #' @param object Object of class \code{cpue}.
 #' @param language The select language to print the summary of cpue objects.
 #' It could be \code{"spanish"} by default or \code{"english"}.
@@ -44,6 +58,17 @@ print.cpue = function(x, language="spanish"){
 #'   \item years A data frame with the cpue by years.
 #' }
 #' @export
+#' @examples
+#' # Read a example of a data base
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of cpue class
+#' cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+#' class(cpue)
+#'
+#' # Produce the summary of the cpue class object
+#' summary(cpue)
+#'
 #' @method summary cpue
 summary.cpue = function(object, language = "spanish"){
 
@@ -79,6 +104,21 @@ summary.cpue = function(object, language = "spanish"){
 #' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return Each element of \code{summary.cpue} method.
 #' @export
+#' @examples
+#' # Read a example of a data base
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of cpue class
+#' cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+#' class(cpue)
+#'
+#' # Print the summary of the cpue class object
+#' sumCpue = summary(effort)
+#' print(sumCpue)
+#'
+#' sumCpue = summary(effort, language = "english")
+#' print(sumCpue, language = "english")
+#'
 #' @method print summary.cpue
 print.summary.cpue = function(x, language = "spanish"){
 
@@ -103,25 +143,47 @@ print.summary.cpue = function(x, language = "spanish"){
 
 #' @title Plot method for cpue objects
 #' @description This method takes a \code{cpue} object and make useful plots.
-#' The plots can be daily, monthly, yearly or for north-central and south peruvian region.
+#' The plots can be daily, monthly, yearly, over the peruvian region, and
+#' for north-central and south peruvian region.
 #' @param x Object of \code{cpue} class.
-#' @param language \code{character}. Define the language of text labels in plots.
+#' @param language A \code{character}. Define the language of text labels in plots.
 #' It could be \code{"spanish"} or \code{"english"}.
 #' @param ploType What type of plot should be draw. Possible types are:
 #' \itemize{
-#'   \item plotDaily for daily plot
+#'    \item plotDaily for daily plot
 #'   \item plotMonthly for monthly plot
 #'   \item plotYearly for yearly plot
-#'   \item plotNC to plot the north-central region
-#'   \item plotS to plot the south region
+#'   \item plotPeru for all the peruvian region
+#'   \item plotNC to graph the north-central region
+#'   \item plotS to graph the south region
 #' }
-#' @param daysToPlot if is a daily plot by default the x axis plot the first day of the month
-#'  (1, 8, 15, 22). This is including in a vector form.
+#' @param daysToPlot If is a daily plot by default the x-axis show the first day of a week
+#'  (1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
+#'  data with \code{all}. This is including in a vector form.
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @param ... Extra arguments.
 #' @return A graph of the specified type in \code{ploType}.
 #' @export
+#' @examples
+#' # Read a example of a data base
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of cpue class
+#' cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+#' class(cpue)
+#'
+#' plot(cpue)
+#' plot(cpue, daysToPlot = "1", colBar = "red")
+#' plot(cpue, language= "english")
+#' plot(cpue, ploType = "plotMonthly")
+#' plot(cpue, ploType = "plotMonthly", language= "english", colBar = "green")
+#' plot(cpue, ploType = "plotYearly")
+#' plot(cpue, ploType = "plotYearly", colBar = "orange")
+#' plot(cpue, ploType = "plotPERU")
+#' plot(cpue, ploType = "plotNC")
+#' plot(cpue, ploType = "plotS")
+#'
 #' @method plot cpue
 plot.cpue = function(x, language = "spanish", ploType = NULL, daysToPlot = c(1,8,15,22),
                      textAxis2 = NULL, textAxis4 = NULL, colBar = "gray", ...){
@@ -155,13 +217,28 @@ plot.cpue = function(x, language = "spanish", ploType = NULL, daysToPlot = c(1,8
 }
 
 #' @title Report method for cpue objects
-#' @description Export a report of catch per unit effort class.
+#' @description Export a report of catch per unit effort (cpue) class.
 #' @param x Object of \code{cpue} class.
-#' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
-#'  (1, 8, 15, 22). This is including in a vector form.
+#' @param daysToPlot If is a daily plot by default the x-axis show the first day of a week
+#'  (1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
+#'  data with \code{all}. This is including in a vector form.
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @export
+#' @examples
+#' # Read a example of a data base
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of cpue class
+#' cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+#' class(cpue)
+#'
+#' #Produce the report showing all days on the x-axis (by default)
+#' report(cpue)
+#'
+#' #Produce the report showing only the day 15 on the x-axis
+#' report(cpue, daysToPlot = "15")
+#'
 #' @method report cpue
 report.cpue = function(x, format = "latex", tangle=FALSE, output = NULL, open = TRUE,
                        daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){

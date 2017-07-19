@@ -152,7 +152,7 @@ NULL
 #' }
 #' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 #' @examples
-#' # Read a data base of fishery class
+#' # Read a example of a data base
 #' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 #'
 #' # For landing information assuming the analyzed species is 'caballa', put the name of the species on \code{sp}

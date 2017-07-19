@@ -1,12 +1,12 @@
 #' @title Print method for fishery objects
-#' @description Shows main information from objects of the class \code{fishery},
-#' like number of records data, the time period of date (years and months),
+#' @description Shows main information from objects of the \code{fishery} class,
+#' like number of records data, the time period of dates (years and months),
 #' the number of ports, the analyzed species and the analyzed variable type.
 #' @param x Object of class \code{fishery}.
 #' @param language The select language to print the outputs.
 #' @export
 #' @examples
-#' # Read a data base of fishery class
+#' # Read a example of a data base
 #' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 #'
 #' # Produce a object of fishery class
@@ -58,7 +58,7 @@ print.fishery = function(x, language="spanish") {
 #' }
 #' @export
 #' @examples
-#' # Read a data base of fishery class
+#' # Read a example of a data base
 #' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 #'
 #' # Produce a object of fishery class
@@ -102,7 +102,7 @@ summary.fishery =  function(object, language = "spanish") {
 #' @return Each element of \code{summary.fishery} method.
 #' @export
 #' @examples
-#' # Read a data base of fishery class
+#' # Read a example of a data base
 #' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 #'
 #' # Produce a object of fishery class
@@ -156,18 +156,22 @@ print.summary.fishery = function(x, language = "spanish") {
 
 #' @title Plot method for fishery objects
 #' @description This method takes a \code{fishery} object and make useful plots for
-#' each variables (lading and fishing effort). The plots can be daily, monthly, yearly or
-#' for north-central and south peruvian region.
+#' each variables (fishing lading and fishing effort). The plots can be daily,
+#' monthly, yearly, over the peruvian region, and for north-central and south peruvian
+#' region. An additional plot type to graph the effort and landing at the same time
+#' using two y-axis.
 #' @param x Object of \code{fishing} class.
-#' @param language \code{character}. Define the language of text labels in plots.
+#' @param language A \code{character}. Define the language of text labels in plots.
 #' It could be \code{"spanish"} or \code{"english"}.
 #' @param ploType What type of plot should be draw. Possible types are:
 #' \itemize{
 #'   \item plotDaily for daily plot
 #'   \item plotMonthly for monthly plot
 #'   \item plotYearly for yearly plot
-#'   \item plotNC to plot the north-central region
-#'   \item plotS to plot the south region
+#'   \item plotPeru for all the peruvian region
+#'   \item plotNC to graph the north-central region
+#'   \item plotS to graph the south region
+#'   \item plotJoined to graph the effort and landing
 #' }
 #' @param daysToPlot If is a daily plot by default the x-axis show the first day of a week
 #'  (1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
@@ -178,7 +182,7 @@ print.summary.fishery = function(x, language = "spanish") {
 #' @return A graph of the specified type in \code{ploType}.
 #' @export
 #' @examples
-#' # Read a data base of fishery class
+#' # Read a example of a data base
 #' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 #'
 #' # Produce a object of fishery class
@@ -228,7 +232,10 @@ plot.fishery = function(x, language = "spanish", ploType = NULL, daysToPlot = c(
 #' @title Report method for fishery objects
 #' @description Export a report of landing or fishing effort.
 #' @param x Object of \code{fishery} class.
-#' @param type Complete this.
+#' @param type To indicate if the report is going to be reproduce for individual
+#' variables (for landing or for effort) use \code{type = single} (by default).
+#' To reproduce a report using the joined information (landing and effort)
+#' use \code{type = joined}.
 #' @param daysToPlot If is a daily plot by default the x-axis show the first day of a week
 #'  (1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
 #'  data with \code{all}. This is including in a vector form.
@@ -236,7 +243,7 @@ plot.fishery = function(x, language = "spanish", ploType = NULL, daysToPlot = c(
 #' @param textAxis4 The text of the y axis.
 #' @export
 #' @examples
-#' # Read a data base of fishery class
+#' # Read a example of a data base
 #' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 #'
 #' # Produce a object of fishery class

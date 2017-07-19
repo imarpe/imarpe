@@ -19,7 +19,7 @@ Each element of \code{summary.fishery} method.
 Shows main information from \code{summary.fishery} objects.
 }
 \examples{
-# Read a data base of fishery class
+# Read a example of a data base
 fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 
 # Produce a object of fishery class

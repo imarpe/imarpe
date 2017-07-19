@@ -142,9 +142,9 @@ fleet = cpue$fleeTable
 
 Para los dos últimos ejemplo, de esfuerzo y cpue, también se pueden usar los parámetros `start` y `end` para hacer un análisis sobre un periodo de tiempo específico, así como el parámetro `port`, para analizar la información de un determinado puerto.
 
-#### Métodos para las clases: `fishery` y `cpue`
+Respecto a los métodos, se construyeron cinco métodos para cada una de las clases de datos `fishery` y `cpue`. Estos son: `print`, `summary`, `print.summary`, `plot` y `report` y las ayudas para cada método debe ser llamada por el método seguido por un punto (".") y luego la clase de datos correspondiente.
 
-Se construyeron cinco métodos para cada una de las clases de datos `fishery` y `cpue`. Estos son: `print`, `summary`, `print.summary`, `plot` y `report` y las ayudas para cada método debe ser llamada por el método seguido por un punto (".") y luego la clase de datos correspondiente.
+#### Métodos de la clase `fishery`
 
 ```{r, eval = FALSE}
 # Revisar la ayuda de los métodos de la clase fishery
@@ -153,14 +153,9 @@ Se construyeron cinco métodos para cada una de las clases de datos `fishery` y `
 ?print.summary.fishery
 ?plot.fishery
 ?report.fishery
-
-# Revisar la ayuda de los métodos de la clase cpue
-?print.cpue
-?summary.cpue
-?print.summary.cpue
-?plot.cpue
-?report.cpue
 ```
+
+La descripción de cada método se dará a continuación:
 
 * print.fishery: muestra un resumen del contenido de información de la base de datos de clase fishery. Esta información incluye: (1) el nombre de la base de datos utilizada; (2) el número de registros que poseen los datos; el periodo de tiempo analizado ((3) meses y (4) años); (5) el número de puertos que poseen los datos; (6) la especie analizada en la base de datos y (7) el tipo de variable, en este caso sería `landing` o `effort`.
 
@@ -168,10 +163,11 @@ Se construyeron cinco métodos para cada una de las clases de datos `fishery` y `
 
 * print.summary.fishery: este método permite visualizar los productos del método `summary.fishery`.
 
-* plot.fishery: este método permite realizar seis tipos de gráficos con datos de la clase `fishery`. 
+* plot.fishery: este método permite realizar siete tipos de gráficos con datos de la clase `fishery`. 
 
 * report.fishery: este método exporta un reporte en formato pdf de la base de datos analizada.
 
+Una breve ejemplificación del uso de los métodos de la clase `fishery` se muestra en la siguiente sección:
 
 ```{r, eval = FALSE}
 # Cargar la base de datos
@@ -196,3 +192,51 @@ report(landing, daysToPlot = "15")
 
 ```
 
+#### Métodos de la clase `cpue`
+
+```{r, eval = FALSE}
+# Revisar la ayuda de los métodos de la clase cpue
+?print.cpue
+?summary.cpue
+?print.summary.cpue
+?plot.cpue
+?report.cpue
+```
+
+La descripción de cada método se dará a continuación:
+
+* print.cpue: muestra un resumen del contenido de información de la base de datos de clase cpue. La información que proporciona este método es similar a la que proporciona `print.fishery`, sin embargo puede revisar la ayuda de `print.cpue` para mayor información.
+
+* summary.cpue: proporciona una lista con: (1) el tipo de esfuerzo que fue usado para estimar la cpue; (2) una base de datos diaria por puerto; (3) una base de datos total en escala temporal diaria; una base de datos por puerto; (4) una base de datos en escala temporal mensual; (5) y una base de datos en escala temporal anual.
+
+* print.summary.cpue: este método permite visualizar los productos del método `summary.cpue`.
+
+* plot.cpue: este método permite realizar seis tipos de gráficos con datos de la clase `cpue`. 
+
+* report.cpue: este método exporta un reporte en formato pdf de la base de datos analizada.
+
+
+Una breve ejemplificación del uso de los métodos de la clase `cpue` se muestra en la siguiente sección:
+
+```{r, eval = FALSE}
+# Cargar la base de datos
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Crear un objeto de la clase cpue usando la base de datos ejemplo (fisheryData) de caballa
+cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa",
+                       efforType = "capacidad_bodega")
+
+#Algunos ejemplos del uso de los métodos
+print(cpue)
+
+sumCpue = summary(cpue)
+print(sumCpue)
+
+sumCpue = summary(cpue, language = "english")
+print(sumCpue, language = "english")
+
+plot(cpue)
+
+report(cpue, daysToPlot = "1")
+
+```

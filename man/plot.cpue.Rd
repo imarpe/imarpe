@@ -39,4 +39,24 @@ A graph of the specified type in \code{ploType}.
 This method takes a \code{cpue} object and make useful plots.
 The plots can be daily, monthly, yearly or for north-central and south peruvian region.
 }
+\examples{
+# Read a example of a data base
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Produce a object of cpue class
+cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue", sp = "caballa", efforType = "capacidad_bodega")
+class(cpue)
+
+plot(cpue)
+plot(cpue, daysToPlot = "1", colBar = "red")
+plot(cpue, language= "english")
+plot(cpue, ploType = "plotMonthly")
+plot(cpue, ploType = "plotMonthly", language= "english", colBar = "green")
+plot(cpue, ploType = "plotYearly")
+plot(cpue, ploType = "plotYearly", colBar = "orange")
+plot(cpue, ploType = "plotPERU")
+plot(cpue, ploType = "plotNC")
+plot(cpue, ploType = "plotS")
+
+}
 
