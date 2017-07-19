@@ -119,13 +119,15 @@ NULL
 #'  create a data base which includes a data frame and a list with the main features of the data frame.
 #'  The included data frame object has observations corresponding to rows and variables to columns.
 #'
-#' @param file The name of the file with fishery data. If it does not contain an absolute path,
+#' @param file The name of a file with a comma separated values format (extension of this files are .csv).
+#'  This file have fishing information related to the landing and effort. If it does not contain an absolute path,
 #'  the file name is relative to the current working directory, \code{\link{getwd}}.
 #' @param type The type of the information: fisheryInfo with two variables (landing and fishing effort) and
 #' the cpue (catch per unith effort).
 #' @param varType The type of the variable that has been to analyze. This can be: lading, effort and cpue.
-#' @param toTons A logical parameter. \code{TRUE} (dafault) it assume that the fishery information is in kilograms
-#' and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information is in tons and don't convert the data.
+#' @param toTons A logical parameter. \code{TRUE} (dafault) it assume that the fishery information is
+#' in kilograms and converts it into tonnes (divided by 1000). \code{FALSE} it assume the the information
+#' is in tons and don't convert the data.
 #' @param sp The name of the species.
 #' @param start The date to start the analysis. By dafault is \code{NULL}.
 #' @param end The date to end the analysis. By dafault is \code{NULL}.
@@ -151,30 +153,41 @@ NULL
 #' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 #' @examples
 #' # Read a data base of fishery class
-#' file.landing = "FisheryData.csv"
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 #'
-#' # For landing information assuming the analyzed species is 'anchovy', put the name of the species on \code{sp}:
-#' landing  = getFishingData(file = file.landing, type = "fisheryinfo", varType = "landing", sp = "anchovy")
+#' # For landing information assuming the analyzed species is 'caballa', put the name of the species on \code{sp}
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
 #'
-#' # If you can analyzed a period of time you have to use \code{start} and \code{end} parameters:
-#' landing  = getFishingData(file = file.name, type = "fisheryinfo", varType = "landing", sp = "anchovy",
+#' # If you can analyzed a period of time you have to use \code{start} and \code{end} parameters
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa",
 #' start = "2009-04-10", end = "2009-08-30")
 #'
-#' # If you can analyzed a specific port put the name of the port on \code{port}:
-#' landing  = getFishingData(file = file.name, type = "fisheryinfo", varType = "landing", sp = "anchovy",
+#' # If you can analyzed a specific port put the name of the port on \code{port}
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa",
 #' start = "2009-04-10", end = "2009-08-30", port = "PAITA")
 #'
-#' # Check the class of the landing object, it would be 'fishery'.
+#' # Check the class of the landing object, it would be 'fishery'
 #' class(landing)
 #'
 #' # To get the data of the landing object.
-#' data = landing$data
+#' dataBase = landing$data
 #'
 #' # To get the main features of the landing object.
 #' info = landing$info
 #'
 #' # To get the data frame with the landings by each type of fleet.
 #' fleet = landing$fleeTable
+#'
+#'
+#' # To analyze the effort information on the same data, use the parameter varType and
+#' # specify the type of effort in the parameter efforType
+#' effort  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
+#'  sp = "caballa", efforType = "capacidad_bodega")
+#'
+#' # To analyze the cpue information on the same data change the parameter type, specify
+#' the varType and specify the type of effort to calculate the catch per unit effort (cpue)
+#' cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
+#' sp = "caballa", efforType = "capacidad_bodega")
 #'
 #' @export
 getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL, port = NULL,

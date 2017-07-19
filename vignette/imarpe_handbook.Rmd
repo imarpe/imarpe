@@ -60,7 +60,7 @@ library(imarpe)
 ## Módulo Pesquería:
 Esta sección trabaja sobre información pesquera, orientada al análisis de las variables: captura y desembarque, esfuerzo y captura por unidad de esfuerzo (cpue), reproduciendo tablas, gráficas y reportes de manera automatizada. Así mismo, el Programa de Observadores a Bordo (Programa de Bitácoras de Pesca) del IMARPE también cuenta un subsección de trabajo dentro del módulo de pesquería, el cual permite obtener las principales gráficas y tablas que son requeridas en los reportes periódicos que emiten.
 
-Las principales funciones con las que cuenta `imarpe` son 4 y las abordaremos una a una mediante sub-secciones que describan las clases de objetos.
+Las principales funciones con las que cuenta `imarpe` son 4 y las explicaremos al detalle en las siguientes sub-secciones.
 
 ```{r, eval = FALSE}
 getFishingData
@@ -69,27 +69,130 @@ getMainResults.bitacora
 getDailyReport
 ```
 
-### 1. Get the fishing data:
-Esta función principal es usada para dos tipos de clases de datos: fishery y cpue. La primera clase, `fishery`, contiene variables pesqueras que en este caso incluye a los desembarques (landing) y al esfuerzo (effort). La segunda clase de datos, `cpue`, incluye a la captura por unidad de esfuerzo (cpue).
+### 1. Análisis de información pesquera
 
-`imarpe` incluye una base de datos (`fisheryData`) para ejemplificar el uso de esta función. Sin embargo, toda base de datos debe poseer información sobre el tiempo (año, mes y dia), sobre la especie, sobre el tipo de flota y puerto, la información de posición (que es opcional), e imprescindible la información de la captura (o desembarque), así como las variables que serán utilizadas en el esfuerzo pesquero. Se puede utilizar la ayuda de `fisheryData` para conocer un poco más de su contenido. 
+#### Uso de getFishingData
+
+Esta función es usada para dos tipos de clases de datos: `fishery` y `cpue`. La primera clase de datos contiene variables pesqueras que en este caso incluye a los desembarques (landing) y al esfuerzo (effort). La segunda clase de datos incluye a la captura por unidad de esfuerzo, de ahi el nombre de la clase.
+
+`imarpe` incluye una base de datos interna (`fisheryData`) que será usada para ejemplificar el uso de esta función. Sin embargo, toda base de datos debe poseer información sobre el tiempo (año, mes y dia), sobre la especie en estudio, sobre el tipo de flota y puertos, la información de la captura (o desembarque) así como del esfuerzo pesquero, la información de posición (latitud y longitud) es opcional.
 
 El nombre de las columnas debe ser el mismo al de la base de datos de ejemplo, sin embargo el uso de mayúsculas y minúsculas será resuelto internamente.
 
-Luego se utilizará la `getFishingData` para analizar los desembarques de la base de datos bringada. La ayuda de esta función puede ser visualizada para una mejor comprensión de sus parámetros.
+En la siguiente demostración del uso de `getFishingData`, la función analiza los desembarques de la base de datos contenida en el archivo .csv (archivo delimitado por comas) para obtener como producto i) un archivo de clase data.frame con la base de datos analizada por puerto en resolución temporal diaria, ii) una lista con las principales características de la base de datos analizada, y iii) un resumen de la información por tipo de flota en resolución temporal mensual.
+
+Adicionalmente, la ayuda de esta función puede ser visualizada para una mejor comprensión de los parámetros de la función.
+
 
 ```{r, eval = FALSE}
 # Cargar la base de datos
-?fisheryData
-data(fisheryData)
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 
-# Usar getFishingData con la base de datos ejemplo (fisheryData)
+# Para cargar la ayuda de la función
 ?getFishingData
-desembarque = getFishingData(file = fisheryData, type = "fisheryInfo", varType = "landing",
-                             sp = "caballa")
+
+# Usar getFishingData con la base de datos ejemplo (fisheryData) de caballa
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+                          sp = "caballa")
+
+class(landing)
+dataBase = landing$data
+info = landing$info
+fleet = landing$fleeTable
+
+# Para analizar un periodo de tiempo de la base de datos
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+                          sp = "caballa", start = "2009-04-10", end = "2009-08-30")
+
+# Para analizar la información de un puerto específico
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+                          sp = "caballa", start = "2009-04-10", end = "2009-08-30",
+                          port = "PAITA")
 ```
 
+De manera similar al análisis de los desembarques se analizará la información del esfuerzo pesquero continuando con el uso de la función `getFishingData` así como de la base de datos interna (`fisheryData`).
 
-`getFishingData` lee información pesquera para obtener i) un data.frame (o marco de datos) y ii) una lista con las principales características de dicho data.frame. 
+Para el análisis de esta variable, el tipo de información (parámetro `type`) sigue siendo `fisheryInfo` pero el tipo de variable (parámetro `varType`) será `effort`; y se debe precisar que tipo de esfuerzo pesquero se analizará en `efforType`. En el siguiente ejemplo se usó capacidad de bodega, pero podría ser número de viajes, número de anzuelos así como número de embarcaciones (ver ayuda de la función `getFishingData` para más información).
 
+```{r, eval = FALSE}
+# Para analizar la información de esfuerzo con la base de datos ejemplo (fisheryData)
+# de caballa
+effort  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
+                         sp = "caballa", efforType = "capacidad_bodega")
+
+class(effort)
+dataBase = effort$data
+info = effort$info
+fleet = effort$fleeTable
+```
+
+Finalmente, el análisis de la captura por unidad de esfuerzo (cpue) se analizará en la siguiente sección. Aquí los parámetros `type` y  `varType` deben ser iguales a `cpue`, y se debe precisar que tipo de esfuerzo se usará (en `efforType`) para calcular la cpue.
+
+```{r, eval = FALSE}
+# Para analizar la información de cpue con la base de datos ejemplo (fisheryData)
+# de caballa
+cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
+                       sp = "caballa", efforType = "capacidad_bodega")
+
+class(cpue)
+dataBase = cpue$data
+info = cpue$info
+fleet = cpue$fleeTable
+```
+
+Para los dos últimos ejemplo, de esfuerzo y cpue, también se pueden usar los parámetros `start` y `end` para hacer un análisis sobre un periodo de tiempo específico, así como el parámetro `port`, para analizar la información de un determinado puerto.
+
+#### Métodos para las clases: `fishery` y `cpue`
+
+Se construyeron cinco métodos para cada una de las clases de datos `fishery` y `cpue`. Estos son: `print`, `summary`, `print.summary`, `plot` y `report` y las ayudas para cada método debe ser llamada por el método seguido por un punto (".") y luego la clase de datos correspondiente.
+
+```{r, eval = FALSE}
+# Revisar la ayuda de los métodos de la clase fishery
+?print.fishery
+?summary.fishery
+?print.summary.fishery
+?plot.fishery
+?report.fishery
+
+# Revisar la ayuda de los métodos de la clase cpue
+?print.cpue
+?summary.cpue
+?print.summary.cpue
+?plot.cpue
+?report.cpue
+```
+
+* print.fishery: muestra un resumen del contenido de información de la base de datos de clase fishery. Esta información incluye: (1) el nombre de la base de datos utilizada; (2) el número de registros que poseen los datos; el periodo de tiempo analizado ((3) meses y (4) años); (5) el número de puertos que poseen los datos; (6) la especie analizada en la base de datos y (7) el tipo de variable, en este caso sería `landing` o `effort`.
+
+* summary.fishery: proporciona una lista con: (1) el tipo de variable que fue analizada; (2) una base de datos diaria por puerto de la variable analizada; (3) una base de datos total en escala temporal diaria; una base de datos por puerto; (4) una base de datos en escala temporal mensual; (5) y una base de datos en escala temporal anual.
+
+* print.summary.fishery: este método permite visualizar los productos del método `summary.fishery`.
+
+* plot.fishery: este método permite realizar seis tipos de gráficos con datos de la clase `fishery`. 
+
+* report.fishery: este método exporta un reporte en formato pdf de la base de datos analizada.
+
+
+```{r, eval = FALSE}
+# Cargar la base de datos
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Crear un objeto de la clase fishery usando la base de datos ejemplo (fisheryData) de caballa
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+                          sp = "caballa")
+
+#Algunos ejemplos del uso de los métodos
+print(landing)
+
+sumLanding = summary(landing)
+print(sumLanding)
+
+sumLanding = summary(landing, language = "english")
+print(sumLanding, language = "english")
+
+plot(landing)
+
+report(landing, daysToPlot = "15")
+
+```
 

@@ -18,4 +18,20 @@ Each element of \code{summary.fishery} method.
 \description{
 Shows main information from \code{summary.fishery} objects.
 }
+\examples{
+# Read a data base of fishery class
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Produce a object of fishery class
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+class(landing)
+
+# Print the summary of the fishery class object
+sumLanding = summary(landing)
+print(sumLanding)
+
+sumLanding = summary(landing, language = "english")
+print(sumLanding, language = "english")
+
+}
 

@@ -1,10 +1,22 @@
 #' @title Print method for fishery objects
-#' @description Shows main information from fishery objects, like number of records data,
-#' the time period of date (years and months), the number of ports, the analyzed species and
-#' the analyzed variable type.
+#' @description Shows main information from objects of the class \code{fishery},
+#' like number of records data, the time period of date (years and months),
+#' the number of ports, the analyzed species and the analyzed variable type.
 #' @param x Object of class \code{fishery}.
 #' @param language The select language to print the outputs.
 #' @export
+#' @examples
+#' # Read a data base of fishery class
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of fishery class
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+#' class(landing)
+#'
+#' # Show main information of the fishery class object
+#' print(landing)
+#' print(landing, language = "english")
+#'
 #' @method print fishery
 print.fishery = function(x, language="spanish") {
 
@@ -31,7 +43,7 @@ print.fishery = function(x, language="spanish") {
 
 #' @title Summary method for fishery objects
 #' @description Get summary information of landing and fishing effort included on
-#'  \code{fishery} objects.
+#' objects of the class \code{fishery} .
 #' @param object Object of class \code{fishery}.
 #' @param language The select language to print the summary of fishery objects.
 #' It could be \code{"spanish"} by default or \code{"english"}.
@@ -45,6 +57,17 @@ print.fishery = function(x, language="spanish") {
 #'   \item years A data frame with the information of the variable by years.
 #' }
 #' @export
+#' @examples
+#' # Read a data base of fishery class
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of fishery class
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+#' class(landing)
+#'
+#' # Produce the summary of the fishery class object
+#' summary(landing)
+#'
 #' @method summary fishery
 summary.fishery =  function(object, language = "spanish") {
 
@@ -78,6 +101,21 @@ summary.fishery =  function(object, language = "spanish") {
 #' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return Each element of \code{summary.fishery} method.
 #' @export
+#' @examples
+#' # Read a data base of fishery class
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of fishery class
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+#' class(landing)
+#'
+#' # Print the summary of the fishery class object
+#' sumLanding = summary(landing)
+#' print(sumLanding)
+#'
+#' sumLanding = summary(landing, language = "english")
+#' print(sumLanding, language = "english")
+#'
 #' @method print summary.fishery
 print.summary.fishery = function(x, language = "spanish") {
 
@@ -131,13 +169,33 @@ print.summary.fishery = function(x, language = "spanish") {
 #'   \item plotNC to plot the north-central region
 #'   \item plotS to plot the south region
 #' }
-#' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
-#'  (1, 8, 15, 22). This is including in a vector form.
+#' @param daysToPlot If is a daily plot by default the x-axis show the first day of a week
+#'  (1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
+#'  data with \code{all}. This is including in a vector form.
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @param ... Extra arguments.
 #' @return A graph of the specified type in \code{ploType}.
 #' @export
+#' @examples
+#' # Read a data base of fishery class
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of fishery class
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+#' class(landing)
+#'
+#' plot(landing)
+#' plot(landing, daysToPlot = "2", colBar = "red")
+#' plot(landing, language= "english")
+#' plot(landing, ploType = "plotMonthly")
+#' plot(landing, ploType = "plotMonthly", language= "english")
+#' plot(landing, ploType = "plotYearly")
+#' plot(landing, ploType = "plotYearly", language= "english", colBar = "green")
+#' plot(landing, ploType = "plotPERU")
+#' plot(landing, ploType = "plotNC")
+#' plot(landing, ploType = "plotS")
+#'
 #' @method plot fishery
 plot.fishery = function(x, language = "spanish", ploType = NULL, daysToPlot = c(1,8,15,22),
                         textAxis2 = NULL, textAxis4 = NULL, colBar = "gray", colLine = "red", ...) {
@@ -171,11 +229,26 @@ plot.fishery = function(x, language = "spanish", ploType = NULL, daysToPlot = c(
 #' @description Export a report of landing or fishing effort.
 #' @param x Object of \code{fishery} class.
 #' @param type Complete this.
-#' @param daysToPlot If is a daily plot by default the x axis plot the first day of the month
-#'  (1, 8, 15, 22). This is including in a vector form.
+#' @param daysToPlot If is a daily plot by default the x-axis show the first day of a week
+#'  (1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
+#'  data with \code{all}. This is including in a vector form.
 #' @param textAxis2 The text of the x axis.
 #' @param textAxis4 The text of the y axis.
 #' @export
+#' @examples
+#' # Read a data base of fishery class
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # Produce a object of fishery class
+#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+#' class(landing)
+#'
+#' #Produce the report showing all days on the x-axis (by default)
+#' report(landing)
+#'
+#' #Produce the report showing only the day 15 on the x-axis
+#' report(landing, daysToPlot = "15")
+#'
 #' @method report fishery
 report.fishery = function(x, type = "singled", format="latex", tangle=FALSE, output = NULL, open = TRUE,
                           daysToPlot = c(1,8,15,22), textAxis2 = NULL, textAxis4 = NULL){

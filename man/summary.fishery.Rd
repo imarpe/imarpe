@@ -25,6 +25,18 @@ A \code{list} of summary.fishery class. This contains:
 }
 \description{
 Get summary information of landing and fishing effort included on
- \code{fishery} objects.
+objects of the class \code{fishery} .
+}
+\examples{
+# Read a data base of fishery class
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Produce a object of fishery class
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+class(landing)
+
+# Produce the summary of the fishery class object
+summary(landing)
+
 }
 

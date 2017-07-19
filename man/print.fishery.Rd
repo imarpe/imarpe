@@ -12,8 +12,21 @@
 \item{language}{The select language to print the outputs.}
 }
 \description{
-Shows main information from fishery objects, like number of records data,
-the time period of date (years and months), the number of ports, the analyzed species and
-the analyzed variable type.
+Shows main information from objects of the class \code{fishery},
+like number of records data, the time period of date (years and months),
+the number of ports, the analyzed species and the analyzed variable type.
+}
+\examples{
+# Read a data base of fishery class
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# Produce a object of fishery class
+landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa")
+class(landing)
+
+# Show main information of the fishery class object
+print(landing)
+print(landing, language = "english")
+
 }
 
