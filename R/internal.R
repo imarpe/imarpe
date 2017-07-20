@@ -5,7 +5,14 @@
 .convertBase = function(file, sp, fleeType, efforType){
 
   #lectura de datos
-  base            = read.csv(file, na.strings = "")
+  if(efforType == "viaje") {
+    base = read.csv(file, na.strings = "")
+  } else {
+    base = read.csv(file, stringsAsFactors = FALSE)
+    colnames(base)  = tolower(colnames(base))
+    base = base[!is.na(base[, "captura"]) & !is.na(base[, efforType]), ]
+  }
+
   colnames(base)  = tolower(colnames(base))
   base$especie    = tolower(base$especie)
   base$tipo_flota = tolower(base$tipo_flota)
@@ -76,8 +83,16 @@
                       landingFun = sum, effortFun = sum, cpueFun = mean,
                       start = start, end = end, port = port, ...){
 
-  #Lectura de base
-  dataBase = read.csv(file = file, header = TRUE, ...)
+  #Lectura de datos
+  if(efforType == "viaje") {
+    dataBase = read.csv(file, stringsAsFactors = FALSE, header = TRUE)
+  } else {
+    dataBase = read.csv(file, stringsAsFactors = FALSE, header = TRUE)
+    colnames(dataBase) = tolower(colnames(dataBase))
+    dataBase = dataBase[!is.na(dataBase[, "captura"]) & !is.na(dataBase[, efforType]), ]
+  }
+
+  #Editando dataBase
   colnames(dataBase)  = tolower(colnames(dataBase))
   dataBase$especie    = tolower(dataBase$especie)
   dataBase$tipo_flota = tolower(dataBase$tipo_flota)
