@@ -7,14 +7,15 @@
 \method{print}{cpue}(x, language = "spanish")
 }
 \arguments{
-\item{x}{Object of class \code{cpue}.}
+\item{x}{Object of \code{cpue} class.}
 
 \item{language}{The select language to print the outputs.}
 }
 \description{
-Shows main information from objects of the catch per unit effort (cpue) class,
-like number of records data, the time period of date (years and months), the number of
-ports, the analyzed species and the type of effort used on the cpue.
+Shows main information from objects of the catch per unit effort
+(cpue) class, like number of records data, the time period of dates
+(years and months), the number of ports, the analyzed species and the
+type of effort used on the cpue.
 }
 \examples{
 # Read a example of a data base

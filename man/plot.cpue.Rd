@@ -11,20 +11,22 @@
 \arguments{
 \item{x}{Object of \code{cpue} class.}
 
-\item{language}{\code{character}. Define the language of text labels in plots.
+\item{language}{A \code{character}. Define the language of text labels in plots.
 It could be \code{"spanish"} or \code{"english"}.}
 
 \item{ploType}{What type of plot should be draw. Possible types are:
 \itemize{
-  \item plotDaily for daily plot
+   \item plotDaily for daily plot
   \item plotMonthly for monthly plot
   \item plotYearly for yearly plot
-  \item plotNC to plot the north-central region
-  \item plotS to plot the south region
+  \item plotPeru for all the peruvian region
+  \item plotNC to graph the north-central region
+  \item plotS to graph the south region
 }}
 
-\item{daysToPlot}{if is a daily plot by default the x axis plot the first day of the month
-(1, 8, 15, 22). This is including in a vector form.}
+\item{daysToPlot}{If is a daily plot by default the x-axis show the first day of a week
+(1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
+data with \code{all}. This is including in a vector form.}
 
 \item{textAxis2}{The text of the x axis.}
 
@@ -37,7 +39,8 @@ A graph of the specified type in \code{ploType}.
 }
 \description{
 This method takes a \code{cpue} object and make useful plots.
-The plots can be daily, monthly, yearly or for north-central and south peruvian region.
+The plots can be daily, monthly, yearly, over the peruvian region, and
+for north-central and south peruvian region.
 }
 \examples{
 # Read a example of a data base

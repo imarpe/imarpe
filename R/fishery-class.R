@@ -2,7 +2,7 @@
 #' @description Shows main information from objects of the \code{fishery} class,
 #' like number of records data, the time period of dates (years and months),
 #' the number of ports, the analyzed species and the analyzed variable type.
-#' @param x Object of class \code{fishery}.
+#' @param x Object of \code{fishery} class.
 #' @param language The select language to print the outputs.
 #' @export
 #' @examples
@@ -43,8 +43,8 @@ print.fishery = function(x, language="spanish") {
 
 #' @title Summary method for fishery objects
 #' @description Get summary information of landing and fishing effort included on
-#' objects of the class \code{fishery} .
-#' @param object Object of class \code{fishery}.
+#' objects of \code{fishery} class.
+#' @param object Object of \code{fishery} class.
 #' @param language The select language to print the summary of fishery objects.
 #' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return A \code{list} of summary.fishery class. This contains:
@@ -96,7 +96,7 @@ summary.fishery =  function(object, language = "spanish") {
 
 #' @title Print method for summary.fishery
 #' @description Shows main information from \code{summary.fishery} objects.
-#' @param x Object of class \code{summary.fishery}.
+#' @param x Object of \code{summary.fishery} class.
 #' @param language The select language to print the summary of fishery objects.
 #' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return Each element of \code{summary.fishery} method.
@@ -290,13 +290,29 @@ report.fishery = function(x, type = "singled", format="latex", tangle=FALSE, out
 }
 
 #' Combine fishery variables
-#' @description Function to combine two fishery class outputs (landings and effort)
+#' @description Function to combine two fishery class outputs (landing and effort)
 #' into a only list.
-#' @param landing List of landings with the class fishery.
-#' @param effort List of efforts with the class fishery.
-#' @return A list of the class fishery with information about the two lists.
+#' @param landing Object of \code{fishery} class and landing variable type.
+#' @param effort Object of \code{fishery} class and effort variable type.
+#' @return A object of \code{fishery} class with information about the two lists, the first
+#' with for landing and the second for effort.
+#' @examples
+#' # Read a example of a data base
+#' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+#'
+#' # A fishery class object with a landing variable type
+#' landingObject = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+#'  sp = "caballa")
+#'
+#' # A fishery class object with a effort variable type
+#' effortObject = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
+#' sp = "caballa", efforType = "viaje")
+#'
+#' # Use combineFisheryVar
+#' fisheryVar = combineFisheryVar(landing = landingObject, effort = effortObject)
+#' class(fisheryVar)
 #' @export
-combineFisheryVar = function(landing, effort){
+combineFisheryVar = function(landing, effort) {
 
   x = list(landing = landing,
            effort  = effort)

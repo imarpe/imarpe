@@ -11,7 +11,10 @@
 \arguments{
 \item{x}{Object of \code{fishery} class.}
 
-\item{type}{Complete this.}
+\item{type}{To indicate if the report is going to be reproduce for individual
+variables (for landing or for effort) use \code{type = single} (by default).
+To reproduce a report using the joined information (landing and effort)
+use \code{type = joined}.}
 
 \item{daysToPlot}{If is a daily plot by default the x-axis show the first day of a week
 (1, 8, 15, 22) but could be change to show a specific day or to show the all days of the

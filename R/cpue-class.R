@@ -3,7 +3,7 @@
 #' (cpue) class, like number of records data, the time period of dates
 #' (years and months), the number of ports, the analyzed species and the
 #' type of effort used on the cpue.
-#' @param x Object of class \code{cpue}.
+#' @param x Object of \code{cpue} class.
 #' @param language The select language to print the outputs.
 #' @export
 #' @examples
@@ -45,7 +45,7 @@ print.cpue = function(x, language="spanish"){
 #' @title Summary method for cpue objects
 #' @description Get summary information included on objects of catch
 #' per unit effort (cpue) class.
-#' @param object Object of class \code{cpue}.
+#' @param object Object of \code{cpue} class.
 #' @param language The select language to print the summary of cpue objects.
 #' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return A \code{list} of summary.cpue class. This contains:
@@ -99,7 +99,7 @@ summary.cpue = function(object, language = "spanish"){
 
 #' @title Print method for summary.cpue
 #' @description Shows main information from \code{summary.cpue} objects.
-#' @param x Object of class \code{summary.cpue}.
+#' @param x Object of \code{summary.cpue} class.
 #' @param language The select language to print the summary of cpue objects.
 #' It could be \code{"spanish"} by default or \code{"english"}.
 #' @return Each element of \code{summary.cpue} method.

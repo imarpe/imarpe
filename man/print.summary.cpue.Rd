@@ -7,7 +7,7 @@
 \method{print}{summary.cpue}(x, language = "spanish")
 }
 \arguments{
-\item{x}{Object of class \code{summary.cpue}.}
+\item{x}{Object of \code{summary.cpue} class.}
 
 \item{language}{The select language to print the summary of cpue objects.
 It could be \code{"spanish"} by default or \code{"english"}.}

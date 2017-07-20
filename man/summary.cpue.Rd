@@ -7,7 +7,7 @@
 \method{summary}{cpue}(object, language = "spanish")
 }
 \arguments{
-\item{object}{Object of class \code{cpue}.}
+\item{object}{Object of \code{cpue} class.}
 
 \item{language}{The select language to print the summary of cpue objects.
 It could be \code{"spanish"} by default or \code{"english"}.}
@@ -24,7 +24,8 @@ A \code{list} of summary.cpue class. This contains:
 }
 }
 \description{
-Get summary information of catch per unit effort (cpue) object.
+Get summary information included on objects of catch
+per unit effort (cpue) class.
 }
 \examples{
 # Read a example of a data base

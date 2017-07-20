@@ -7,7 +7,7 @@
 \method{print}{summary.fishery}(x, language = "spanish")
 }
 \arguments{
-\item{x}{Object of class \code{summary.fishery}.}
+\item{x}{Object of \code{summary.fishery} class.}
 
 \item{language}{The select language to print the summary of fishery objects.
 It could be \code{"spanish"} by default or \code{"english"}.}

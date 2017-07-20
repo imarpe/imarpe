@@ -7,7 +7,7 @@
 \method{summary}{fishery}(object, language = "spanish")
 }
 \arguments{
-\item{object}{Object of class \code{fishery}.}
+\item{object}{Object of \code{fishery} class.}
 
 \item{language}{The select language to print the summary of fishery objects.
 It could be \code{"spanish"} by default or \code{"english"}.}
@@ -25,7 +25,7 @@ A \code{list} of summary.fishery class. This contains:
 }
 \description{
 Get summary information of landing and fishing effort included on
-objects of the class \code{fishery} .
+objects of \code{fishery} class.
 }
 \examples{
 # Read a example of a data base

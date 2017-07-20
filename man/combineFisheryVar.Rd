@@ -7,15 +7,32 @@
 combineFisheryVar(landing, effort)
 }
 \arguments{
-\item{landing}{List of landings with the class fishery.}
+\item{landing}{Object of \code{fishery} class and landing variable type.}
 
-\item{effort}{List of efforts with the class fishery.}
+\item{effort}{Object of \code{fishery} class and effort variable type.}
 }
 \value{
-A list of the class fishery with information about the two lists.
+A object of \code{fishery} class with information about the two lists, the first
+with for landing and the second for effort.
 }
 \description{
-Function to combine two fishery class outputs (landings and effort)
+Function to combine two fishery class outputs (landing and effort)
 into a only list.
+}
+\examples{
+# Read a example of a data base
+fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
+
+# A fishery class object with a landing variable type
+landingObject = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+ sp = "caballa")
+
+# A fishery class object with a effort variable type
+effortObject = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
+sp = "caballa", efforType = "viaje")
+
+# Use combineFisheryVar
+fisheryVar = combineFisheryVar(landing = landingObject, effort = effortObject)
+class(fisheryVar)
 }
 

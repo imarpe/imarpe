@@ -11,7 +11,7 @@
 \arguments{
 \item{x}{Object of \code{fishing} class.}
 
-\item{language}{\code{character}. Define the language of text labels in plots.
+\item{language}{A \code{character}. Define the language of text labels in plots.
 It could be \code{"spanish"} or \code{"english"}.}
 
 \item{ploType}{What type of plot should be draw. Possible types are:
@@ -19,8 +19,10 @@ It could be \code{"spanish"} or \code{"english"}.}
   \item plotDaily for daily plot
   \item plotMonthly for monthly plot
   \item plotYearly for yearly plot
-  \item plotNC to plot the north-central region
-  \item plotS to plot the south region
+  \item plotPeru for all the peruvian region
+  \item plotNC to graph the north-central region
+  \item plotS to graph the south region
+  \item plotJoined to graph the effort and landing
 }}
 
 \item{daysToPlot}{If is a daily plot by default the x-axis show the first day of a week
@@ -38,8 +40,10 @@ A graph of the specified type in \code{ploType}.
 }
 \description{
 This method takes a \code{fishery} object and make useful plots for
-each variables (lading and fishing effort). The plots can be daily, monthly, yearly or
-for north-central and south peruvian region.
+each variables (fishing lading and fishing effort). The plots can be daily,
+monthly, yearly, over the peruvian region, and for north-central and south peruvian
+region. An additional plot type to graph the effort and landing at the same time
+using two y-axis.
 }
 \examples{
 # Read a example of a data base

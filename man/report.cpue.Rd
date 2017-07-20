@@ -11,15 +11,16 @@
 \arguments{
 \item{x}{Object of \code{cpue} class.}
 
-\item{daysToPlot}{If is a daily plot by default the x axis plot the first day of the month
-(1, 8, 15, 22). This is including in a vector form.}
+\item{daysToPlot}{If is a daily plot by default the x-axis show the first day of a week
+(1, 8, 15, 22) but could be change to show a specific day or to show the all days of the
+data with \code{all}. This is including in a vector form.}
 
 \item{textAxis2}{The text of the x axis.}
 
 \item{textAxis4}{The text of the y axis.}
 }
 \description{
-Export a report of catch per unit effort class.
+Export a report of catch per unit effort (cpue) class.
 }
 \examples{
 # Read a example of a data base

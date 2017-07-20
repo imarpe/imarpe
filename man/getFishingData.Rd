@@ -32,7 +32,7 @@ is in tons and don't convert the data.}
 \item{efforType}{If the varType is effort or cpue (catch per unit effort) this parameter indicate what
 type of effort will be used.
 \itemize{
-  \item "viajes" for the travels number.
+  \item "viaje" for the travel number.
   \item "capacidad_bodega" for storage capacity.
   \item "anzuelos" for the hook number.
   \item "embarcaciones" for the number of boats.

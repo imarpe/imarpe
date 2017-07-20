@@ -7,13 +7,13 @@
 \method{print}{fishery}(x, language = "spanish")
 }
 \arguments{
-\item{x}{Object of class \code{fishery}.}
+\item{x}{Object of \code{fishery} class.}
 
 \item{language}{The select language to print the outputs.}
 }
 \description{
-Shows main information from objects of the class \code{fishery},
-like number of records data, the time period of date (years and months),
+Shows main information from objects of the \code{fishery} class,
+like number of records data, the time period of dates (years and months),
 the number of ports, the analyzed species and the analyzed variable type.
 }
 \examples{
