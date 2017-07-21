@@ -186,9 +186,9 @@
     if(efforType == "capacidad_bodega"){
       if(language == "spanish"){labUnits = expression(paste("Capacidad bodega (", m^3, ")")) } else {labUnits = expression(paste("Hold storage (", m^3, ")"))}}
     if(efforType == "anzuelos"){
-      if(language == "spanish"){labUnits = "Numero de anzuelos)" } else {labUnits = "Number of fish hook"}}
+      if(language == "spanish"){labUnits = "Numero de anzuelos" } else {labUnits = "Number of fish hook"}}
     if(efforType == "embarcaciones"){
-      if(language == "spanish"){labUnits = "Numero de embarcaciones)" } else {labUnits = "Number of boats"}}
+      if(language == "spanish"){labUnits = "Numero de embarcaciones" } else {labUnits = "Number of boats"}}
   }
 
   if(is.null(ylab)){
@@ -234,9 +234,9 @@
     if(efforType == "capacidad_bodega"){
       if(language == "spanish"){labUnits = expression(paste("Capacidad bodega (", m^3, ")")) } else {labUnits = expression(paste("Hold storage (", m^3, ")"))}}
     if(efforType == "anzuelos"){
-      if(language == "spanish"){labUnits = "Numero de anzuelos)" } else {labUnits = "Number of fishhook"}}
+      if(language == "spanish"){labUnits = "Numero de anzuelos" } else {labUnits = "Number of fishhook"}}
     if(efforType == "embarcaciones"){
-      if(language == "spanish"){labUnits = "Numero de embarcaciones)" } else {labUnits = "Number of boats"}}
+      if(language == "spanish"){labUnits = "Numero de embarcaciones" } else {labUnits = "Number of boats"}}
   }
 
   if(is.null(ylab)){
@@ -278,9 +278,9 @@
     if(efforType == "capacidad_bodega"){
       if(language == "spanish"){labUnits = expression(paste("Capacidad bodega (", m^3, ")")) } else {labUnits = expression(paste("Hold storage (", m^3, ")"))}}
     if(efforType == "anzuelos"){
-      if(language == "spanish"){labUnits = "Numero de anzuelos)" } else {labUnits = "Number of fishhook"}}
+      if(language == "spanish"){labUnits = "Numero de anzuelos" } else {labUnits = "Number of fishhook"}}
     if(efforType == "embarcaciones"){
-      if(language == "spanish"){labUnits = "Numero de embarcaciones)" } else {labUnits = "Number of boats"}}
+      if(language == "spanish"){labUnits = "Numero de embarcaciones" } else {labUnits = "Number of boats"}}
   }
 
   if(is.null(ylab)){
@@ -336,9 +336,9 @@
   if(efforType == "capacidad_bodega") {
     if(language == "spanish") {labAxis4 = expression(paste("Capacidad bodega (", m^3, ")")) } else {labAxis4 = expression(paste("Hold storage (", m^3, ")"))}}
   if(efforType == "anzuelos") {
-    if(language == "spanish") {labAxis4 = "Numero de anzuelos)" } else {labAxis4 = "Number of fish hook"}}
+    if(language == "spanish") {labAxis4 = "Numero de anzuelos" } else {labAxis4 = "Number of fish hook"}}
   if(efforType == "embarcaciones") {
-    if(language == "spanish") {labAxis4 = "Numero de embarcaciones)" } else {labAxis4 = "Number of boats"}}
+    if(language == "spanish") {labAxis4 = "Numero de embarcaciones" } else {labAxis4 = "Number of boats"}}
 
   landingType = x$landing$info$varType
   if(landingType == "landing") {
