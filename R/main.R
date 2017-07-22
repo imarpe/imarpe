@@ -402,50 +402,48 @@ plotEffort = function(effort1, effort2, ...) {
 
 #' Title
 #'
-#' @param directorio
-#' @param URLporcentas
-#' @param fechaInicio
-#' @param fechaFinal
-#' @param fechaInicio_exploratoria
-#' @param fechaFinal_exploratoria
-#' @param axisParamsCuota
-#' @param tallasSimple
-#' @param datosCrucero
-#' @param umbral
-#' @param especie
 #' @param a
 #' @param b
+#' @param directory
+#' @param urlFishingMonitoring
+#' @param datesList
+#' @param simpleFreqSizes
+#' @param dataCruise
+#' @param threshold
+#' @param species
+#' @param growthParameters
 #' @param officialBiomass
-#' @param k
-#' @param Linf
-#' @param sizeM
-#' @param vectorM
-#' @param catchFactor
 #'
 #' @return
 #' @export
-getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
-                          fechaInicio_exploratoria, fechaFinal_exploratoria, axisParamsCuota,
-                          tallasSimple, datosCrucero, umbral, especie, a, b,
-                          officialBiomass, k, Linf, sizeM, vectorM, catchFactor){
+getDailyReport = function(directory = NULL,
+                          urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
+                          datesList, simpleFreqSizes, dataCruise, officialBiomass, threshold = 30, species = "Anchoveta",
+                          a, b, growthParameters = list(k       = 0.83,
+                                                  Linf    = 19.21,
+                                                  sizeM   = c(0, 8, 12),
+                                                  vectorM = rep(0.8, 3),
+                                                  catchFactor = 1)) {
 
   # COMPILAR PORCENTAS
   cat("\n-------COMPILING DAILY REPORTS-------\n")
 
-  if(is.null(directorio) || !dir.exists(directorio)){
-    directorio <- tempdir()
-    dir.create(path = directorio, showWarnings = FALSE)
+  if(is.null(directory) || !dir.exists(directory)){
+    directory <- tempdir()
+    dir.create(path = directory, showWarnings = FALSE)
   }
 
   # Downloading daily reports
   # descarga los porcenta
-  DownloadPorcenta(directorio = directorio, dirUrl = URLporcentas, inicio = fechaInicio, fin = fechaFinal)
+  DownloadPorcenta(directorio = directory, dirUrl = urlFishingMonitoring,
+                   inicio = datesList$startDate,
+                   fin = datesList$endDate)
 
   # Leer porcentaes
-  porcentasSalida <- ReadPorcenta(directorio = directorio, inicio = fechaInicio, fin = fechaFinal)
+  porcentasSalida <- ReadPorcenta(directorio = directory, inicio = datesList$startDate, fin = datesList$endDate)
 
   # Escribir tabla compilada
-  porcentasArchivo <- paste0("data/desembarque_UpTo", format(as.Date(fechaFinal, "%Y-%m-%d"), "%d%m%Y"),".csv")
+  porcentasArchivo <- paste0("data/desembarque_UpTo", format(as.Date(datesList$endDate, "%Y-%m-%d"), "%d%m%Y"),".csv")
   write.csv(x = porcentasSalida$desembarque, file = porcentasArchivo, row.names = FALSE)
 
 
@@ -453,10 +451,10 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
   cat("\n-------WEIGHTING SIMPLE FREQUENCY DATA AND LANDINGS-------\n")
 
   # Leer frecuencias simples
-  datosPonderacion <- leerData(muestreo = tallasSimple, desembarque = porcentasArchivo)
+  datosPonderacion <- leerData(muestreo = simpleFreqSizes, desembarque = porcentasArchivo)
 
   # Hacer ponderaciones
-  surveyData <- get(load(datosCrucero))
+  surveyData <- get(load(dataCruise))
 
   # Si el objeto proviene de TBE, obtener valores de a y b
   if(!is.null(object$info$a_b)){
@@ -464,24 +462,24 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
     b <- object$info$a_b$b
   }
 
-  DatosPonderados <- LC_ponderada(data = datosPonderacion, tallas = seq(5, 20, 0.5), especie = especie,
-                                  umbral = umbral, a = a, b = b)
+  DatosPonderados <- LC_ponderada(data = datosPonderacion, tallas = seq(5, 20, 0.5), especie = species,
+                                  umbral = threshold, a = a, b = b)
 
   # Guardar datos ponderados
-  ponderadosArchivo <- paste0("data/ponderados_UpTo", format(as.Date(fechaFinal, "%Y-%m-%d"), "%d%m%Y"),".csv")
+  ponderadosArchivo <- paste0("data/ponderados_UpTo", format(as.Date(datesList$endDate, "%Y-%m-%d"), "%d%m%Y"),".csv")
   guardarPonderacion(data = DatosPonderados, filename = ponderadosArchivo)
 
 
   # GENERAR DATOS PARA REPORTE
   cat("\n-------GENERATE DATA FOR REPORTING-------\n")
 
-  sp <- tolower(especie)
+  sp <- tolower(species)
   allMarks <- seq(2, 20, 0.5)
 
   catchData <- readAtLength(file = ponderadosArchivo, sp = sp, check.names = FALSE)
 
   index <- as.Date(colnames(catchData))
-  index <- index >= as.Date(fechaInicio) & index <= as.Date(fechaFinal)
+  index <- index >= as.Date(datesList$startDate) & index <= as.Date(datesList$endDate)
   catchData <- catchData[,index]
 
   if(is.null(officialBiomass)){
@@ -506,8 +504,8 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
   output <- as.matrix(surveyVector)
   for(i in seq(ncol(catchVector))){
 
-    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*catchFactor,
-                              a = a, b = b, k = k, Linf = Linf, sizeM = sizeM, vectorM = vectorM,
+    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 52, sp = sp, Ts = 1)
 
     output <- cbind(output, tempOutput$N[2,])
@@ -531,8 +529,8 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
   output <- as.matrix(outputByWeek[,ncol(outputByWeek) - 1])
   for(i in seq(sum(index))){
 
-    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*catchFactor,
-                              a = a, b = b, k = k, Linf = Linf, sizeM = sizeM, vectorM = vectorM,
+    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 365, sp = sp, Ts = 1)
 
     output <- cbind(output, tempOutput$N[2,])
@@ -541,9 +539,6 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
   colnames(output) <- c(ifelse(ncol(outputByWeek) > 3, paste("Semana", ncol(outputByWeek) - 3), "Crucero"),
                         paste("Día", seq_len(ncol(output) - 1)))
   colnames(catchVector) <- paste("Día", 1:ncol(catchVector))
-
-  ylimList <- list(c(0, 3e+05, 5e4), c(0, 20e3, 5e3), c(0, 3e+05, 5e4))
-  ylimList2 <- list(c(0, 1e+06, 2e5), c(0, 5e5, 1e5), c(0, 1e+06, 2e5))
 
   outputByDay <- cbind(allMarks, output)
   outputByDay <- outputByDay[,-2]
@@ -554,7 +549,7 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
   for(i in seq(ncol(catchData))){
 
     tempOutput <- projectPOPE(N = cbind(outputByDayAll[,i], outputByDayAll[,i]), catch = catchData[,i],
-                              a = a, b = b, k = k, Linf = Linf, sizeM = sizeM, vectorM = vectorM,
+                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 365, sp = sp, Ts = 1)
 
     outputByDayAll <- cbind(outputByDayAll, tempOutput$N[2,])
@@ -562,7 +557,7 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
 
   dimnames(outputByDayAll) <- list(allMarks, c("crucero", as.character(allDates)))
 
-  updatedTo <- allDates[match(as.Date(fechaFinal, format = "%Y-%m-%d"), as.Date(colnames(catchData)))]
+  updatedTo <- allDates[match(as.Date(datesList$endDate, format = "%Y-%m-%d"), as.Date(colnames(catchData)))]
 
   directorioTrabajo <- getwd()
 
@@ -576,16 +571,13 @@ getDailyReport = function(directorio, URLporcentas, fechaInicio, fechaFinal,
                 outputByWeek = outputByWeek,
                 outputByDay = outputByDay,
                 getInfo = getInfo,
-                ylimList = ylimList,
-                ylimList2 = ylimList2,
-                axisParamsCuota = axisParamsCuota,
                 outputByDayAll = outputByDayAll,
-                fechaInicio = fechaInicio,
-                fechaFinal = fechaFinal,
-                fechaInicio_exploratoria = fechaInicio_exploratoria,
-                fechaFinal_exploratoria = fechaFinal_exploratoria,
-                fechaInicio_temporada = fechaInicio_temporada,
-                fechaFinal_temporada = fechaFinal_temporada,
+                startDate = datesList$startDate,
+                endDate   = datesList$endDate,
+                startExploringDate = datesList$startExploringDate,
+                endExploringDate   = datesList$endExploringDate,
+                startSeasonDate = datesList$startSeasonDate,
+                endSeasonDate   = datesList$endSeasonDate,
                 allDates = allDates)
 
   class(output) = "fishingMonitoring"

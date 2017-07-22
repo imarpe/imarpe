@@ -5,7 +5,10 @@
 \title{Report method for x objects}
 \usage{
 \method{report}{fishingMonitoring}(x, format = "latex", tangle = FALSE,
-  output = NULL, open = TRUE)
+  output = NULL, open = TRUE, axisPlot = list(plot1Lab2 = c(0, 3e+06,
+  5e+05), plot3Lab1 = list(c(0, 3e+05, 50000), c(0, 20000, 5000), c(0, 3e+05,
+  50000)), plot3Lab2 = list(c(0, 1e+06, 2e+05), c(0, 5e+05, 1e+05), c(0, 1e+06,
+  2e+05))))
 }
 \description{
 x

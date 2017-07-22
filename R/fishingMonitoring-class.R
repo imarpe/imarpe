@@ -4,7 +4,10 @@
 #' @param x
 #' @export
 #' @method report fishingMonitoring
-report.fishingMonitoring = function(x, format = "latex", tangle=FALSE, output = NULL, open = TRUE) {
+report.fishingMonitoring = function(x, format = "latex", tangle=FALSE, output = NULL, open = TRUE,
+                                    axisPlot = list(plot1Lab2 = c(0, 3e6, 5e5),
+                                                    plot3Lab1 = list(c(0, 3e+05, 5e4), c(0, 20e3, 5e3), c(0, 3e+05, 5e4)),
+                                                    plot3Lab2 = list(c(0, 1e+06, 2e5), c(0, 5e5, 1e5), c(0, 1e+06, 2e5)))) {
 
   if(is.null(output)) output = getwd()
 

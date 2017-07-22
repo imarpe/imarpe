@@ -4,13 +4,14 @@
 \alias{getDailyReport}
 \title{Title}
 \usage{
-getDailyReport(directorio, URLporcentas, fechaInicio, fechaFinal,
-  fechaInicio_exploratoria, fechaFinal_exploratoria, axisParamsCuota,
-  tallasSimple, datosCrucero, umbral, especie, a, b, officialBiomass, k, Linf,
-  sizeM, vectorM, catchFactor)
+getDailyReport(directory = NULL,
+  urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
+  datesList, simpleFreqSizes, dataCruise, officialBiomass, threshold = 30,
+  species = "Anchoveta", a, b, growthParameters = list(k = 0.83, Linf =
+  19.21, sizeM = c(0, 8, 12), vectorM = rep(0.8, 3), catchFactor = 1))
 }
 \arguments{
-\item{catchFactor}{}
+\item{officialBiomass}{}
 }
 \description{
 Title

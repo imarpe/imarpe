@@ -21,8 +21,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <!-- Tabla 1 -->
 ```{r, echo=FALSE, cache=FALSE}
-fechaInicio_exploratoria <- as.Date(x$fechaInicio_exploratoria, format = "%d/%m/%Y")
-fechaFinal_exploratoria <- as.Date(x$fechaFinal_exploratoria, format = "%d/%m/%Y")
+startExploringDate <- as.Date(x$startExploringDate, format = "%Y-%m-%d")
+endExploringDate <- as.Date(x$endExploringDate, format = "%Y-%m-%d")
 
 allDates <- as.Date(colnames(x$catchData))
 
@@ -30,7 +30,7 @@ index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(all
 index <- index[!duplicated(index)]
 weekIndex <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
 
-weekIndex[seq(which(allDates > fechaFinal_exploratoria)[1] - 1)] <- 1
+weekIndex[seq(which(allDates > endExploringDate)[1] - 1)] <- 1
 
 catchData <- cbind(survey = x$surveyVector, x$catchData)
 weekIndex <- c(0, weekIndex)
@@ -107,12 +107,12 @@ biomassData <- sweep(x = biomassData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FU
 colnames(biomassData) <- as.character(c(as.Date("2017-4-1"), x$allDates[!duplicated(weekIndex)][-(ncol(x$outputByWeek) - 2)], 
                                         x$allDates[seq(length(x$allDates) - ncol(x$outputByDay) + 2, length(x$allDates))]))
 
-fechaInicio_temporada <- as.Date(x$fechaInicio_temporada, format = "%d/%m/%Y")
-fechaFinal_temporada <- as.Date(x$fechaFinal_temporada, format = "%d/%m/%Y")
+startSeasonDate <- as.Date(x$startSeasonDate, format = "%Y-%m-%d")
+endSeasonDate <- as.Date(x$endSeasonDate, format = "%Y-%m-%d")
 
-xlim <- c(fechaInicio_temporada, fechaFinal_temporada)
+xlim <- c(startSeasonDate, endSeasonDate)
 ylim <- c(0, ((sum(x$a*x$allMarks^x$b*x$surveyVector) %/% 1e6) + 1)*1e6)
-ylim2 <- c(x$axisParamsCuota[1], x$axisParamsCuota[2])
+ylim2 <- c(axisPlot$plot1Lab2[1], axisPlot$plot1Lab2[2])
 
 colnames(x$catchData)[1] <- colnames(biomassData)[1]
 
@@ -120,7 +120,7 @@ colnames(x$catchData)[1] <- colnames(biomassData)[1]
 par(mar = c(0, 0, 0, 0), oma = c(6, 4, 1, 4), yaxs = "i", xaxs = "i", mfrow = c(3, 1))
 
 plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim)
-abline(v = fechaInicio_temporada, lty = "dashed", col = "gray50")
+abline(v = startSeasonDate, lty = "dashed", col = "gray50")
 
 lines(x$allDates, cumsum(colSums(sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")))*ylim[2]/ylim2[2],
       col = "blue", lwd = 2)
@@ -134,7 +134,7 @@ legend("topright", legend = c("Biomasa", "Captura"), bty = "n", col = c("red", "
 yLabs <- seq(ylim[1], ylim[2], 1e6)
 axis(side = 2, at = yLabs, labels = yLabs/1e6, las = 2)
 
-yLabs2 <- seq(ylim2[1], ylim2[2], x$axisParamsCuota[3])
+yLabs2 <- seq(ylim2[1], ylim2[2], axisPlot$plot1Lab2[3])
 axis(side = 4, at = seq(ylim[1], ylim[2], length.out = length(yLabs2)), labels = yLabs2/1e6, las = 2)
 box()
 
@@ -148,14 +148,14 @@ juvB <- apply(juvB, 2, function(z) sum(z[x$allMarks < 12])/sum(z))*100
 xValues <- as.Date(colnames(x$catchData))
 xValues2 <- c(min(xValues) - 1e3, xValues, max(xValues) + 1e3)
 
-xlim <- c(fechaInicio_temporada, fechaFinal_temporada)
+xlim <- c(startSeasonDate, endSeasonDate)
 ylim1 <- c(0, 80)
 ylim2 <- c(0, 60)
 
 
 plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim1)
 polygon(x = c(xValues2, rev(xValues2)), y = rep(c(24, 33), each = length(xValues2)), border = FALSE, col = "gray80")
-abline(v = fechaInicio_temporada, lty = "dashed", col = "gray50")
+abline(v = startSeasonDate, lty = "dashed", col = "gray50")
 abline(h = 28.5, lty = "dotted")
 lines(xValues, juvN, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
 
@@ -165,7 +165,7 @@ box()
 
 plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim2)
 polygon(x = c(xValues2, rev(xValues2)), y = rep(c(12, 18), each = length(xValues2)), border = FALSE, col = "gray80")
-abline(v = fechaInicio_temporada, lty = "dashed", col = "gray50")
+abline(v = startSeasonDate, lty = "dashed", col = "gray50")
 abline(h = 15, lty = "dotted")
 lines(xValues, juvB, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
 mtext(text = "% juveniles (peso)", side = 3, line = -2, adj = 0.99)
@@ -186,7 +186,7 @@ axis(side = 1, at = xValues2, labels = as.character(format(xValues2, format = "%
 ```{r, echo=FALSE, cache=FALSE}
 
 # Tabla diaria
-index <- match(as.Date(x$fechaFinal, format = "%Y-%m-%d"), as.Date(colnames(x$catchData)))
+index <- match(as.Date(x$endDate, format = "%Y-%m-%d"), as.Date(colnames(x$catchData)))
 output <- x$getInfo(x = x$catchData[,index], allMarks = x$allMarks, a = x$a, b = x$b, nDecimalsBiomass = 3)
 dailyTable <- matrix(data = output, ncol = 1, 
                      dimnames = list(names(output), format(x$updatedTo, "%d/%m/%Y")))
@@ -208,7 +208,7 @@ pander::pander(outputTable, justify = "center", keep.line.breaks = TRUE, split.t
 <!-- Plot 2 -->
 ```{r, echo=FALSE, message=FALSE, fig.height=3, fig.width=8, cache=FALSE}
 
-index <- match(as.Date(x$fechaFinal, format = "%Y-%m-%d"), as.Date(colnames(x$catchData)))
+index <- match(as.Date(x$endDate, format = "%Y-%m-%d"), as.Date(colnames(x$catchData)))
 output <- cbind(x$allMarks, x$catchData[,index], x$catchData[,index]*x$a*x$allMarks^x$b)
 colnames(output) <- c("Talla", "Abundancia", "Biomasa")
 
@@ -273,8 +273,8 @@ par(mar = rep(0, 4), oma = c(4, 6.5, 1, 5), xaxs = "i", yaxs = "i", mfrow = c(3,
 for(i in seq(2, ncol(output))){
   
   xlim <- range(allMarks)
-  ylim <- x$ylimList[[i - 1]]
-  ylim2 <- x$ylimList2[[i - 1]]
+  ylim <- axisPlot$plot3Lab1[[i - 1]]
+  ylim2 <- axisPlot$plot3Lab2[[i - 1]]
   
   plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim[1:2], xlab = NA, ylab = NA)
   
