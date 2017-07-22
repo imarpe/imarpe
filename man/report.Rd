@@ -21,4 +21,7 @@ A report on specific format.
 \description{
 This function built a report for each class including on imarpe package.
 }
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

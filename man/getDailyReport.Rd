@@ -18,7 +18,7 @@ must be changed.}
 \item{urlFishingMonitoring}{The web address (url - Uniform Resource Locator) for downloading
 the landings. By default it is \url{http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal}.}
 
-\item{datesList}{A \code{list} of six dates (\code{Y-m-d}) with the names:
+\item{datesList}{A \code{list} of six dates (format: YEAR-month-day) with the names:
  \itemize{
   \item startDate: start date to download the landing files.
   \item endDate: end date to download the landing files.

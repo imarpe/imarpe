@@ -17,4 +17,7 @@ Method for plotEffort.numeric function.
 \details{
 For more details read the help of \code{\link{plotEffort.numeric}}.
 }
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

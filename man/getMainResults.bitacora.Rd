@@ -61,4 +61,7 @@ If one of the parameter (observedTrip, fishingHaul, fishingPoints, speciesCompos
 distributionCatch, and effortData) is \code{NULL} on \code{getMainResults.bitacora} function
 the output of this parameter on the list produced by the function is \code{NULL} too.
 }
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

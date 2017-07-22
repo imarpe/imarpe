@@ -17,4 +17,7 @@ Method for plotFishingPresence.bitacora function.
 \details{
 For more details read the help of \code{\link{plotFishingPresence.bitacora}}.
 }
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

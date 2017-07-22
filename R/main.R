@@ -151,6 +151,7 @@ NULL
 #' each type of fleet.
 #' }
 #' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @examples
 #' # Read a example of a data base
 #' fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
@@ -238,6 +239,7 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
 #' \code{info} \tab A list containing the main features of the data.
 #' }
 #' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @examples
 #' # Read a data base of bitacora class
 #' file.name = "bitacoraData.csv"
@@ -277,6 +279,7 @@ getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SAL
 #' @param output The report.
 #' @param ... Extra arguments passed to \code{\link{report}} function.
 #' @return A report on specific format.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @export
 report = function(object, format, output, ...) {
   UseMethod("report")
@@ -319,6 +322,7 @@ report = function(object, format, output, ...) {
 #' @details If one of the parameter (observedTrip, fishingHaul, fishingPoints, speciesComposition,
 #' distributionCatch, and effortData) is \code{NULL} on \code{getMainResults.bitacora} function
 #' the output of this parameter on the list produced by the function is \code{NULL} too.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @export
 getMainResults.bitacora = function(object, observedTrip = NULL, fishingHaul = NULL, fishingPoints = NULL,
                                    speciesComposition = NULL, distributionCatch = NULL, effortData = NULL,
@@ -361,6 +365,7 @@ getMainResults.bitacora = function(object, observedTrip = NULL, fishingHaul = NU
 #' @param x Object of \code{bitacora} class.
 #' @param ... Extra arguments passed to \code{plotFishingPoints.bitacora} function.
 #' @details For more details read the help of \code{\link{plotFishingPoints.bitacora}}.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @export
 plotFishingPoints = function(x, laguage, dataType, ...) {
   UseMethod(generic = "plotFishingPoints", object = x)
@@ -372,6 +377,7 @@ plotFishingPoints = function(x, laguage, dataType, ...) {
 #' @param x Object of \code{bitacora} class.
 #' @param ... Extra arguments passed to \code{plotFishingPresence.bitacora} function.
 #' @details For more details read the help of \code{\link{plotFishingPresence.bitacora}}.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @export
 plotFishingPresence = function(x, ...) {
   UseMethod(generic = "plotFishingPresence", object = x)
@@ -383,6 +389,7 @@ plotFishingPresence = function(x, ...) {
 #' @param x Object of \code{bitacora} class.
 #' @param ... Extra arguments passed to \code{plotSpeciesComposition.bitacora} function.
 #' @details For more details read the help of \code{\link{plotSpeciesComposition.bitacora}}.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @export
 plotSpeciesComposition = function(x, ...) {
   UseMethod(generic = "plotSpeciesComposition", object = x)
@@ -394,6 +401,7 @@ plotSpeciesComposition = function(x, ...) {
 #' @param x Object of \code{bitacora} class.
 #' @param ... Extra arguments passed to \code{plotEffort.numeric} function.
 #' @details For more details read the help of \code{\link{plotEffort.numeric}}.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @export
 plotEffort = function(effort1, effort2, ...) {
   UseMethod(generic = "plotEffort", object = c(effort1, effort2))

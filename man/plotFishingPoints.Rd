@@ -17,4 +17,7 @@ Method for plotFishingPoins.bitacora function.
 \details{
 For more details read the help of \code{\link{plotFishingPoints.bitacora}}.
 }
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

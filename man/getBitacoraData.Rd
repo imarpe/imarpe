@@ -79,4 +79,7 @@ data = dataBase$data
 info = dataBase$info
 
 }
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

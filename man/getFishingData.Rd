@@ -97,4 +97,7 @@ cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
 sp = "caballa", efforType = "capacidad_bodega")
 
 }
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 
