@@ -400,30 +400,45 @@ plotEffort = function(effort1, effort2, ...) {
 }
 
 
-#' Title
-#'
-#' @param a
-#' @param b
-#' @param directory
-#' @param urlFishingMonitoring
-#' @param datesList
-#' @param simpleFreqSizes
-#' @param dataCruise
-#' @param threshold
-#' @param species
-#' @param growthParameters
-#' @param officialBiomass
-#'
-#' @return
+#' @title Get daily report of fishing monitoring
+#' @description This function download anchovy landing information from an official
+#' repository of the IMARPE to compare this landings with the biomass estimated.
+#' @param directory Directory where the anchovy landing reports are stored. By default it
+#' is \code{NULL}, temporarily saved and then deleted. If you want to keep this parameter
+#' must be changed.
+#' @param urlFishingMonitoring The web address (url - Uniform Resource Locator) for downloading
+#' the landings. By default it is \url{http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal}.
+#' @param datesList A \code{list} of six dates (format: YEAR-month-day) with the names:
+#'  \itemize{
+#'   \item startDate: start date to download the landing files.
+#'   \item endDate: end date to download the landing files.
+#'   \item startExploringDate: start date of exploratory analysis.
+#'   \item endExploringDate: end date of exploratory analysis.
+#'   \item startSeasonDate: start date of fishing season.
+#'   \item endSeasonDate: end date of fishing season.
+#' }
+#' @param simpleFreqSizes A comma delimited file (.csv) with simple frequency data per size.
+#' @param dataCruise A RData with the outputs of the cruise.
+#' @param officialBiomass A official value of biomass.
+#' @param threshold Threshold for considering the number of individuals. By default \code{threshold = 30}.
+#' @param species The species that is going to be analyzed. By default is \code{species = "Anchoveta"}.
+#' @param a Length-weight ratio parameter.
+#' @param b Length-weight ratio parameter.
+#' @param growthParameters A \code{list} of growthParamters. By default this are:
+#' \itemize{
+#'  \item k = 0.83
+#'  \item Linf = 19.21
+#'  \item sizeM = c(0, 8, 12)
+#'  \item vectorM = rep(0.8, 3)
+#'  \item catchFactor = 1
+#' }
+#' @return A object of fishingMonitoring class. It is saved on the working directory.
+#' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 #' @export
 getDailyReport = function(directory = NULL,
                           urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
                           datesList, simpleFreqSizes, dataCruise, officialBiomass, threshold = 30, species = "Anchoveta",
-                          a, b, growthParameters = list(k       = 0.83,
-                                                  Linf    = 19.21,
-                                                  sizeM   = c(0, 8, 12),
-                                                  vectorM = rep(0.8, 3),
-                                                  catchFactor = 1)) {
+                          a, b, growthParameters = list(k = 0.83, Linf = 19.21, sizeM = c(0, 8, 12), vectorM = rep(0.8, 3), catchFactor = 1)) {
 
   # COMPILAR PORCENTAS
   cat("\n-------COMPILING DAILY REPORTS-------\n")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fishingMonitoring-class.R
 \name{report.fishingMonitoring}
 \alias{report.fishingMonitoring}
-\title{Report method for x objects}
+\title{Report method for fishingMonitoring objects}
 \usage{
 \method{report}{fishingMonitoring}(x, format = "latex", tangle = FALSE,
   output = NULL, open = TRUE, axisPlot = list(plot1Lab2 = c(0, 3e+06,
@@ -10,7 +10,12 @@
   50000)), plot3Lab2 = list(c(0, 1e+06, 2e+05), c(0, 5e+05, 1e+05), c(0, 1e+06,
   2e+05))))
 }
+\arguments{
+\item{x}{Object of \code{fishingMonitoring} class.}
+
+\item{axisPlot}{A list with the y-axis of the graphics number one and three of the report.}
+}
 \description{
-x
+Export a report with an analysis of the fishing monitoring.
 }
 

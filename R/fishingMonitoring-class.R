@@ -1,7 +1,8 @@
 
-#' @title Report method for x objects
-#' @description x
-#' @param x
+#' @title Report method for fishingMonitoring objects
+#' @description Export a report with an analysis of the fishing monitoring.
+#' @param x Object of \code{fishingMonitoring} class.
+#' @param axisPlot A list with the y-axis of the graphics number one and three of the report.
 #' @export
 #' @method report fishingMonitoring
 report.fishingMonitoring = function(x, format = "latex", tangle=FALSE, output = NULL, open = TRUE,
