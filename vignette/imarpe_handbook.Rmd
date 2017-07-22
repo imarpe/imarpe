@@ -273,8 +273,26 @@ class(fisheryVar)
 plot(fisheryVar, ploType = "plotJoined")
 
 # report
+report(fisheryVar, type = "joined")
 report(fisheryVar, type = "joined", daysToPlot = "1")
 
 ```
 
 #### 1.2 Uso de `getDailyReport`
+
+`getDailyReport` es usada para realizar un análisis de los desembarques pesqueros de anchoveta respecto a la biomasa estimada en las cuotas de captura del recurso. 
+Esta función se encarga de descargar de manera automática los desembarques diarios de anchoveta que estan disponibles en la página web del Instituto del Mar del Perú (IMARPE) y en función a sus parámetros principales: fechas de análisis, información biológica de la especie, resultados del crucero para la estimación de la biomasa, la cuota oficial de biomasa; se realiza un análisis cuyos resultados serán guardados en un objeto de clase `fishingMonitoring`. Este objecto se guardará en el formato RData en el directorio donde se esté realizando el trabajo. 
+
+```{r, eval = FALSE}
+# Revisar la ayuda de getDailyReport para más información
+?getDailyReport
+```
+
+##### Método de la clase `fishingMonitoring`
+
+La finalidad principal de `getDailyReport` es la construcción del reporte diario de la pesquería de anchoveta, por lo que el método construido para los objetos de la clase `fishingMonitoring` es `report.fishingMonitoring`.
+
+```{r, eval = FALSE}
+# Revisar la ayuda del método de la clase fishingMonitoring.
+?report.fishingMonitoring
+```
