@@ -281,7 +281,7 @@ report(fisheryVar, type = "joined", daysToPlot = "1")
 #### 1.2 Uso de `getDailyReport`
 
 `getDailyReport` es usada para realizar un análisis de los desembarques pesqueros de anchoveta respecto a la biomasa estimada en las cuotas de captura del recurso. 
-Esta función se encarga de descargar de manera automática los desembarques diarios de anchoveta que estan disponibles en la página web del Instituto del Mar del Perú (IMARPE) y en función a sus parámetros principales: fechas de análisis, información biológica de la especie, resultados del crucero para la estimación de la biomasa, la cuota oficial de biomasa; se realiza un análisis cuyos resultados serán guardados en un objeto de clase `fishingMonitoring`. Este objecto se guardará en el formato RData en el directorio donde se esté realizando el trabajo. 
+Esta función se encarga de descargar de manera automática los desembarques diarios de anchoveta que estan disponibles en la página web del Instituto del Mar del Perú (IMARPE) y en función a sus parámetros principales: fechas de análisis, información biológica de la especie, resultados del crucero para la estimación de la biomasa, la cuota oficial de biomasa; se realiza un análisis cuyos resultados serán guardados en un objeto de clase `fishingMonitoring`. Este objecto se guardará en el formato `RData` en el directorio donde se esté realizando el trabajo. 
 
 ```{r, eval = FALSE}
 # Revisar la ayuda de getDailyReport para más información
@@ -296,3 +296,39 @@ La finalidad principal de `getDailyReport` es la construcción del reporte diario
 # Revisar la ayuda del método de la clase fishingMonitoring.
 ?report.fishingMonitoring
 ```
+
+A continuación se incluirá un ejemplo del uso de `getDailyReport`. Este código servirá para comprender el formato que deben tener los datos para poder obtener un objeto de clase `fishingMonitoring`. El siguiente código debe ser ejecutado sólo si se cuenta con los datos de entrada necesarios.
+
+```{r, eval = FALSE}
+# Correr el siguiente código solo si se cuenta con la información necesaria.
+
+# Lista de fechas
+datesList = list(startDate = "2017-4-20",
+                 endDate = "2017-6-19",
+                 startExploringDate = "2017-4-22",
+                 endExploringDate = "2017-4-25",
+                 startSeasonDate = "2017-4-22",
+                 endSeasonDate = "2017-7-31")
+
+# Frecuencia simple por talla
+simpleFreqSizes = "DataTallas_2017-I.csv"
+
+# Archivo de crucero en formato RData 
+dataCruise = "cr_170304_det.RData"
+
+#Valor de biomasa oficial (en toneladas)
+officialBiomass = 7778463
+
+# Parámetros a y b
+a = 0.0034
+b = 3.273
+
+x = getDailyReport(datesList = datesList, simpleFreqSizes = simpleFreqSizes,
+                   dataCruise = dataCruise, officialBiomass = officialBiomass,
+                   a = a, b = b)
+class(x)
+
+report(x)
+
+```
+
