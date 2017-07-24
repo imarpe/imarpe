@@ -253,3 +253,91 @@ assignAnchovy_season = function(x, region){
   return(seasonVector)
 }
 
+
+#' Download daily fishing monitoring files
+#' @description Function to download landing and effort anchovy information from an official
+#' repository of the IMARPE. The unique effort of this data base is number of boats.
+#' @param directory Directory where the landing and effort information are stored. By default it
+#' is \code{NULL}, temporarily saved and then deleted. If you want to keep this parameter must be changed.
+#' @param urlFishingMonitoring The web address (url - Uniform Resource Locator) for downloading
+#' the landings. By default it is \url{http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal}.
+#' @param startDate Start date to download the files.
+#' @param endDate End date to download the files.
+#' @param saveFile A logical parameter. By default is \code{TRUE} to save a data frame
+#' with the fishery information that has been downloaded. The name to save the file is
+#' "dailyFishing" with the start date (without "-") and the end date (without "-"), this
+#' characters saparated by "_".
+#' @return A data frame where the columns are the variables in spanish:
+#' \itemize{
+#'  \item anho: for years
+#'  \item mes: for months
+#'  \item dia: for days
+#'  \item especie: for species
+#'  \item tipo_flota: for type of fleet
+#'  \item puerto: for port
+#'  \item captura: for the catch or landing of the species
+#'  \item embarcaciones: for the effort
+#' }
+#' @export
+#' @examples
+#' # Download fishing information, by default it is saved.
+#' fishingInfo = downloadDailyFishing(startDate = "2017-4-20", endDate = "2017-6-19")
+#' View(fishingInfo)
+#'
+#' #Use saveFile = FALSE to do not save the information.
+#' fishingInfo = downloadDailyFishing(startDate = "2017-4-20", endDate = "2017-6-19", saveFile = FALSE)
+#' View(fishingInfo)
+#'
+downloadDailyFishing = function(directory = NULL,
+                                urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
+                                startDate, endDate, saveFile = TRUE) {
+
+  # working directory
+  if(is.null(directory) || !dir.exists(directory)) {
+    directory = tempdir()
+    dir.create(path = directory, showWarnings = FALSE)
+  }
+
+  # download the daily data
+  DownloadPorcenta(directorio = directory, dirUrl = urlFishingMonitoring, inicio = startDate, fin = endDate)
+
+  # Read the daily data
+  outputData = ReadPorcenta(directorio = directory, inicio = startDate, fin = endDate)
+
+  #Get the data base
+  dataLanding = outputData$desembarque
+  dataEffort  = outputData$n.embarcaciones
+
+  #sort data
+  dataLanding$puerto = as.character(dataLanding$puerto)
+  dataLanding = rbind(colnames(dataLanding), dataLanding)
+  colnames(dataLanding) = ""
+
+  #dates
+  vectorDates = seq(from = as.Date(startDate, format = "%Y-%m-%d"), to = as.Date(endDate, format = "%Y-%m-%d"), by = "day")
+  years  = as.numeric(format(vectorDates, "%Y"))
+  months = as.numeric(format(vectorDates, "%m"))
+  days   = as.numeric(format(vectorDates, "%d"))
+
+  vectorPorts = (dim(dataLanding)[2] - 1)
+
+  dailyFishing = data.frame(anho          = rep(years, each = vectorPorts),
+                            mes           = rep(months, each = vectorPorts),
+                            dia           = rep(days, each = vectorPorts),
+                            especie       = rep("anchoveta", vectorPorts),
+                            tipo_flota    = rep(c("industrial", "industrial_madera"), times = vectorPorts/2 * length(vectorDates)),
+                            puerto        = rep(as.character(dataLanding[1, 2:(dim(dataLanding)[2])]), times =  length(vectorDates)),
+                            captura       = as.numeric(as.vector(t(dataLanding[c(3:dim(dataLanding)[1]), c(2:dim(dataLanding)[2])]))),
+                            embarcaciones = as.numeric(as.vector(t(dataEffort[c(2:dim(dataEffort)[1]), c(2:dim(dataEffort)[2])]))))
+
+  #delete temporary files
+  unlink(x = list.files(path = directory, pattern = ".xlsx", full.names = TRUE), force = TRUE, recursive = TRUE)
+
+  #save the new data base
+  if(isTRUE(saveFile)){
+    write.csv(x = dailyFishing,
+              file = paste0("dailyFishing", "_", gsub("-", "", startDate), "_", gsub("-", "", endDate), ".csv"),
+              row.names = FALSE)
+  }
+  return(dailyFishing)
+}
