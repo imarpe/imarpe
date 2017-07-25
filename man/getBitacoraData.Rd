@@ -15,8 +15,8 @@ getBitacoraData(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
   capCab = "CAPTURA_CABALLA", capBon = "CAPTURA_BONITO")
 }
 \arguments{
-\item{file}{The name of the file with data of the bitacora class. If it does not contain an absolute path,
-the file name is relative to the current working directory, \code{\link{getwd}}.}
+\item{file}{The name of the file. If it does not contain an absolute path, the file name is relative to
+the current working directory, \code{\link{getwd}}.}
 
 \item{colTrip}{Name of travel code column. By default is "CODIGO_VIAJE".}
 
@@ -58,25 +58,27 @@ the file name is relative to the current working directory, \code{\link{getwd}}.
 }
 \description{
 This function read the information from the Programme of Fishery Logbooks (in spanish: Programa de
-Bitacoras de Pesca - PBP) and create  a data base which includes a data frame and a list with the main features
+Bitacoras de Pesca - PBP) and create a data base which includes a data frame and a list with the main features
 of the data frame. The included data frame object has observations corresponding to rows and variables to columns.
 }
 \note{
 If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 }
 \examples{
-# Read a data base of bitacora class
-file.name = "bitacoraData.csv"
-dataBase  = getBitacoraData(file = file.name)
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
 
-# Check the class of the data
-class(dataBase)
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
 
-# To get the data of the bitacora class
-data = dataBase$data
+# Check the class of bitacoraObject
+class(bitacoraObject)
+
+# To get the data of bitacora class
+dataBase = bitacoraObject$data
 
 # To get the main features of the data
-info = dataBase$info
+info = bitacoraObject$info
 
 }
 \author{

@@ -213,10 +213,10 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
 #' @title Get data from bitacora class
 #'
 #' @description This function read the information from the Programme of Fishery Logbooks (in spanish: Programa de
-#' Bitacoras de Pesca - PBP) and create  a data base which includes a data frame and a list with the main features
+#' Bitacoras de Pesca - PBP) and create a data base which includes a data frame and a list with the main features
 #' of the data frame. The included data frame object has observations corresponding to rows and variables to columns.
-#' @param file The name of the file with data of the bitacora class. If it does not contain an absolute path,
-#'  the file name is relative to the current working directory, \code{\link{getwd}}.
+#' @param file The name of the file. If it does not contain an absolute path, the file name is relative to
+#' the current working directory, \code{\link{getwd}}.
 #' @param colTrip Name of travel code column. By default is "CODIGO_VIAJE".
 #' @param colPort Name of the port column. By default is "PUERTO_SALIDA".
 #' @param colDateStart Name of data column with the start date of the travel. By default is "DIA_SALIDA".
@@ -242,18 +242,20 @@ getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end
 #' @note If type is not explicitly defined, the function will be equivalent to use \code{\link{read.csv}}.
 #' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @examples
-#' # Read a data base of bitacora class
-#' file.name = "bitacoraData.csv"
-#' dataBase  = getBitacoraData(file = file.name)
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
 #'
-#' # Check the class of the data
-#' class(dataBase)
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
 #'
-#' # To get the data of the bitacora class
-#' data = dataBase$data
+#' # Check the class of bitacoraObject
+#' class(bitacoraObject)
+#'
+#' # To get the data of bitacora class
+#' dataBase = bitacoraObject$data
 #'
 #' # To get the main features of the data
-#' info = dataBase$info
+#' info = bitacoraObject$info
 #'
 #' @export
 getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SALIDA",
