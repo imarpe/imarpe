@@ -25,4 +25,16 @@ A \code{list} of summary.bitacora class. This contains:
 \description{
 Get summary information of bitacora object.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Produce the summary of bitacora class object
+summary(bitacoraObject)
+
+}
 

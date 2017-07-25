@@ -5,6 +5,18 @@
 #' @param x Object of class \code{bitacora}.
 #' @param language The select language to print the outputs.
 #' @export
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Show main information of the bitacora class object
+#' print(bitacoraObject)
+#' print(bitacoraObject, language = "english")
+#'
 #' @method print bitacora
 print.bitacora = function(x, language="spanish") {
 
@@ -40,6 +52,17 @@ print.bitacora = function(x, language="spanish") {
 #'   \item fishingHaul The fishing haul by latitude.
 #' }
 #' @export
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Produce the summary of bitacora class object
+#' summary(bitacoraObject)
+#'
 #' @method summary bitacora
 summary.bitacora = function(object, language = "spanish", latByPort = FALSE) {
 
@@ -57,6 +80,21 @@ summary.bitacora = function(object, language = "spanish", latByPort = FALSE) {
 #' @param language The select language to print the summary of bitacora objects.
 #' @return Each element of \code{summary.bitacora} method.
 #' @export
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Print the summary of the fishery class object
+#' sumBitacora = summary(bitacoraObject)
+#' print(sumBitacora)
+#'
+#' sumBitacora = summary(bitacoraObject, language = "english")
+#' print(sumBitacora, language = "english")
+#'
 #' @method print summary.bitacora
 print.summary.bitacora = function(x, language = "spanish") {
 
@@ -86,7 +124,7 @@ print.summary.bitacora = function(x, language = "spanish") {
 #'   \item "dataAnch" to graphic fishing points of anchovy
 #'   \item "dataSar" to graphic fishing points of sardine
 #'   \item "dataJur" to graphic fishing points of jack mackerel
-#'   \item "dataCab" to graphic fishing points of chub mackere
+#'   \item "dataCab" to graphic fishing points of chub mackerel
 #'   \item "dataBon" to graphic fishing points of bonito
 #'   \item "dataGroups" to graphic fishing points for other species differences to the five mentioned
 #'   \item "dataTotal" to graphic fishing points of all species
@@ -108,6 +146,20 @@ print.summary.bitacora = function(x, language = "spanish") {
 #' @param ... Extra arguments.
 #'
 #' @return A map for fishing points of the data type selected on \code{dataType}.
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Use the parameter dataType = "dataAnch" to graph anchovy fishing points
+#' plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataAnch")
+#'
+#' # Use the parameter dataType = "dataCab" to graph chub mackerel fishing points
+#' plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataCab")
+#'
 #' @export
 plotFishingPoints.bitacora = function(x, language = "spanish", dataType,
                                       colMap = "khaki1", colFleet = c("red", "blue", "green", "black"),
@@ -130,7 +182,8 @@ plotFishingPoints.bitacora = function(x, language = "spanish", dataType,
 #' non-tarjet species for the fishery.
 #' @param x Object of \code{bitacora} class.
 #' @param byGroup \code{logical}. To indicate if the fishing presence points will be plotted by species that
-#'  make up a taxonomic group (\code{TRUE}), or to plot the taxonomic group in general (\code{FALSE}).
+#'  make up a taxonomic group (\code{TRUE}), or to plot the taxonomic group in general (\code{FALSE}) except
+#'  four: "neritico", "transzonal", "oceanico", "demersal".
 #' @param group Indicates what taxonomic group should be graph on the map of fishing presence.
 #' By defaul is \code{NULL} when \code{byGroup = FALSE}, but when \code{byGroup = TRUE} this parameter receives
 #' the name of the taxonomic group. These might be: "neritico", "transzonal", "costero", "oceanico", "demersal",
@@ -148,6 +201,22 @@ plotFishingPoints.bitacora = function(x, language = "spanish", dataType,
 #' @param ... Extra arguments.
 #'
 #' @return A map for fishing presence points by taxonomic group or in general (for all species if the data).
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Use the parameter byGroup = TRUE and then use the parameter group to indicate which taxonomic
+#' # groups is going to be plotted:
+#' plotFishingPresence(x = bitacoraObject, byGroup = TRUE, group = "neritico")
+#' plotFishingPresence(x = bitacoraObject, byGroup = TRUE, group = "transzonal")
+#'
+#' # Use the parameter byGroup = FALSE:
+#' plotFishingPresence(x = bitacoraObject, byGroup = FALSE)
+#'
 #' @export
 plotFishingPresence.bitacora = function(x, byGroup = TRUE, group = NULL,
                                         colMap = "khaki1", colSpecies = NULL, colLegend = NULL,
@@ -174,8 +243,17 @@ plotFishingPresence.bitacora = function(x, byGroup = TRUE, group = NULL,
 #' @param minPercentage  Numeric value indicating the minimum percentage that catches must have
 #'  to be graphic. By default is 0.2.
 #' @param ... Extra arguments.
-#'
 #' @return A pie graph.
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Composition of species by catches using a threshold = TRUE and minPercentage = 0.7
+#' plotSpeciesComposition(x = bitacoraObject, minPercentage = 0.7)
 #' @export
 plotSpeciesComposition.bitacora = function(x, threshold = TRUE, minPercentage = 0.2, ...) {
 
@@ -194,6 +272,17 @@ plotSpeciesComposition.bitacora = function(x, threshold = TRUE, minPercentage = 
 #' @description Export a report of bitacora.
 #' @param x Object of \code{bitacora} class.
 #' @export
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Produce a report
+#' report(bitacoraObject)
+#'
 #' @method report bitacora
 report.bitacora = function(x, format = "latex", tangle=FALSE, output = NULL, open = TRUE) {
 

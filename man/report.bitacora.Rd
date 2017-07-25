@@ -13,4 +13,16 @@
 \description{
 Export a report of bitacora.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Produce a report
+report(bitacoraObject)
+
+}
 

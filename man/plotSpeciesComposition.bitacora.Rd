@@ -25,4 +25,15 @@ A pie graph.
 \description{
 This method takes a \code{bitacora} object and do a pie graph.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Composition of species by catches using a threshold = TRUE and minPercentage = 0.7
+plotSpeciesComposition(x = bitacoraObject, minPercentage = 0.7)
+}
 

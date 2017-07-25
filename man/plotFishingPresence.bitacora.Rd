@@ -12,7 +12,8 @@
 \item{x}{Object of \code{bitacora} class.}
 
 \item{byGroup}{\code{logical}. To indicate if the fishing presence points will be plotted by species that
-make up a taxonomic group (\code{TRUE}), or to plot the taxonomic group in general (\code{FALSE}).}
+make up a taxonomic group (\code{TRUE}), or to plot the taxonomic group in general (\code{FALSE}) except
+four: "neritico", "transzonal", "oceanico", "demersal".}
 
 \item{group}{Indicates what taxonomic group should be graph on the map of fishing presence.
 By defaul is \code{NULL} when \code{byGroup = FALSE}, but when \code{byGroup = TRUE} this parameter receives
@@ -44,5 +45,22 @@ A map for fishing presence points by taxonomic group or in general (for all spec
 \description{
 This method takes a \code{bitacora} object and plot on a map the presence of the
 non-tarjet species for the fishery.
+}
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Use the parameter byGroup = TRUE and then use the parameter group to indicate which taxonomic
+# groups is going to be plotted:
+plotFishingPresence(x = bitacoraObject, byGroup = TRUE, group = "neritico")
+plotFishingPresence(x = bitacoraObject, byGroup = TRUE, group = "transzonal")
+
+# Use the parameter byGroup = FALSE:
+plotFishingPresence(x = bitacoraObject, byGroup = FALSE)
+
 }
 

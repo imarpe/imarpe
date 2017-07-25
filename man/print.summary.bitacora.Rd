@@ -17,4 +17,20 @@ Each element of \code{summary.bitacora} method.
 \description{
 Shows main information from \code{summary.bitacora} objects.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Print the summary of the fishery class object
+sumBitacora = summary(bitacoraObject)
+print(sumBitacora)
+
+sumBitacora = summary(bitacoraObject, language = "english")
+print(sumBitacora, language = "english")
+
+}
 

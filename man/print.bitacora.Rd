@@ -16,4 +16,17 @@ Shows main information from bitacora objects, like the origen of the
 information, the number of trips, the number of data ports, the number of months
 of data, the number of years of data, the types of fleets on the data.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Show main information of the bitacora class object
+print(bitacoraObject)
+print(bitacoraObject, language = "english")
+
+}
 

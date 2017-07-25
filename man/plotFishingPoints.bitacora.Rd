@@ -19,7 +19,7 @@
   \item "dataAnch" to graphic fishing points of anchovy
   \item "dataSar" to graphic fishing points of sardine
   \item "dataJur" to graphic fishing points of jack mackerel
-  \item "dataCab" to graphic fishing points of chub mackere
+  \item "dataCab" to graphic fishing points of chub mackerel
   \item "dataBon" to graphic fishing points of bonito
   \item "dataGroups" to graphic fishing points for other species differences to the five mentioned
   \item "dataTotal" to graphic fishing points of all species
@@ -52,5 +52,20 @@ A map for fishing points of the data type selected on \code{dataType}.
 }
 \description{
 This method takes a \code{bitacora} object and plots fishing points.
+}
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Use the parameter dataType = "dataAnch" to graph anchovy fishing points
+plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataAnch")
+
+# Use the parameter dataType = "dataCab" to graph chub mackerel fishing points
+plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataCab")
+
 }
 
