@@ -66,9 +66,11 @@ Las principales funciones con las que cuenta `imarpe` son 4 y las explicaremos a
 
 ```{r, eval = FALSE}
 getFishingData
+downloadDailyFishing
+getDailyReport
 getBitacoraData
 getMainResults.bitacora
-getDailyReport
+
 ```
 
 ### 1. Análisis de información pesquera
@@ -278,7 +280,47 @@ report(fisheryVar, type = "joined", daysToPlot = "1")
 
 ```
 
-#### 1.2 Uso de `getDailyReport`
+#### 1.2 Uso de `downloadDailyFishing`
+
+La función `downloadDailyFishing` fue creada con la finalidad de descargar de manera automática la información del seguimiento pesquero de la anchoveta. Esta información se encuentra disponible en la página web del Instituto del Mar del Perú (IMARPE) y consta básicamente de dos variables pesqueras: i) desembarque y ii) esfuerzo (número de embarcaciones), ambas en escala temporal diaria.  
+
+`downloadDailyFishing` retorna una base de datos de clase `data.frame` con las variables (en las columnas) de: años, meses, dias, especie, tipo de flota, puerto, desembarque y embarcaciones, el cual representa al esfuerzo pesquero. Esta base de datos puede ser guardada en el directorio en el que se trabaja usando el parámetro `saveFile = TRUE`. 
+
+```{r, eval = FALSE}
+# Revisar la ayuda de downloadDailyFishing para más información
+?downloadDailyFishing
+
+# Obtener información del seguimiento pesquero
+fishingInfo = downloadDailyFishing(startDate = "2017-4-20", endDate = "2017-6-19")
+View(fishingInfo)
+```
+
+La importancia de usar `downloadDailyFishing` es que la base de datos que se genera y se guarda en el directorio de trabajo (con extensión .csv) puede ser usado para crear un objeto de clase `fishery` con ayuda de la función `getFishingData`. Esto permitirá observar y analizar el seguimiento pesquero de la anchoveta de una manera más sencilla.
+
+```{r, eval = FALSE}
+fishingInfo = downloadDailyFishing(startDate = "2017-4-20", endDate = "2017-6-19")
+View(fishingInfo)
+
+# Utilizando el archivo de extensión .csv que se generó al crear fishingInfo se 
+# analizará el desembarque:
+dailyLanding = getFishingData(file = "dailyFishing_2017420_2017619.csv",
+                              type = "fisheryinfo", varType = "landing", sp = "anchoveta",
+                              toTons = FALSE)
+class(dailyLanding)
+print(dailyLanding)
+report(dailyLanding, daysToPlot = "1")
+
+# Utilizando el archivo de extensión .csv que se generó al crear fishingInfo se 
+# analizará el esfuerzo (embarcaciones):
+dailyEffort = getFishingData(file = "dataDailyReport_2017420_2017619.csv",
+                             type = "fisheryinfo", varType = "effort", sp = "anchoveta",
+                             efforType = "embarcaciones")
+print(dailyEffort)
+report(dailyEffort, daysToPlot = "1")
+```
+
+
+#### 1.3 Uso de `getDailyReport`
 
 `getDailyReport` es usada para realizar un análisis de los desembarques pesqueros de anchoveta respecto a la biomasa estimada en las cuotas de captura del recurso. 
 Esta función se encarga de descargar de manera automática los desembarques diarios de anchoveta que estan disponibles en la página web del Instituto del Mar del Perú (IMARPE) y en función a sus parámetros principales: fechas de análisis, información biológica de la especie, resultados del crucero para la estimación de la biomasa, la cuota oficial de biomasa; se realiza un análisis cuyos resultados serán guardados en un objeto de clase `fishingMonitoring`. Este objecto se guardará en el formato `RData` en el directorio donde se esté realizando el trabajo. 
@@ -332,3 +374,9 @@ report(x)
 
 ```
 
+
+#### 1.4 Uso de `getBitacoraData`
+
+`getBitacoraData` tiene como finalidad leer la información recogida por el programa de Bitácoras de Pesca (PBP) del IMARPE para realizar diversos análisis de manera automatizada y guardarlos en un objeto de clase `bitacora`. 
+
+La información necesaria para usar `getBitacoraData` es un archivo de extensión .csv (delimitado por comas) en el formato XXX.
