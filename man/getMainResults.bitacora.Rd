@@ -61,6 +61,24 @@ If one of the parameter (observedTrip, fishingHaul, fishingPoints, speciesCompos
 distributionCatch, and effortData) is \code{NULL} on \code{getMainResults.bitacora} function
 the output of this parameter on the list produced by the function is \code{NULL} too.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Get the results
+principalData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+specie = "anchoveta", observedTrip = TRUE, fishingHaul = TRUE, distributionCatch = TRUE)
+
+# See the principal results bitacora class object
+principalData$observedTrip
+principalData$fishingHaul
+principalData$distributionCatch
+
+}
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
