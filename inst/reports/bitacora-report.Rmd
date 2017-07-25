@@ -104,7 +104,7 @@ pander::pander(catchComposition, align = "c", keep.line.breaks = TRUE)
 ```
 
 ```{r, echo=FALSE, message=FALSE, fig.height=6.5, fig.width=6.5}
-plotSpeciesComposition(x = bitacoraData, minPercentage = 0.2)
+plotSpeciesComposition(x, minPercentage = 0.7)
 ```
 
 \pagebreak
