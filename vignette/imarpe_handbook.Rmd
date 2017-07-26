@@ -23,9 +23,11 @@ Palabras clave: R, imarpe, automatización, reportes, figuras, tablas.
 
 \section{Introducción}
 
-`imarpe` es un paquete implementado en R cuya principal función es automatizar el procesamiento de información así como automatizar la elaboración de gráficas, tablas, y reportes que son necesarios en el trabajo rutinario para el personal del Instituto del Mar del Perú (IMARPE). El diseño de este paquete es flexible, permitiendo al usuario realizar cambios sobre los parámetros de los resultados ya tendrán a su disposición el código en R que genera los productos; adicionalmente, el diseño de este paquete permite trabajar con funciones genéricas (e.g. plot, summary, print) sobre cada clase de datos, facilitando de esta manera su utilización incluso con conocimientos mínimos de R. 
- 
-Dentro de las principales ventajas que proporciona `imarpe` están:
+`imarpe` es un paquete implementado en R cuya principal función es automatizar el procesamiento de información así como automatizar la elaboración de gráficas, tablas, y reportes que son necesarios en el trabajo rutinario para el personal del Instituto del Mar del Perú (IMARPE). El diseño de este paquete es flexible, permitiendo al usuario realizar cambios sobre los parámetros de los resultados ya que tendrán a su disposición el código en R que genera los productos; adicionalmente, el diseño de este paquete permite trabajar con funciones genéricas (e.g. plot, summary, print) sobre cada clase de datos, facilitando de esta manera su utilización incluso con conocimientos mínimos de R. 
+
+\pagebreak
+
+Las principales ventajas que proporciona `imarpe` son:
 
  * No requiere que el usuario posea conocimientos avanzados de programación y/o R, 
  
@@ -33,16 +35,16 @@ Dentro de las principales ventajas que proporciona `imarpe` están:
  
  * Brinda al usuario un procesamiento automatizado de la información, 
  
- * Permite que el usuario realice cambios sobre los parámetros de las salidas (tablas, figuras y reportes.)
+ * Permite que el usuario realice cambios sobre los parámetros de las salidas (tablas, figuras y reportes),
 
  * Proporciona gráficas de buena calidad así como la capacidad de realizar análisis reproducibles.
 
 
 \subsection{Programación orientada a objetos}
 
-R tiene tres sistemas orientados a objetos (S3, S4 y R5), y todos trabajan con los conceptos "clase" y "método". Una clase se define como un tipo de objeto, describiendo que propiedades posee, como funciona y como este objeto se puede relacionar con otros tipos de objetos; de esta manera, cada objeto debe poseer una clase. Por otro lado, un método se define como aquella función que está asociada a un tipo particular de objetos.
+R tiene tres sistemas orientados a objetos (S3, S4 y R5), y todos trabajan con los conceptos de  "clase" y "método". Una clase se define como un tipo de objeto, describiendo que propiedades posee, como funciona y como este objeto se puede relacionar con otros tipos de objetos; de esta manera, cada objeto debe poseer una clase. Por otro lado, un método se define como aquella función que está asociada a un tipo particular de objetos.
 
-S3 implementa un estilo de programación orientada a objetos llamada función genérica OO (o en inglés, generic-function OO). En el funcionamiento de este sistema se realizan cálculos a través de métodos y a través de un tipo especial de función llamada "función genérica", la cual decide qué método llamar. 
+S3 implementa un estilo de programación orientada a objetos llamada "función genérica OO" (o en inglés, generic-function OO). En el funcionamiento de este sistema se realizan cálculos a través de métodos y a través de un tipo especial de función llamada "función genérica", la cual decide qué método utilizar. 
 
 El uso principal de S3 en R es a través de los métodos print, summary and plot. Estos métodos permiten tener una función genérica por ejemplo de print, que mostraría el objeto de una manera especial.
 
@@ -55,9 +57,9 @@ install.packages("devtools")
 library("devtools")
 ```
 
-La instalación de `imarpe` se realizará directamente de la cuenta github del Instituto del Mar del Peru (IMARPE) \url{https://github.com/imarpe}, lugar donde se trabaja en las mejoras y actualizaciones  de los paquetes en R desarrollados por el personal del IMARPE. 
+La instalación de `imarpe` se realizará directamente de la cuenta github del Instituto del Mar del Peru (IMARPE) \url{https://github.com/imarpe}, lugar donde se trabaja en las mejoras y actualizaciones de los paquetes en R desarrollados por el personal del IMARPE. 
 
-En esta web también se encuentra `imarpe`, y su instalación se realizará usando las siguientes líneas de código. La primera línea de código instala el paquete y debe ser corrida por única vez, sin embargo, cada vez que se haga una actualización del paquete, se deberá correr nuevamente para cargar de manera automática la nueva versión de `imarpe`. La segunda línea de código se encargará de cargar el paquete la instalado, esta debe ser ejecutada cada vez que se quiera usar el paquete. 
+En esta web también se encuentra `imarpe`, y su instalación se realizará usando las siguientes líneas de código. La primera línea de código instala el paquete y debe ser corrida por única vez, sin embargo, cada vez que se haga una actualización del paquete, se deberá correr nuevamente para cargar de manera automática la nueva versión de `imarpe`. La segunda línea de código se encargará de cargar el paquete ya instalado, esta debe ser ejecutada cada vez que se quiera hacer uso de `imarpe`. 
 
 ```{r, eval = FALSE}
 install_github("imarpe/imarpe")
@@ -72,7 +74,7 @@ library(imarpe)
 
 \subsection{Módulo Pesquería}
 
-Esta sección trabaja sobre información pesquera, orientada al análisis de las variables: captura y desembarque, esfuerzo y captura por unidad de esfuerzo (cpue), reproduciendo tablas, gráficas y reportes de manera automatizada. Así mismo, el Programa de Observadores a Bordo (Programa de Bitácoras de Pesca) del IMARPE también cuenta un subsección de trabajo dentro del módulo de pesquería, el cual permite obtener las principales gráficas y tablas que son requeridas en los reportes periódicos que emiten.
+Esta sección trabaja sobre información pesquera, orientada al análisis de las variables: captura y desembarque, esfuerzo y captura por unidad de esfuerzo (cpue), reproduciendo tablas, gráficas y reportes de manera automatizada. Así mismo, el Programa de Observadores a Bordo (Programa de Bitácoras de Pesca - PBP) del IMARPE también cuenta un subsección de trabajo dentro del módulo de pesquería, el cual permite obtener las principales gráficas y tablas que son requeridas en los reportes periódicos que el PBP emite.
 
 Las principales funciones con las que cuenta `imarpe` son 4 y las explicaremos al detalle en las siguientes sub-secciones.
 
@@ -107,18 +109,23 @@ fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 # Usar getFishingData con la base de datos ejemplo (fisheryData) de caballa
 landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
                           sp = "caballa")
-
 class(landing)
+
 dataBase = landing$data
+head(dataBase)
+
 info = landing$info
+info
+
 fleet = landing$fleeTable
+head(fleet)
 
 # Para analizar un periodo de tiempo de la base de datos
-landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+landing = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
                           sp = "caballa", start = "2009-04-10", end = "2009-08-30")
 
 # Para analizar la información de un puerto específico
-landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
+landing = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
                           sp = "caballa", start = "2009-04-10", end = "2009-08-30",
                           port = "PAITA")
 ```
@@ -130,13 +137,19 @@ Para el análisis de esta variable (esfuerzo) el tipo de información (parámetro `
 ```{r, eval = TRUE}
 # Para analizar la información de esfuerzo con la base de datos ejemplo (fisheryData)
 # de caballa
-effort  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
+effort = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
                          sp = "caballa", efforType = "capacidad_bodega")
-
 class(effort)
+
 dataBase = effort$data
+head(dataBase)
+
 info = effort$info
+info
+
 fleet = effort$fleeTable
+head(fleet)
+
 ```
 
 Finalmente, el análisis de la captura por unidad de esfuerzo (cpue) se analizará en la siguiente sección. Aquí los parámetros `type` y  `varType` deben ser iguales a `cpue`, y se debe precisar que tipo de esfuerzo se usará (en `efforType`) para calcular la cpue.
@@ -144,18 +157,24 @@ Finalmente, el análisis de la captura por unidad de esfuerzo (cpue) se analizará
 ```{r, eval = TRUE}
 # Para analizar la información de cpue con la base de datos ejemplo (fisheryData)
 # de caballa
-cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
-                       sp = "caballa", efforType = "capacidad_bodega")
-
+cpue = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
+                      sp = "caballa", efforType = "capacidad_bodega")
 class(cpue)
+
 dataBase = cpue$data
+head(dataBase)
+
 info = cpue$info
+info
+
 fleet = cpue$fleeTable
+head(fleet)
+
 ```
 
-Para los dos últimos ejemplo, de esfuerzo y cpue, también se pueden usar los parámetros `start` y `end` para hacer un análisis sobre un periodo de tiempo específico, así como el parámetro `port`, para analizar la información de un determinado puerto.
+Para los dos últimos ejemplos, de esfuerzo y cpue, también se pueden usar los parámetros `start` y `end` para hacer un análisis sobre un periodo de tiempo específico, así como el parámetro `port`, para analizar la información de un determinado puerto.
 
-Respecto a los métodos, se construyeron cinco métodos para cada una de las clases de datos `fishery` y `cpue`. Estos son: `print`, `summary`, `print.summary`, `plot` y `report` y las ayudas para cada método debe ser llamada por el método seguido por un punto (".") y luego la clase de datos correspondiente.
+Respecto a los métodos, se construyeron cinco métodos para cada una de las clases de datos `fishery` y `cpue`. Estos son: `print`, `summary`, `print.summary`, `plot` y `report`; y las ayudas para cada método debe ser llamada por el método seguido por un punto (".") y luego la clase de datos correspondiente.
 
 ##### Métodos de la clase `fishery`
 
@@ -191,21 +210,29 @@ fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
                           sp = "caballa")
 
-#Algunos ejemplos del uso de los métodos
+# Algunos ejemplos del uso de los métodos
 print(landing)
 
 sumLanding = summary(landing)
 sumLanding$var
 
+# Visualizar sólo las primeras seis filas de cada base de datos contenida en sumLanding
 head(sumLanding$portDay)
 head(sumLanding$day)
 head(sumLanding$port)
 head(sumLanding$months)
 head(sumLanding$years)
 
+# Ejemplo de gráfica diaria, mostrando en el eje x sólo los días "1"
+# revisar la ayuda de plot.fishery para más información (?plot.fishery)
 plot(landing, daysToPlot = "1")
-
 ```
+
+```{r, eval = FALSE}
+# Ver en el Anexo el reporte de desembarque
+report(landing)
+```
+
 
 ##### Métodos de la clase `cpue`
 
@@ -220,7 +247,7 @@ plot(landing, daysToPlot = "1")
 
 La descripción de cada método se dará a continuación:
 
-* print.cpue: muestra un resumen del contenido de información de la base de datos de clase cpue. La información que proporciona este método es similar a la que proporciona `print.fishery`, sin embargo puede revisar la ayuda de `print.cpue` para mayor información.
+* print.cpue: muestra un resumen del contenido de información de la base de datos de clase cpue. La información que proporciona este método es similar a la que proporciona `print.fishery`. Revisar la ayuda de `print.cpue` para mayor información.
 
 * summary.cpue: proporciona una lista con: (1) el tipo de esfuerzo que fue usado para estimar la cpue; (2) una base de datos diaria por puerto; (3) una base de datos total en escala temporal diaria; una base de datos por puerto; (4) una base de datos en escala temporal mensual; (5) y una base de datos en escala temporal anual.
 
@@ -233,7 +260,7 @@ La descripción de cada método se dará a continuación:
 
 Una breve ejemplificación del uso de los métodos de la clase `cpue` se muestra en la siguiente sección:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Cargar la base de datos
 fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 
@@ -246,25 +273,32 @@ cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
 print(cpue)
 
 sumCpue = summary(cpue)
-print(sumCpue)
+sumCpue$effort
 
-sumCpue = summary(cpue, language = "english")
-print(sumCpue, language = "english")
+head(sumCpue$portDay)
+head(sumCpue$day)
+head(sumCpue$port)
+head(sumCpue$months)
+head(sumCpue$years)
 
-plot(cpue)
-
-report(cpue, daysToPlot = "1")
+# Ejemplo de gráfica mensual
+# revisar la ayuda de plot.fishery para más información (?plot.fishery)
+plot(cpue, ploType = "plotMonthly", language= "english", colBar = "gray")
 
 ```
 
+```{r, eval = FALSE}
+# # Ver en el Anexo el reporte de cpue
+report(cpue)
+```
 
 ##### Uso de `combineFisheryVar`
 
-Esta función permite combinar en un sólo objeto de clase `fishery` la información del desembarque y esfuerzo. El método `report.fishery` está disponible para ser usado en este tipo de objetos, permitiendo de esta manera la producción de un reporte unificado con la información de ambas variables pesqueras.
+`combineFisheryVar` permite combinar en un sólo objeto de clase `fishery` la información del desembarque y esfuerzo. El método `report.fishery` está disponible para ser usado en este tipo de objetos, permitiendo de esta manera la producción de un reporte unificado con la información de ambas variables pesqueras.
 
-Adicionalmente, este tipo de objetos puede ser usado por el método `plot.fishery` usando el `ploType = "joined"`. Esto produce una gráfica en escala temporal diaria con la información de ambas variables (desembarque y esfuerzo), el desembarque en el eje vertical izquierdo y el esfuerzo en el eje vertical derecho.
+Adicionalmente, este tipo de objetos puede ser usado por el método `plot.fishery` usando `ploType = "joined"`. Esto produce una gráfica en escala temporal diaria con la información de ambas variables (desembarque y esfuerzo), el desembarque en el eje vertical izquierdo y el esfuerzo en el eje vertical derecho.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Cargar la base de datos
 fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 
@@ -275,16 +309,19 @@ landingOject = getFishingData(file = fisheryData, type = "fisheryinfo",
 # Objeto de clase fishery para la variable tipo effort
 effortObject = getFishingData(file = fisheryData, type = "fisheryinfo",
                               varType = "effort", sp = "caballa",
-                              efforType = "viaje")
+                              efforType = "capacidad_bodega")
 
 # Uso de la función combineFisheryVar
 fisheryVar = combineFisheryVar(landing = landingOject, effort = effortObject)
 class(fisheryVar)
 
 # Gráfica
-plot(fisheryVar, ploType = "plotJoined")
+plot(fisheryVar, ploType = "plotJoined", daysToPlot = "1")
+```
 
-# report
+
+```{r, eval = FALSE}
+# # Ver en el Anexo el reporte 
 report(fisheryVar, type = "joined")
 report(fisheryVar, type = "joined", daysToPlot = "1")
 
@@ -292,24 +329,27 @@ report(fisheryVar, type = "joined", daysToPlot = "1")
 
 #### 1.2 Uso de `downloadDailyFishing`
 
-La función `downloadDailyFishing` fue creada con la finalidad de descargar de manera automática la información del seguimiento pesquero de la anchoveta. Esta información se encuentra disponible en la página web del Instituto del Mar del Perú (IMARPE) y consta básicamente de dos variables pesqueras: i) desembarque y ii) esfuerzo (número de embarcaciones), ambas en escala temporal diaria.  
+La función `downloadDailyFishing` fue creada con la finalidad de descargar de manera automática la información del seguimiento pesquero de anchoveta. Esta información se encuentra disponible en la página web del Instituto del Mar del Perú (IMARPE) e incluye dos variables pesqueras importantes: i) desembarque y ii) esfuerzo (por número de embarcaciones), ambas en escala temporal diaria.  
 
-`downloadDailyFishing` retorna una base de datos de clase `data.frame` con las variables (en las columnas) de: años, meses, dias, especie, tipo de flota, puerto, desembarque y embarcaciones, el cual representa al esfuerzo pesquero. Esta base de datos puede ser guardada en el directorio en el que se trabaja usando el parámetro `saveFile = TRUE`. 
+`downloadDailyFishing` retorna una base de datos de clase `data.frame` con las variables (en las columnas) de: años, meses, dias, especie, tipo de flota, puerto, desembarque y embarcaciones; el cual representa al esfuerzo pesquero. Esta base de datos puede ser guardada en el directorio en el que se trabaja usando el parámetro `saveFile = TRUE`. 
 
 ```{r, eval = FALSE}
 # Revisar la ayuda de downloadDailyFishing para más información
 ?downloadDailyFishing
+```
 
+```{r, eval = FALSE}
 # Obtener información del seguimiento pesquero
 fishingInfo = downloadDailyFishing(startDate = "2017-4-20", endDate = "2017-6-19")
-View(fishingInfo)
+
+head(fishingInfo)
+
 ```
 
 La importancia de usar `downloadDailyFishing` es que la base de datos que se genera y se guarda en el directorio de trabajo (con extensión .csv) puede ser usado para crear un objeto de clase `fishery` con ayuda de la función `getFishingData`. Esto permitirá observar y analizar el seguimiento pesquero de la anchoveta de una manera más sencilla.
 
 ```{r, eval = FALSE}
 fishingInfo = downloadDailyFishing(startDate = "2017-4-20", endDate = "2017-6-19")
-View(fishingInfo)
 
 # Utilizando el archivo de extensión .csv que se generó al crear fishingInfo se 
 # analizará el desembarque:
@@ -333,7 +373,7 @@ report(dailyEffort, daysToPlot = "1")
 #### 1.3 Uso de `getDailyReport`
 
 `getDailyReport` es usada para realizar un análisis de los desembarques pesqueros de anchoveta respecto a la biomasa estimada en las cuotas de captura del recurso. 
-Esta función se encarga de descargar de manera automática los desembarques diarios de anchoveta que estan disponibles en la página web del Instituto del Mar del Perú (IMARPE) y en función a sus parámetros principales: fechas de análisis, información biológica de la especie, resultados del crucero para la estimación de la biomasa, la cuota oficial de biomasa; se realiza un análisis cuyos resultados serán guardados en un objeto de clase `fishingMonitoring`. Este objecto se guardará en el formato `RData` en el directorio donde se esté realizando el trabajo. 
+Esta función tiene como finalidad descargar de manera automática los desembarques diarios de anchoveta que estan disponibles en la página web del IMARPE y en función a sus parámetros principales: fechas de análisis, información biológica de la especie, resultados del crucero para la estimación de la biomasa, la cuota oficial de biomasa; se realiza un análisis cuyos resultados serán guardados en un objeto de clase `fishingMonitoring`. Este objecto se guardará en el formato `RData` en el directorio donde se esté realizando el trabajo. 
 
 ```{r, eval = FALSE}
 # Revisar la ayuda de getDailyReport para más información
@@ -384,19 +424,15 @@ report(x)
 
 ```
 
-
 #### 1.4 Uso de `getBitacoraData`
 
 `getBitacoraData` tiene como finalidad leer la información recogida por el programa de Bitácoras de Pesca (PBP) del IMARPE para realizar diversos análisis de manera automatizada y guardarlos en un objeto de clase `bitacora`. 
 
-La información necesaria para usar `getBitacoraData` es un archivo de extensión .csv (delimitado por comas) con el formato original en la que esta base de datos se descarga del IMARSIS (Sistema de Información del IMARPE). Esta base de datos será analizada y se obtendrá un objeto (de clase `bitacora`) con dos elementos: i) la base de datos procesada y ii) las principales características de la base de datos procesada. 
+La información necesaria para usar `getBitacoraData` es un archivo de extensión .csv (delimitado por comas) con el formato original en la que esta base de datos se descarga del IMARSIS (Sistema de Información del IMARPE). Esta base de datos será analizada y se obtendrá un objeto (de clase `bitacora`) con dos elementos: i) la base de datos procesada y ii) las principales características de dicha base de datos. 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Cargar la base de datos
 bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
-
-# Para cargar la ayuda de la función
-?getBitacoraData
 
 # Usar getBitacoraData con la base de datos ejemplo (bitacoraData)
 bitacoraObject = getBitacoraData(file = bitacoraData)
@@ -407,7 +443,10 @@ class(bitacoraObject)
 # Obtener la base de datos filtrada y revisar las principales características de la
 # base de datos
 dataBase = bitacoraObject$data
+
 info = bitacoraObject$info
+info
+
 ```
 
 ##### Métodos de la clase `bitacora`
@@ -433,7 +472,7 @@ Los métodos construidos para la clase de datos `bitacora` son 7 y se describirán
 
 * plotFishingPoints.bitacora: este método toma un objeto de clase `bitacora` y grafica en un mapa los puntos de pesca de la especie precisada en `dataType`.
 
-* plotFishingPresence.bitacora: este método toma un objeto de clase `bitacora` y grafica en un mapa la incidencia de especies en la captura, ya sea por grupo taxonómico o en general.
+* plotFishingPresence.bitacora: este método toma un objeto de clase `bitacora` y grafica en un mapa la incidencia de especies en la captura, ya sea por grupo taxonómico o de manera general.
 
 * plotSpeciesComposition.bitacora: este método toma un objeto de clase `bitacora` y grafica en un diagrama de pie la composición de las capturas. 
 
@@ -441,7 +480,7 @@ Los métodos construidos para la clase de datos `bitacora` son 7 y se describirán
 
 Una breve ejemplificación del uso de los métodos de la clase `bitacora` se muestra en la siguiente sección. 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE, cache=TRUE}
 # Cargar la base de datos
 bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
 
@@ -452,20 +491,38 @@ bitacoraObject = getBitacoraData(file = bitacoraData)
 print(bitacoraObject)
 
 sumBitacora = summary(bitacoraObject)
-print(sumBitacora)
+class(sumBitacora)
 
+head(sumBitacora$observedTrip)
+head(sumBitacora$fishingHaul)
+```
+
+\pagebreak
+
+```{r, eval=TRUE, message=FALSE, fig.height=10.5, fig.width=8}
 plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataAnch")
-plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataCab")
+```
 
+\pagebreak
+
+```{r, eval=TRUE, message=FALSE, fig.height=10.5, fig.width=8}
 plotFishingPresence(x = bitacoraObject, byGroup = TRUE, group = "crustaceo")
-plotFishingPresence(x = bitacoraObject, byGroup = FALSE)
+```
 
+\pagebreak
+
+```{r, eval=TRUE, message=FALSE, fig.height=4.5, fig.width=4.5}
 plotSpeciesComposition(x = bitacoraObject, minPercentage = 0.7)
 
+```
+
+```{r, eval = FALSE}
+# # Ver en el Anexo el reporte de bitacora
 report(bitacoraObject)
 
 ```
 
+\pagebreak
 
 ##### Uso de `getMainResults`
 
@@ -473,26 +530,75 @@ Los resultados que se generan usando la base de datos del PBP es muy amplia, inc
 
 A continuación se muestra un breve ejemplo del uso de `getMainResults`:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Cargar la base de datos
 bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
 
 # Crear un objeto de la clase bitacora usando la base de datos de ejemplo (bitacoraData)
 bitacoraObject = getBitacoraData(file = bitacoraData)
 
-#Uso de getMainResults.bitacora
+# Uso de getMainResults.bitacora
 mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
                                            specie = "anchoveta",
                                            observedTrip = TRUE)
+# Viajes observados
+observedTrip = mainBitacoraData$observedTrip
 
-#Viajes observados
-observedTrip = principalData$observedTrip
+head(observedTrip)
+
 ```
 
 ##### Uso de `effortSpeciesData`
 
-El esfuerzo pesquero es una variable importante en el seguimiento de la pesquería de un recurso, y ésta también puede ser analizada con la información que el PBP recoge de manera rutinaria. Por tanto, el uso de `effortSpeciesData` tiene la finalidad recibir un objeto de clase `bitacora` y hacer un filtro para poder estimar el esfuerzo en función a una especie determinada.
+El esfuerzo pesquero es una variable importante en el seguimiento de la pesquería de un recurso, y ésta también puede ser analizada con la información que el PBP recoge de manera rutinaria. Por tanto, el uso de `effortSpeciesData` tiene la finalidad recibir un objeto de clase `bitacora` y realizar un filtro de los datos para una especie, clasificando en función a ella las temporadas de pesca para cada región (norte-centro, sur, o total). El producto generado de dicha función es una data.frame con información que será util para poder estimar el esfuerzo pesquero.
 
-Luego de tener la base de datos filtrada para una especie así como para una región específica (región norte-centro o región sur), se puede hacer uso de `getEffort`. Esta función permite estimar el esfuerzo en función a cuatro tipos de variables: (1) duración del viaje ("travelTime"), (2) al número de calas (haulTotal), (3) capacidad de bodega (storageCapacity), y (4) tiempo de búsqueda (searchTime); sobre el tiempo (años, meses, dias o temporadas) o sobre los puertos. Adicionalmente, el esfuerzo puede ser estimado para toda la base de datos o haciendo un filtro de algún tipo de flota en especial.
+Luego de obtener la base de datos filtrada se puede hacer uso de `getEffort`. Esta función permite estimar el esfuerzo en función a cuatro tipos de variables: (1) duración del viaje ("travelTime"), (2) al número de calas ("haulTotal"), (3) capacidad de bodega ("storageCapacity""), y (4) tiempo de búsqueda ("searchTime"); sobre el tiempo (años, meses, dias o temporadas) o sobre los puertos. Adicionalmente, el esfuerzo puede ser estimado para toda la base de datos o haciendo un filtro de algún tipo de flota en especial.
 
-El resultado de `getEffor` (completar).
+El resultado de `getEffort` puede ser utilizado para producir una gráfica típica de los informes de PBP, la cual relaciona los series de esfuerzo pesquero en los ejes Y (izquiero y derecho) por cada puerto en el eje X.
+
+```{r, eval = TRUE, cache=TRUE}
+# Cargar la base de datos
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Crear un objeto de la clase bitacora usando la base de datos de ejemplo (bitacoraData)
+bitacoraObject = getBitacoraData(file = bitacoraData)
+
+# Uso de getMainResults.bitacora 
+mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+                                           specie = "anchoveta", effortData = TRUE)
+
+# Data de esfuerzo
+effortData = mainBitacoraData$effortData
+
+# Filtro de datos: datos de anchoveta para la región norte-centro
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+
+# Obtener el esfuerzo por duración  de viaje
+effortNC_tt = getEffort(data = effortNC, efforType = "travelTime", effortBy = "port")
+effortNC_tt
+
+# Obtener el esfuerzo por número de calas
+effortNC_hn = getEffort(data = effortNC, efforType = "haulTotal", effortBy = "port")
+effortNC_hn
+
+```
+
+```{r, eval=TRUE, fig.height=6, fig.width=11.5}
+# Gráfico de esfuerzo
+plotEffort(effort1 = effortNC_tt, effort2 = effortNC_hn, labAxis2 = "Horas de viaje",
+           labAxis4 = "N\u{00FA}mero de calas", colBar="gray", colLine = "black",
+           legend = c("Duracion del viaje", "N\u{00FA}mero de calas"))
+
+```
+
+Adicionalmente, `imarpe` cuenta con una función llamada `getCpue_relative` la cual permitirá obtener la captura por unidad de esfuerzo (cpue) removiendo el efecto de la capacidad de bodega. Para obtener la cpue relativa se debe contar con la base de dato generada por `effortSpeciesData.bitacora`. Ver el siguiente ejemplo:
+
+```{r, eval = TRUE}
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+
+# Obtener la cpue relativa
+getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "port")
+
+getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "time", timeBy = "months")
+
+```
