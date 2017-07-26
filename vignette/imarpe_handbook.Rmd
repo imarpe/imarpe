@@ -229,8 +229,8 @@ plot(landing, daysToPlot = "1")
 ```
 
 ```{r, eval = FALSE}
-# Ver en el Anexo el reporte de desembarque
-report(landing)
+# Reporte adjuntado en el Anexo
+report(landing, daysToPlot = "1")
 ```
 
 
@@ -288,8 +288,8 @@ plot(cpue, ploType = "plotMonthly", language= "english", colBar = "gray")
 ```
 
 ```{r, eval = FALSE}
-# # Ver en el Anexo el reporte de cpue
-report(cpue)
+# Reporte adjuntado en el Anexo
+report(cpue, daysToPlot = "1")
 ```
 
 ##### Uso de `combineFisheryVar`
@@ -321,8 +321,7 @@ plot(fisheryVar, ploType = "plotJoined", daysToPlot = "1")
 
 
 ```{r, eval = FALSE}
-# # Ver en el Anexo el reporte 
-report(fisheryVar, type = "joined")
+# Reporte adjuntado en el Anexo
 report(fisheryVar, type = "joined", daysToPlot = "1")
 
 ```
@@ -365,6 +364,7 @@ report(dailyLanding, daysToPlot = "1")
 dailyEffort = getFishingData(file = "dataDailyReport_2017420_2017619.csv",
                              type = "fisheryinfo", varType = "effort", sp = "anchoveta",
                              efforType = "embarcaciones")
+class(dailyEffort)
 print(dailyEffort)
 report(dailyEffort, daysToPlot = "1")
 ```
@@ -420,6 +420,7 @@ x = getDailyReport(datesList = datesList, simpleFreqSizes = simpleFreqSizes,
                    a = a, b = b)
 class(x)
 
+# Reporte adjuntado en el Anexo
 report(x)
 
 ```
@@ -517,7 +518,7 @@ plotSpeciesComposition(x = bitacoraObject, minPercentage = 0.7)
 ```
 
 ```{r, eval = FALSE}
-# # Ver en el Anexo el reporte de bitacora
+# Reporte adjuntado en el Anexo
 report(bitacoraObject)
 
 ```
@@ -571,7 +572,8 @@ mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "
 effortData = mainBitacoraData$effortData
 
 # Filtro de datos: datos de anchoveta para la región norte-centro
-effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta",
+                                      region = "norte-centro")
 
 # Obtener el esfuerzo por duración  de viaje
 effortNC_tt = getEffort(data = effortNC, efforType = "travelTime", effortBy = "port")
@@ -594,11 +596,13 @@ plotEffort(effort1 = effortNC_tt, effort2 = effortNC_hn, labAxis2 = "Horas de vi
 Adicionalmente, `imarpe` cuenta con una función llamada `getCpue_relative` la cual permitirá obtener la captura por unidad de esfuerzo (cpue) removiendo el efecto de la capacidad de bodega. Para obtener la cpue relativa se debe contar con la base de dato generada por `effortSpeciesData.bitacora`. Ver el siguiente ejemplo:
 
 ```{r, eval = TRUE}
-effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta",
+                                      region = "norte-centro")
 
 # Obtener la cpue relativa
 getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "port")
 
-getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "time", timeBy = "months")
+getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "time",
+                 timeBy = "months")
 
 ```
