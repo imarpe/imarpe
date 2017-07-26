@@ -1,22 +1,28 @@
 ---
 title: "**imarpe**: un paquete para la automatización de gráficos, tablas y reportes usando R"
 author: "Criscely Luján-Paredes"
-date: "24 de Julio de 2017"
+date: "26 de Julio de 2017"
 output: 
-  pdf_document
-  
+  pdf_document:
+    toc: true
+    toc_depth: 5
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+require(imarpe)
 ```
 
-# Resumen
+
+\section{Resumen}
+
 Este documento es una introducción al uso del paquete `imarpe`, el cuál proporciona herramientas para la elaboración de gráficas, tablas y reportes que se realizan de manera rutinaria en las investigaciones producidas por el Instituto del Mar del Perú (IMARPE). El objetivo principal de `imarpe` es que los usuarios trabajen en R sin requerir conocimientos avanzados de programación, ahorrando tiempo en el procesamiento de información. 
 
 Palabras clave: R, imarpe, automatización, reportes, figuras, tablas.
 
-# Introducción
+
+\section{Introducción}
+
 `imarpe` es un paquete implementado en R cuya principal función es automatizar el procesamiento de información así como automatizar la elaboración de gráficas, tablas, y reportes que son necesarios en el trabajo rutinario para el personal del Instituto del Mar del Perú (IMARPE). El diseño de este paquete es flexible, permitiendo al usuario realizar cambios sobre los parámetros de los resultados ya tendrán a su disposición el código en R que genera los productos; adicionalmente, el diseño de este paquete permite trabajar con funciones genéricas (e.g. plot, summary, print) sobre cada clase de datos, facilitando de esta manera su utilización incluso con conocimientos mínimos de R. 
  
 Dentro de las principales ventajas que proporciona `imarpe` están:
@@ -31,14 +37,16 @@ Dentro de las principales ventajas que proporciona `imarpe` están:
 
  * Proporciona gráficas de buena calidad así como la capacidad de realizar análisis reproducibles.
 
-### Programación orientada a objetos
+
+\subsection{Programación orientada a objetos}
+
 R tiene tres sistemas orientados a objetos (S3, S4 y R5), y todos trabajan con los conceptos "clase" y "método". Una clase se define como un tipo de objeto, describiendo que propiedades posee, como funciona y como este objeto se puede relacionar con otros tipos de objetos; de esta manera, cada objeto debe poseer una clase. Por otro lado, un método se define como aquella función que está asociada a un tipo particular de objetos.
 
 S3 implementa un estilo de programación orientada a objetos llamada función genérica OO (o en inglés, generic-function OO). En el funcionamiento de este sistema se realizan cálculos a través de métodos y a través de un tipo especial de función llamada "función genérica", la cual decide qué método llamar. 
 
 El uso principal de S3 en R es a través de los métodos print, summary and plot. Estos métodos permiten tener una función genérica por ejemplo de print, que mostraría el objeto de una manera especial.
 
-# Instalación de `imarpe`
+ Instalación de `imarpe`
 Para usar `imarpe` se debe tener instalado R, y se recomienda usar la interface gráfica de R Studio.
 Para la instalación de todo paquete de R se require contar con internet y luego de verificar esto, desde R Studio se debe intalar y cargar el paquete devtools, de la siguiente manera:
 
@@ -56,24 +64,28 @@ install_github("imarpe/imarpe")
 library(imarpe)
 ```
 
-# Estructura de `imarpe`
+
+\section{Estructura de `imarpe`}
+
 `imarpe` cuenta con el desarrollo del módulo de pesquería. Sin embargo, el objetivo es extender el desarrollo del paquete a tres módulos más, los cuales estén conformados por los modulos de biología, oceanografía y cruceros hidroacústicos.
 
-## Módulo Pesquería:
+
+\subsection{Módulo Pesquería}
+
 Esta sección trabaja sobre información pesquera, orientada al análisis de las variables: captura y desembarque, esfuerzo y captura por unidad de esfuerzo (cpue), reproduciendo tablas, gráficas y reportes de manera automatizada. Así mismo, el Programa de Observadores a Bordo (Programa de Bitácoras de Pesca) del IMARPE también cuenta un subsección de trabajo dentro del módulo de pesquería, el cual permite obtener las principales gráficas y tablas que son requeridas en los reportes periódicos que emiten.
 
 Las principales funciones con las que cuenta `imarpe` son 4 y las explicaremos al detalle en las siguientes sub-secciones.
 
 ```{r, eval = FALSE}
-getFishingData
-downloadDailyFishing
-getDailyReport
-getBitacoraData
-getMainResults.bitacora
+?getFishingData
+?downloadDailyFishing
+?getDailyReport
+?getBitacoraData
+?getMainResults.bitacora
 
 ```
 
-### 1. Análisis de información pesquera
+\subsubsection{1. Análisis de información pesquera} 
 
 #### 1.1 Uso de `getFishingData`
 
@@ -88,12 +100,9 @@ En la siguiente demostración del uso de `getFishingData`, la función analiza los
 Adicionalmente, la ayuda de esta función puede ser visualizada para una mejor comprensión de los parámetros de la función.
 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Cargar la base de datos
 fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
-
-# Para cargar la ayuda de la función
-?getFishingData
 
 # Usar getFishingData con la base de datos ejemplo (fisheryData) de caballa
 landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing",
@@ -118,7 +127,7 @@ De manera similar al análisis de los desembarques se analizará la información de
 
 Para el análisis de esta variable (esfuerzo) el tipo de información (parámetro `type`) sigue siendo `fisheryInfo` pero el tipo de variable (parámetro `varType`) será `effort`; y se debe precisar que tipo de esfuerzo pesquero se analizará en el parámetro `efforType`. En el siguiente ejemplo se usó capacidad de bodega, pero podría ser número de viajes, número de anzuelos así como número de embarcaciones (ver ayuda de la función `getFishingData` para más información).
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Para analizar la información de esfuerzo con la base de datos ejemplo (fisheryData)
 # de caballa
 effort  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
@@ -132,7 +141,7 @@ fleet = effort$fleeTable
 
 Finalmente, el análisis de la captura por unidad de esfuerzo (cpue) se analizará en la siguiente sección. Aquí los parámetros `type` y  `varType` deben ser iguales a `cpue`, y se debe precisar que tipo de esfuerzo se usará (en `efforType`) para calcular la cpue.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Para analizar la información de cpue con la base de datos ejemplo (fisheryData)
 # de caballa
 cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
@@ -174,7 +183,7 @@ reproduce un reporte con un formato para los desembarques y otro para el esfuerz
 
 Una breve ejemplificación del uso de los métodos de la clase `fishery` se muestra en la siguiente sección:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Cargar la base de datos
 fisheryData = system.file("extdata", "fisheryData.csv", package = "imarpe")
 
@@ -186,14 +195,15 @@ landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "l
 print(landing)
 
 sumLanding = summary(landing)
-print(sumLanding)
+sumLanding$var
 
-sumLanding = summary(landing, language = "english")
-print(sumLanding, language = "english")
+head(sumLanding$portDay)
+head(sumLanding$day)
+head(sumLanding$port)
+head(sumLanding$months)
+head(sumLanding$years)
 
-plot(landing)
-
-report(landing, daysToPlot = "15")
+plot(landing, daysToPlot = "1")
 
 ```
 
@@ -379,4 +389,110 @@ report(x)
 
 `getBitacoraData` tiene como finalidad leer la información recogida por el programa de Bitácoras de Pesca (PBP) del IMARPE para realizar diversos análisis de manera automatizada y guardarlos en un objeto de clase `bitacora`. 
 
-La información necesaria para usar `getBitacoraData` es un archivo de extensión .csv (delimitado por comas) en el formato XXX.
+La información necesaria para usar `getBitacoraData` es un archivo de extensión .csv (delimitado por comas) con el formato original en la que esta base de datos se descarga del IMARSIS (Sistema de Información del IMARPE). Esta base de datos será analizada y se obtendrá un objeto (de clase `bitacora`) con dos elementos: i) la base de datos procesada y ii) las principales características de la base de datos procesada. 
+
+```{r, eval = FALSE}
+# Cargar la base de datos
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Para cargar la ayuda de la función
+?getBitacoraData
+
+# Usar getBitacoraData con la base de datos ejemplo (bitacoraData)
+bitacoraObject = getBitacoraData(file = bitacoraData)
+
+# Revisar la clase de bitacoraObject
+class(bitacoraObject)
+
+# Obtener la base de datos filtrada y revisar las principales características de la
+# base de datos
+dataBase = bitacoraObject$data
+info = bitacoraObject$info
+```
+
+##### Métodos de la clase `bitacora`
+
+```{r, eval = FALSE}
+# Revisar la ayuda de los métodos de la clase bitacora
+?print.bitacora
+?summary.bitacora
+?print.summary.bitacora
+?plotFishingPoints.bitacora
+?plotFishingPresence.bitacora
+?plotSpeciesComposition.bitacora
+?report.bitacora
+```
+
+Los métodos construidos para la clase de datos `bitacora` son 7 y se describirán a continuación:
+
+* print.bitacora: muestra la principal información del objeto de clase `bitacora`. Esta información incluye: (1) el nombre de la base de datos utilizada; (2) el número de viajes de pesca que posee la base de datos, (3) el número de puertos que se encuentra en la base de datos, (4) el número de meses (5) y años analizados (6), así como los tipos de flota que figuran en la base de datos, estos pueden ser: artesanal, menor escala, industrial de madera e industrial.
+
+* summary.bitacora: método que proporciona una lista de clase `summary.bitacora` conteniendo: (1) una base de datos de viajes observados por puerto, y (2) una base de datos de lances pesqueros por latitud.
+
+* print.summary.bitacora: este método permite visualizar los productos del método `summary.bitacora`.
+
+* plotFishingPoints.bitacora: este método toma un objeto de clase `bitacora` y grafica en un mapa los puntos de pesca de la especie precisada en `dataType`.
+
+* plotFishingPresence.bitacora: este método toma un objeto de clase `bitacora` y grafica en un mapa la incidencia de especies en la captura, ya sea por grupo taxonómico o en general.
+
+* plotSpeciesComposition.bitacora: este método toma un objeto de clase `bitacora` y grafica en un diagrama de pie la composición de las capturas. 
+
+* report.bitacora: este método exporta un reporte en formato pdf un conjunto de análisis realizados con la base cargada del PBP.
+
+Una breve ejemplificación del uso de los métodos de la clase `bitacora` se muestra en la siguiente sección. 
+
+```{r, eval = FALSE}
+# Cargar la base de datos
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Crear un objeto de la clase bitacora usando la base de datos de ejemplo (bitacoraData)
+bitacoraObject = getBitacoraData(file = bitacoraData)
+
+# Algunos ejemplos del uso de los métodos
+print(bitacoraObject)
+
+sumBitacora = summary(bitacoraObject)
+print(sumBitacora)
+
+plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataAnch")
+plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataCab")
+
+plotFishingPresence(x = bitacoraObject, byGroup = TRUE, group = "crustaceo")
+plotFishingPresence(x = bitacoraObject, byGroup = FALSE)
+
+plotSpeciesComposition(x = bitacoraObject, minPercentage = 0.7)
+
+report(bitacoraObject)
+
+```
+
+
+##### Uso de `getMainResults`
+
+Los resultados que se generan usando la base de datos del PBP es muy amplia, incluyendo una serie de cuadros de datos de diversos tipos. `getMainResults` brinda una herramienta sencilla de obtener sólo los resultados que le interesan al usuario de una manera muy sencilla. Para esto, es necesario tener un objeto de clase `bitacora`, indicar el idioma en el que se desean visualizar los resultados (español es el idioma por defecto), precisar la especie en estudio, y seleccionar los resultados que se querrar obtener poniendo `TRUE` en cada uno de ellos. 
+
+A continuación se muestra un breve ejemplo del uso de `getMainResults`:
+
+```{r, eval = FALSE}
+# Cargar la base de datos
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Crear un objeto de la clase bitacora usando la base de datos de ejemplo (bitacoraData)
+bitacoraObject = getBitacoraData(file = bitacoraData)
+
+#Uso de getMainResults.bitacora
+mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+                                           specie = "anchoveta",
+                                           observedTrip = TRUE)
+
+#Viajes observados
+observedTrip = principalData$observedTrip
+```
+
+##### Uso de `effortSpeciesData`
+
+El esfuerzo pesquero es una variable importante en el seguimiento de la pesquería de un recurso, y ésta también puede ser analizada con la información que el PBP recoge de manera rutinaria. Por tanto, el uso de `effortSpeciesData` tiene la finalidad recibir un objeto de clase `bitacora` y hacer un filtro para poder estimar el esfuerzo en función a una especie determinada.
+
+Luego de tener la base de datos filtrada para una especie así como para una región específica (región norte-centro o región sur), se puede hacer uso de `getEffort`. Esta función permite estimar el esfuerzo en función a cuatro tipos de variables: (1) duración del viaje ("travelTime"), (2) al número de calas (haulTotal), (3) capacidad de bodega (storageCapacity), y (4) tiempo de búsqueda (searchTime); sobre el tiempo (años, meses, dias o temporadas) o sobre los puertos. Adicionalmente, el esfuerzo puede ser estimado para toda la base de datos o haciendo un filtro de algún tipo de flota en especial.
+
+El resultado de `getEffor` (completar).
