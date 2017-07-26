@@ -26,4 +26,26 @@ estimates the season by species, for anchovy the season depend of region
 (north-central and south region) but for other species
 (sardine, jack mackerel, chub mackerel and bonito) the season is annual.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+class(bitacoraObject)
+
+# Get the results
+mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+specie = "anchoveta", effortData = TRUE)
+
+# Effort data
+effortData = mainBitacoraData$effortData
+
+# Use of effortSpeciesData.bitacora
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+
+}
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

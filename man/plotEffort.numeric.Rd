@@ -32,4 +32,35 @@ A graph for two types of fishing effort by ports. One type is on the left
 This method take a series of fishing effort by ports and produces a graph
 that is useful for the PBP program.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+
+# Get the results
+mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+specie = "anchoveta", effortData = TRUE)
+
+# Effort data
+effortData = mainBitacoraData$effortData
+
+# Filter data: anchovy data for anchovy and the north-central region
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta",
+ region = "norte-centro")
+
+# Get effort
+effortNC_tt = getEffort(data = effortNC, efforType = "travelTime", effortBy = "port")
+effortNC_hn = getEffort(data = effortNC, efforType = "haulTotal", effortBy = "port")
+
+# Graph
+plotEffort(effort1 = effortNC_tt, effort2 = effortNC_hn, labAxis2 = "Horas de viaje",
+labAxis4 = "N\\u{00FA}mero de calas", colBar="gray", colLine = "black",
+legend = c("Duracion del viaje", "N\\u{00FA}mero de calas"))
+
+}
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

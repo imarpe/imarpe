@@ -499,6 +499,25 @@
 #' @param region If the species is anchovy (\code{anchoveta}) is necessary
 #' indicate for each region the effort data is going to be calculate. By default is \code{NULL}.
 #' @return A \code{data.frame} with effort data for a given species.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#' class(bitacoraObject)
+#'
+#' # Get the results
+#' mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+#' specie = "anchoveta", effortData = TRUE)
+#'
+#' # Effort data
+#' effortData = mainBitacoraData$effortData
+#'
+#' # Use of effortSpeciesData.bitacora
+#' effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+#'
 #' @export
 effortSpeciesData.bitacora = function(data, species, region = NULL){
 
@@ -562,6 +581,28 @@ effortSpeciesData.bitacora = function(data, species, region = NULL){
 #' @param fleeType The effort could be estimated for the whole data given or for a data by fleeType.
 #' By default this parameter is \code{NULL}.
 #' @return A \code{vector} with the estimated effort.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#'
+#' # Get the results
+#' mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+#' specie = "anchoveta", effortData = TRUE)
+#'
+#' # Effort data
+#' effortData = mainBitacoraData$effortData
+#'
+#  # Filter data: anchovy data for anchovy and the north-central region
+#' effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+#'
+#' # Get the cpue
+#' effortNC_tt = getEffort(data = effortNC, efforType = "travelTime", effortBy = "port")
+#' effortNC_hn = getEffort(data = effortNC, efforType = "haulTotal", effortBy = "port")
+#'
 #' @export
 getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
 
@@ -616,6 +657,28 @@ getEffort = function(data, efforType, effortBy, timeBy, fleeType = NULL) {
 #' @param fleeType The relative cpue could be estimated for the whole data given or for a data by fleeType.
 #' By default this parameter is \code{NULL}.
 #' @return A \code{vector} with the relative cpue.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#'
+#' # Get the results
+#' mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+#' specie = "anchoveta", effortData = TRUE)
+#'
+#' # Effort data
+#' effortData = mainBitacoraData$effortData
+#'
+#' # Filter data: anchovy data for anchovy and the north-central region
+#' effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+#'
+#' # Get the cpue relative
+#' getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "port")
+#' getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "time", timeBy = "months")
+#'
 #' @export
 getCpue_relative = function(data, toTons=FALSE, efforType, cpueBy = "time", timeBy, fleeType = NULL) {
 
@@ -664,6 +727,34 @@ getCpue_relative = function(data, toTons=FALSE, efforType, cpueBy = "time", time
 #' @param ... Extra arguments.
 #' @return A graph for two types of fishing effort by ports. One type is on the left
 #'  vertical axis and the other on the right vertical axis, the ports are on the horizontal axis.
+#' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+#' @examples
+#' # Read a example of data base
+#' bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+#'
+#' # Create a object of bitacora class
+#' bitacoraObject = getBitacoraData(file = bitacoraData)
+#'
+#' # Get the results
+#' mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+#' specie = "anchoveta", effortData = TRUE)
+#'
+#' # Effort data
+#' effortData = mainBitacoraData$effortData
+#'
+#' # Filter data: anchovy data for anchovy and the north-central region
+#' effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta",
+#'  region = "norte-centro")
+#'
+#' # Get effort
+#' effortNC_tt = getEffort(data = effortNC, efforType = "travelTime", effortBy = "port")
+#' effortNC_hn = getEffort(data = effortNC, efforType = "haulTotal", effortBy = "port")
+#'
+#' # Graph
+#' plotEffort(effort1 = effortNC_tt, effort2 = effortNC_hn, labAxis2 = "Horas de viaje",
+#' labAxis4 = "N\u{00FA}mero de calas", colBar="gray", colLine = "black",
+#' legend = c("Duracion del viaje", "N\u{00FA}mero de calas"))
+#'
 #' @export
 plotEffort.numeric = function(effort1, effort2, labAxis2, labAxis4, colBar = NULL,
                                colLine = NULL, legend = NULL, ...) {

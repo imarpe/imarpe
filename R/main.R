@@ -335,13 +335,13 @@ report = function(object, format, output, ...) {
 #' class(bitacoraObject)
 #'
 #' # Get the results
-#' principalData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+#' mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
 #' specie = "anchoveta", observedTrip = TRUE, fishingHaul = TRUE, distributionCatch = TRUE)
 #'
 #' # See the principal results bitacora class object
-#' principalData$observedTrip
-#' principalData$fishingHaul
-#' principalData$distributionCatch
+#' mainBitacoraData$observedTrip
+#' mainBitacoraData$fishingHaul
+#' mainBitacoraData$distributionCatch
 #'
 #' @export
 getMainResults.bitacora = function(object, observedTrip = NULL, fishingHaul = NULL, fishingPoints = NULL,

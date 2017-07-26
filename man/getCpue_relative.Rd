@@ -41,4 +41,29 @@ Get the relative catch per unit effort (cpue)
 \details{
 The relative cpue is a index used on bitacora report.
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+
+# Get the results
+mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+specie = "anchoveta", effortData = TRUE)
+
+# Effort data
+effortData = mainBitacoraData$effortData
+
+# Filter data: anchovy data for anchovy and the north-central region
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+
+# Get the cpue relative
+getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "port")
+getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "time", timeBy = "months")
+
+}
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 

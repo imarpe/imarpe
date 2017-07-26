@@ -36,4 +36,28 @@ Generical function to get the fishing effort. The type of fishing effort could b
   \item searchTime for the effort as a function of the search time to catch the species.
 }
 }
+\examples{
+# Read a example of data base
+bitacoraData = system.file("extdata", "bitacoraData.csv", package = "imarpe")
+
+# Create a object of bitacora class
+bitacoraObject = getBitacoraData(file = bitacoraData)
+
+# Get the results
+mainBitacoraData = getMainResults.bitacora(object = bitacoraObject, language = "spanish",
+specie = "anchoveta", effortData = TRUE)
+
+# Effort data
+effortData = mainBitacoraData$effortData
+
+effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", region = "norte-centro")
+
+# Get the cpue
+effortNC_tt = getEffort(data = effortNC, efforType = "travelTime", effortBy = "port")
+effortNC_hn = getEffort(data = effortNC, efforType = "haulTotal", effortBy = "port")
+
+}
+\author{
+Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
+}
 
