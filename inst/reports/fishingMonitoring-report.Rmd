@@ -64,7 +64,7 @@ firstTable <- matrix(data = NA, nrow = nrow(output), ncol = 6,
                      dimnames = list(c("Crucero", exploratoriaLabel, colnames(catchData)[ncol(catchData)]), 
                                      c("$N (x10~^6)$", "Biomasa (t)", "$Juv N (x10~^6)$", "%juvN", "Juv Peso (t)", "%juv peso (t)")))
 firstTable[1, 1] <- sum(x$surveyVector)
-firstTable[1, 2] <- sum(x$a*x$allMarks^b*x$surveyVector)
+firstTable[1, 2] <- sum(x$a*x$allMarks^x$b*x$surveyVector)
 firstTable[1:nrow(output), 3:ncol(firstTable)] <- output
 
 pander::pander(firstTable, align = "c", keep.line.breaks = TRUE, split.table = 120, missing = "")
@@ -89,12 +89,12 @@ secondTable[2, 1:4] <- c(round(catchInfo[c(1, 2)], 0), round(catchInfo[c(5, 6)],
 secondTable[2, 5] <- as.character(round(sum(sobrevivientes), 0))
 secondTable[2, 6] <- as.character(round(sum(x$a*x$allMarks^x$b*sobrevivientes)/1e6, 2))
 
-pander::pander(secondTable, keep.line.breaks = TRUE, split.table = 220)
+pander::pander(secondTable, keep.line.breaks = TRUE, split.table = 250)
 ```
 
 
 <!-- Plot 1 -->
-```{r, echo=FALSE, message=FALSE, fig.height=6.2, fig.width=8, cache=FALSE}
+```{r, echo=FALSE, message=FALSE, fig.height=5, fig.width=8, cache=FALSE}
 
 # Plot 1
 index <- c(1, grep(x = weekdays(x$allDates), pattern = "lunes|monday"), length(x$allDates) + 1)

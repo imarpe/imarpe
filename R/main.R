@@ -580,8 +580,8 @@ getDailyReport = function(directory = NULL,
   }
 
   colnames(output) <- c(ifelse(ncol(outputByWeek) > 3, paste("Semana", ncol(outputByWeek) - 3), "Crucero"),
-                        paste("Día", seq_len(ncol(output) - 1)))
-  colnames(catchVector) <- paste("Día", 1:ncol(catchVector))
+                        paste("D\u00eda", seq_len(ncol(output) - 1)))
+  colnames(catchVector) <- paste("D\u00eda", 1:ncol(catchVector))
 
   outputByDay <- cbind(allMarks, output)
   outputByDay <- outputByDay[,-2]

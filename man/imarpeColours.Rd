@@ -13,4 +13,3 @@ Vector of colours to use in the package.
 \references{
 imarpe package vignette.
 }
-

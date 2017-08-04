@@ -65,4 +65,3 @@ plot(landing, ploType = "plotNC")
 plot(landing, ploType = "plotS")
 
 }
-

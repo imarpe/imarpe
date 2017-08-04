@@ -62,4 +62,3 @@ plot(cpue, ploType = "plotNC")
 plot(cpue, ploType = "plotS")
 
 }
-

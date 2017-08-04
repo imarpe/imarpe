@@ -48,4 +48,3 @@ effortNC = effortSpeciesData.bitacora(data = effortData, species = "anchoveta", 
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

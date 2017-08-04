@@ -60,4 +60,3 @@ effortNC_hn = getEffort(data = effortNC, efforType = "haulTotal", effortBy = "po
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

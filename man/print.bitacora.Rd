@@ -29,4 +29,3 @@ print(bitacoraObject)
 print(bitacoraObject, language = "english")
 
 }
-

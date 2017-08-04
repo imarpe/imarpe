@@ -34,4 +34,3 @@ sumCpue = summary(effort, language = "english")
 print(sumCpue, language = "english")
 
 }
-

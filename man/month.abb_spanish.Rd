@@ -14,4 +14,3 @@ Vector with the months names abbreviations on spanish.
 \references{
 imarpe package vignette.
 }
-

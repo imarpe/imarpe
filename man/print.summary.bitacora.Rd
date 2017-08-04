@@ -33,4 +33,3 @@ sumBitacora = summary(bitacoraObject, language = "english")
 print(sumBitacora, language = "english")
 
 }
-

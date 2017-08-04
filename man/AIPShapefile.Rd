@@ -14,4 +14,3 @@ The peruvian shape isoparalitoral area.
 \references{
 imarpe package vignette.
 }
-

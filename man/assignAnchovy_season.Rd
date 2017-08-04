@@ -28,4 +28,3 @@ exampleDates = as.Date(c("20/01/2013", "30/01/1999"), format = "\%d/\%m/\%Y")
 assignAnchovy_season(exampleDates, region = "norte-centro")
 
 }
-

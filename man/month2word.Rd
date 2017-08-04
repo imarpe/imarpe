@@ -22,4 +22,3 @@ months = seq(from = 1, to = 12, by = 1)
 month2word(x = months)
 
 }
-

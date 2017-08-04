@@ -63,4 +63,3 @@ legend = c("Duracion del viaje", "N\\u{00FA}mero de calas"))
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

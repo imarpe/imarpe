@@ -16,4 +16,3 @@ seasons in the north-central region of the Peruvian coast.
 \references{
 imarpe package vignette.
 }
-

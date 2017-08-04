@@ -37,4 +37,3 @@ class(bitacoraObject)
 summary(bitacoraObject)
 
 }
-

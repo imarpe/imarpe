@@ -20,4 +20,3 @@ the function \code{tim.colors} of the fields packages.
 vectorColours(n = 5)
 
 }
-

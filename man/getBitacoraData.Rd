@@ -84,4 +84,3 @@ info = bitacoraObject$info
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

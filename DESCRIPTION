@@ -10,6 +10,6 @@ Maintainer: Luis Lau-Medrano <luis.laum@gmail.com>
 Description: Tools for graphics and summary reports for IMARPE.
 License: GPL-2
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Depends: reshape2, plyr, rmarkdown, maps, fields, plotrix, sp
 Imports: Hmisc

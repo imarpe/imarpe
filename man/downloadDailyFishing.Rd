@@ -51,4 +51,3 @@ fishingInfo = downloadDailyFishing(startDate = "2017-4-20", endDate = "2017-6-19
 View(fishingInfo)
 
 }
-

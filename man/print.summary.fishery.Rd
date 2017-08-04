@@ -34,4 +34,3 @@ sumLanding = summary(landing, language = "english")
 print(sumLanding, language = "english")
 
 }
-

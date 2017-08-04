@@ -17,4 +17,3 @@ Criscely Lujan-Paredes \email{criscelylujan@gmail.com}, Luis Lau-Medrano \email{
 \keyword{fishery,}
 \keyword{imarpe.}
 \keyword{reports,}
-

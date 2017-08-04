@@ -22,4 +22,3 @@ PP is position (up or down).
 getAIPInfo(c(30073, 1020, 2010))
 
 }
-

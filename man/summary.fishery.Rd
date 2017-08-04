@@ -39,4 +39,3 @@ class(landing)
 summary(landing)
 
 }
-

@@ -28,4 +28,3 @@ exampleCoords = data.frame(lon = runif(n = 10, min = -80, max = -78),
 isopArea.assigner(dataPoints = exampleCoords)
 
 }
-

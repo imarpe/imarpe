@@ -35,4 +35,3 @@ sp = "caballa", efforType = "viaje")
 fisheryVar = combineFisheryVar(landing = landingObject, effort = effortObject)
 class(fisheryVar)
 }
-

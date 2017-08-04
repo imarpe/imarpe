@@ -20,4 +20,3 @@ For more details read the help of \code{\link{plotSpeciesComposition.bitacora}}.
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

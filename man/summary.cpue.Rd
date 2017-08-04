@@ -39,4 +39,3 @@ class(cpue)
 summary(cpue)
 
 }
-

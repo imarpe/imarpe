@@ -16,4 +16,3 @@ seasons in the south region of the Peruvian coast.
 \references{
 imarpe package vignette.
 }
-

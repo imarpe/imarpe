@@ -20,4 +20,3 @@ rest of the object on lower case.
 capitalizeFirstLetter(x = c("the LAsT BOOK", "my favoURIte MOVIe"))
 
 }
-

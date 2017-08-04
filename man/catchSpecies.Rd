@@ -14,4 +14,3 @@ Data with a list of species and taxonomic groups finding on bitacoras catches.
 \references{
 imarpe package vignette.
 }
-

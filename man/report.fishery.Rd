@@ -42,4 +42,3 @@ report(landing)
 report(landing, daysToPlot = "15")
 
 }
-

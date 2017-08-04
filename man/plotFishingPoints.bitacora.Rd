@@ -68,4 +68,3 @@ plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataAnch
 plotFishingPoints(x = bitacoraObject, language = "spanish", dataType = "dataCab")
 
 }
-

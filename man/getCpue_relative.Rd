@@ -66,4 +66,3 @@ getCpue_relative(data = effortNC, efforType = "travelTime", cpueBy = "time", tim
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

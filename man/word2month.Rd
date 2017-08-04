@@ -22,4 +22,3 @@ months = month.abb
 word2month(x = months)
 
 }
-

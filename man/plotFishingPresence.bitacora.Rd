@@ -63,4 +63,3 @@ plotFishingPresence(x = bitacoraObject, byGroup = TRUE, group = "transzonal")
 plotFishingPresence(x = bitacoraObject, byGroup = FALSE)
 
 }
-

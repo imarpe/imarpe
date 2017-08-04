@@ -154,7 +154,7 @@ leerData <- function(muestreo = NULL, desembarque = NULL, ...){
 
   baseMuestreo$puerto <- harborNames
   baseMuestreo$puerto[harborNames == "Coishco"] <- "Chimbote"
-  baseMuestreo$puerto[harborNames == "Bayóvar"] <- "Parachique"
+  baseMuestreo$puerto[harborNames == "Bay\u00f3var"] <- "Parachique"
   # baseMuestreo$puerto[harborNames == "Tambo de Mora"] <- "t.mora"
   # baseMuestreo$puerto[harborNames == "La Planchada"] <- "Planchada"
 
@@ -203,7 +203,7 @@ LC_ponderada <- function(data, tallas, especie, umbral, a, b){
 filtroMuestreo <- function(data, tallas, especie, umbral, ...){
   colnames(data) <- tolower(colnames(data))
   if(is.na(sum(data$captura))){
-    warning("Existen 'NA' en la variable 'captura'. Las filas que contiene estos valores serán eliminadas.")
+    warning("Existen 'NA' en la variable 'captura'. Las filas que contiene estos valores ser\u00e1n eliminadas.")
   }
   tallas <- as.character(tallas)
   data <- data[data$especie == especie, ]
@@ -351,7 +351,7 @@ guardarPonderacion <- function(data, filename = NULL, ...){
   rownames(output) <- tallas
 
   if(is.null(filename)){
-    filename <- paste0("ponderación_al_", as.character(rev(colnames(output)[1])), ".csv")
+    filename <- paste0("ponderaci\u00f3n_al_", as.character(rev(colnames(output)[1])), ".csv")
   }
 
   write.csv(x = output, file = filename, ...)

@@ -37,4 +37,3 @@ report(cpue)
 report(cpue, daysToPlot = "15")
 
 }
-

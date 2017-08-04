@@ -100,4 +100,3 @@ sp = "caballa", efforType = "capacidad_bodega")
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

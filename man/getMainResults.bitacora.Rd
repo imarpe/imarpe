@@ -82,4 +82,3 @@ mainBitacoraData$distributionCatch
 \author{
 Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 }
-

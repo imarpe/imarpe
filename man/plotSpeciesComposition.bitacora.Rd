@@ -36,4 +36,3 @@ class(bitacoraObject)
 # Composition of species by catches using a threshold = TRUE and minPercentage = 0.7
 plotSpeciesComposition(x = bitacoraObject, minPercentage = 0.7)
 }
-

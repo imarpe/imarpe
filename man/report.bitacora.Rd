@@ -25,4 +25,3 @@ class(bitacoraObject)
 report(bitacoraObject)
 
 }
-

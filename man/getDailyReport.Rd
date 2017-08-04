@@ -61,4 +61,3 @@ repository of the IMARPE to compare this landings with the biomass estimated.
 \author{
 Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 }
-
