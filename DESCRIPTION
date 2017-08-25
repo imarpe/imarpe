@@ -4,7 +4,7 @@ Title: Tools for graphics and summary reports for IMARPE
 Version: 0.1.2
 Date: 2017-08-25
 Authors@R: c(person("Criscely", "Lujan-Paredes", role = c("aut"), email = "criscelylujan@gmail.com"),
-             person("Ricardo", "Oliveros-Ramos", role = c("aut", "cre"), email = "ricardo.oliveros@gmail.com"),
+             person("Ricardo", "Oliveros-Ramos", role = c("aut"), email = "ricardo.oliveros@gmail.com"),
              person("Wencheng", "Lau-Medrano", role = c("aut", "cre"), email = "llau@imarpe.gob.pe"),
              person("Josymar", "Torrejon-Magallanes", role = "aut", email = "jotorrejon@imarpe.gob.pe"),
              person("Pablo", "Marin-Abanto", role = "aut", email = "pmarin@imarpe.gob.pe"),
