@@ -1,12 +1,15 @@
 Package: imarpe
 Type: Package
 Title: Tools for graphics and summary reports for IMARPE
-Version: 0.1.0
-Date: 2017-05-01
-Authors@R: c(person("Criscely", "Lujan-Paredes", role = c("aut", "cre"), email = "criscelylujan@gmail.com"),
-             person("Josymar", "Torrejon-Magallanes", role = "ctb", email = "ejosymart@gmail.com"),
-             person("Luis", "Lau-Medrano", role = "ctb", email = "luis.laum@gmail.com"))
-Maintainer: Luis Lau-Medrano <luis.laum@gmail.com>
+Version: 0.1.1
+Date: 2017-08-25
+Authors@R: c(person("Criscely", "Lujan-Paredes", role = c("aut"), email = "criscelylujan@gmail.com"),
+             person("Ricardo", "Oliveros-Ramos", role = c("aut", "cre"), email = "ricardo.oliveros@gmail.com"),
+             person("Wencheng", "Lau-Medrano", role = c("aut", "cre"), email = "llau@imarpe.gob.pe"),
+             person("Josymar", "Torrejon-Magallanes", role = "aut", email = "jotorrejon@imarpe.gob.pe"),
+             person("Pablo", "Marin-Abanto", role = "aut", email = "pmarin@imarpe.gob.pe"),
+             person("Erick", "Chacon Montalvan", role = "ctr", email="eral.th07@gmail.com"),
+             person("Vilma", "Romero Romero", role = "ctr", email="vilsurr@gmail.com"))
 Description: Tools for graphics and summary reports for IMARPE.
 License: GPL-2
 LazyData: true
