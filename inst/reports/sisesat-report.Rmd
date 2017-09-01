@@ -1,0 +1,194 @@
+---
+title: "Reporte semanal de la pesquería del Stock Norte Centro de anchoveta (Temporada 2016 - I)"
+#author: "(DGIRP - AFDPERP)"
+
+header-includes:
+  - \usepackage{fancyhdr}
+  - \fancyfoot[LE,RO]{DGIRP}
+  - \usepackage[spanish]{babel}
+  - \usepackage{fullpage}
+fontsize: 10pt
+geometry: margin=1cm
+keep_tex: yes
+output: pdf_document
+
+# output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# param
+xlabNames = ""
+Nlas = 1
+
+out.semana  = estimaSemana2(inicio.temp = inicio_temp, fin.temp = fin_temp)
+labelSEMANA = rangeWeek(data = out.semana, semana = "semana", fecha = "diasTemporada")
+
+
+# space
+space.perfil = -5
+space = (0:(length(unique(out_report$Sisesat_Point_Pesca_NC$semana))-1))*space.perfil
+
+
+Sisesat_Point_Pesca_NC00 = out_report$Sisesat_Point_Pesca_NC
+for(i in 1:length(unique(Sisesat_Point_Pesca_NC00$semana))){
+  Sisesat_Point_Pesca_NC00[Sisesat_Point_Pesca_NC00$semana == rev(sort(unique(Sisesat_Point_Pesca_NC00$semana)))[i],"Lon"] = Sisesat_Point_Pesca_NC00[Sisesat_Point_Pesca_NC00$semana == rev(sort(unique(Sisesat_Point_Pesca_NC00$semana)))[i],"Lon"] + space[i]
+}
+
+x = Sisesat_Point_Pesca_NC00$Lon
+y = Sisesat_Point_Pesca_NC00$Lat
+
+ker = kde2d(Sisesat_Point_Pesca_NC00$Lon,Sisesat_Point_Pesca_NC00$Lat,n = 1000, h = 2) # el h optimo es 2
+vmin = min(ker$z[ker$z != 0]) # identifico el valor minimo 
+vmax = max(ker$z[ker$z != 0]) # identifico el valor maximo
+
+# ker$z corresponde al valor de z
+ker$z = (ker$z - vmin)/(vmax-vmin) 
+
+# hotspots
+coor = contourLines(ker,levels = 0.4)
+col = designer.colors(n = 64, col = c("white","skyblue","green", "yellow", "orange", "red", "black"))
+wf = -84 + space[length(space)]
+
+```
+
+```{r, echo=FALSE, message=FALSE , fig.height=9, fig.width=8}
+
+par(mfrow = c(4,2), mar = c(2,4.5,0,1), oma = c(0,0,0,0), cex = 0.8)
+
+plot(out_report$effort$semana, out_report$effort$Dur.viaje, 
+     ylim = c(0, max(out_report$effort$Dur.viaje)*1.1), 
+     pch = 16, type = "o", 
+     xlab = xlabNames, ylab = "Duración de viaje (horas)",
+     axes = F)
+box()
+axis(1, at = out_report$effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+segments(out_report$sdt_effort$semana,out_report$effort$Dur.viaje + out_report$sdt_effort$Dur.viaje, 
+         out_report$sdt_effort$semana,out_report$effort$Dur.viaje - out_report$sdt_effort$Dur.viaje)
+
+
+plot(out_report$effort$semana, out_report$effort$Num.Calas, 
+     ylim = c(0, max(out_report$effort$Num.Calas)*1.1), 
+     pch = 16, type = "o", 
+     xlab = xlabNames, ylab = "Número de lances",
+     axes = F)
+box()
+axis(1, at = out_report$effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+segments(out_report$sdt_effort$semana,out_report$effort$Num.Calas + out_report$sdt_effort$Num.Calas, 
+         out_report$sdt_effort$semana,out_report$effort$Num.Calas - out_report$sdt_effort$Num.Calas)
+
+
+plot(out_report$effort$semana, out_report$effort$cpueDv, 
+     ylim = c(0, max(out_report$effort$cpueDv)*1.1), 
+     pch = 16, type = "o", 
+     xlab = xlabNames, ylab = "CPUE (ton/horas de viaje)",
+     axes = F)
+box()
+axis(1, at = out_report$sdt_effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+segments(out_report$sdt_effort$semana,out_report$effort$cpueDv + out_report$sdt_effort$cpueDv, 
+         out_report$sdt_effort$semana,out_report$effort$cpueDv - out_report$sdt_effort$cpueDv)
+
+plot(out_report$effort$semana, out_report$effort$cpueNcala, 
+     ylim = c(0, max(out_report$effort$cpueNcala)*1.1), 
+     pch = 16, type = "o", 
+     xlab = xlabNames, ylab = "CPUE (ton/N° lances)",
+     axes = F)
+box()
+axis(1, at = out_report$effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+segments(out_report$sdt_effort$semana,out_report$effort$cpueNcala + out_report$sdt_effort$cpueNcala, 
+         out_report$sdt_effort$semana,out_report$effort$cpueNcala - out_report$sdt_effort$cpueNcala)
+
+
+# area
+plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$area_pesca, 
+     ylim = c(0, max(out_report$spatial_indicators$area_pesca)*1.1), 
+     pch = 16, type = "o", 
+     xlab = xlabNames, ylab = expression(paste("Área cubierta por la flota", " ",(mn^2))),
+     axes = F)
+box()
+axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+
+# dc
+plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$dc_mean, 
+     ylim = c(0, max(out_report$spatial_indicators$dc_mean)*1.3), 
+     pch = 16, type = "o", 
+     xlab = xlabNames, ylab = "Distancia costa media (mn)",
+     axes = F)
+box()
+axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+segments(out_report$spatial_indicators$semana,out_report$spatial_indicators$dc_mean - (out_report$spatial_indicators$dc_mean - out_report$spatial_indicators$dc_q_0.1), 
+         out_report$spatial_indicators$semana, out_report$spatial_indicators$dc_mean + out_report$spatial_indicators$dc_q_0.9 - out_report$spatial_indicators$dc_mean)
+
+# lat
+plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$Lat_mean, 
+     ylim = c(-16, -3), 
+     pch = 16, type = "o", 
+     xlab = xlabNames, ylab = "Latitud media (°S)",
+     axes = F)
+box()
+axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+
+# índice de agregación
+plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$Igini, 
+     pch = 16, type = "o", ylim = c(0.4, 1),
+     xlab = xlabNames, ylab = "Índice de agregación",
+     axes = F)
+
+box()
+axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(2, las = 2)
+
+
+```
+
+\newpage
+
+```{r echo=FALSE, message=FALSE, fig.height=10, fig.width=8}
+
+par(mfrow = c(2,1), mar=c(3,3,2,2))
+
+image(ker,  xlim = c(wf, -70), ylim = c(-21, -3), axes=FALSE, col = col)
+mapa.peru.simple(xlim = c(wf, -70), add = TRUE, labelsxy = F, axis4L = F,perfil = TRUE)
+title("Áreas de pesca")
+
+for(i in 1:length(space)){
+  lines(shoreline$V1 + space[i], shoreline$V2, col = "gray")
+  text(x = -72 + space[i], y = -19, labels = rev(labelSEMANA)[i], cex = 0.7)
+}
+
+require(geoR)
+legend.krige(x.leg = c(wf + 3 ,wf + 3.5),y.leg = c(-20.0,-14.5), scale.vals = c(0.2,0.5,0.8), cex = 0.7,
+             values = 0:1, vertical = T, col = col)
+text(x = wf + 2.9, y = -14, labels = "Densidad", cex = 0.8, font = 2)
+
+# map hotspots
+mapa.peru(xlim = c(wf, -70), labelsxy = F, axis4L = F,perfil = TRUE)
+for(i in 1:length(space)){
+  lines(shoreline$V1 + space[i], shoreline$V2, col = "gray")
+  text(x = -72 + space[i], y = -19, labels = rev(labelSEMANA)[i], cex = 0.7)
+}
+title("Área hotspot (densidad > 40%)")
+
+for(i in 1:length(coor)){
+  polygon(coor[[i]],col = "skyblue",lty = 2, lwd = 1, border = "red")
+}
+points(x,y, pch = ".", co = "gray", cex = 1)
+
+for(i in 1:length(coor)){
+  points(mean(coor[[i]]$x),mean(coor[[i]]$y),col="red", pch = 16, cex = 1.2, bg = "black")
+}
+
+legend("bottomleft", c("Hotspot","Puntos de pesca"), 
+                       pch = 16,  
+                       col = c("skyblue","gray"), bty = "n")
+
+```
+
