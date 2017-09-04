@@ -5,8 +5,8 @@
   
   require(kali)
   
-  axis.Lon <- paste(abs(seq(xlim[1],xlim[2],by = 2)),"?W")
-  axis.Lat <- paste(abs(seq(ylim[1],ylim[2],by = 2)),"?S")
+  axis.Lon <- paste(abs(seq(xlim[1],xlim[2],by = 2)),"°W")
+  axis.Lat <- paste(abs(seq(ylim[1],ylim[2],by = 2)),"°S")
   
   Encoding(axis.Lon) <- "UTF-8"
   Encoding(axis.Lat) <- "UTF-8"
@@ -21,7 +21,7 @@
     mtext("Longitud", side=1, line=1.5, cex=0.8)
     mtext("Latitud", side=2, line=1.8, cex=0.8)
   }
-  principalP = puertosPeru[c(2,4,5,7,8,10,12,14,16,17,19),]
+  principalP = harborPeru[c(2,4,5,7,8,10,12,14,16,17,19),]
   text(principalP$lon, principalP$lat, labels = principalP$puertos, cex=cex.Port, pos=4, font=1)
   
   # axis
@@ -47,8 +47,8 @@
   require(maps)
   require(mapdata)
   
-  axis.Lon <- paste(abs(seq(xlim[1],xlim[2],by = 2)),"?W")
-  axis.Lat <- paste(abs(seq(ylim[1],ylim[2],by = 2)),"?S")
+  axis.Lon <- paste(abs(seq(xlim[1],xlim[2],by = 2)),"°W")
+  axis.Lat <- paste(abs(seq(ylim[1],ylim[2],by = 2)),"°S")
   
   Encoding(axis.Lon) <- "UTF-8"
   Encoding(axis.Lat) <- "UTF-8"
@@ -62,7 +62,7 @@
     mtext("Longitud", side=1, line=1.5, cex=0.8)
     mtext("Latitud", side=2, line=1.8, cex=0.8)
   }
-  principalP = puertosPeru[c(2,4,5,7,8,10,12,14,16,17,19),]
+  principalP = harborPeru[c(2,4,5,7,8,10,12,14,16,17,19),]
   text(principalP$lon, principalP$lat, labels = principalP$puertos, cex=cex.Port, pos=4, font=1)
   
   # axis
@@ -82,13 +82,4 @@
   #return(invisible)
 }
 
-.estima_semana <- function(inicio.temp, fin.temp, ...){
-  require(lubridate)
-  
-  diasTemporada = seq.Date(as.Date(inicio.temp), as.Date(fin.temp),by =  "day")
-  dias =  weekdays(diasTemporada)
-  temporada = data.frame(diasTemporada = diasTemporada, dias = dias)
-  nSem = c(rep(0, min(which(dias == "lunes"))-1), sort(rep(1:length(dias[dias=="lunes"]),7)))
-  temporada$semana <- nSem[1:length(dias)]  
-  return(temporada)
-}
+.

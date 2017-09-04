@@ -10,3 +10,5 @@
 #' @importFrom RCurl url.exists
 #' @importFrom XLConnect loadWorkbook readWorksheet
 #' @importFrom lubridate day
+#' @importFrom kali
+#' @importFrom Rgeo MASS fields
