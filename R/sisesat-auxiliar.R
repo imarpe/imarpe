@@ -37,13 +37,10 @@ rangeWeek <-function (data, fecha, semana)
   return(labelSem)
 }
 
-
-#  ------------------------------------------------------------------------
-# input para el reporte
-
 # FUNCIONES PARA OBTENER INDICADORES ESPACIO TEMPORALES DEL ESFUERZO --------
 
 ##data = Pred_Emi_Todas 
+# esta funcion deberia ser input
 
 extrae_data <- function(data, temp, date = "date.GMT", region = "NC", ...){
   require(fenix)

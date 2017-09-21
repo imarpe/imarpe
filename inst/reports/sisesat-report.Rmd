@@ -1,5 +1,5 @@
 ---
-title:  \textbf{\Large Reporte semanal de la Pesquería Industrial del Stock Norte-Centro de Anchoveta (Temporada 2013-II)}
+title:  \textbf{\Large Reporte semanal de la Pesquería Industrial del Stock Norte-Centro de Anchoveta (Temporada 2016-I)}
 
 header-includes:
 
@@ -302,5 +302,6 @@ layout(matrix(1:3, nrow = 3), heights = c(1,0.1,1))
 
 \fbox{\begin{minipage}{47em}
 El presente reporte se puede reproducir citando:
-Reporte semanal de la Pesquería Industrial del Stock Norte-Centro de anchoveta (Temporada 2013-II) [online]. Callao, Instituto del Mar del Per\'u, Año 1 N° 2, \textit{Lunes, 11 de setiembre de 2017}.
+Reporte semanal de la Pesquería Industrial del Stock Norte-Centro de anchoveta (Temporada 2016-I) [online]. Callao, Instituto del Mar del Per\'u, Año 1 N° 2, \textit{Lunes, 11 de setiembre de 2017}.
 \end{minipage}}
+
