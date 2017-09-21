@@ -1,16 +1,50 @@
 ---
-title: Reporte semanal de la pesquería del Stock Norte Centro de anchoveta (Temporada
-  2016 - I)
-geometry: margin=1cm
+title:  \textbf{\Large Reporte semanal de la Pesquería Industrial del Stock Norte-Centro de Anchoveta (Temporada 2013-II)}
+
 header-includes:
-- \usepackage{fancyhdr}
-- \fancyfoot[LE,RO]{DGIRP}
+
+#- \fancyfoot[LE,RO]{DGIRP} nota pie de pagina
 - \usepackage[spanish]{babel}
 - \usepackage{fullpage}
+- \usepackage{caption}
+
+- \usepackage{vmargin}
+# - \setlength{\topmargin}{10mm}
+# - \setlength{\oddsidemargin}{10mm}
+# - \setlength{\evensidemargin}{10mm}
+
+- \usepackage{graphicx}
+- \usepackage{fancyhdr}
+# - \lhead{\begin{picture}(4,4) \put(4,4){\includegraphics[width=90mm]{F:/reporte/imarpe_logo_2.png}} \end{picture}}
+# - \renewcommand{\headrulewidth}{0pt}
+- \pagestyle{fancy}
+- \usepackage{xcolor}
+
+#- \setlength\headheight{28pt}
+#- \fancyhead[L]{\includegraphics[width=5cm]{imarpe_logo_1.png}}
+#- \rhead{\begin{picture}(0,0) \put(0,0){\includegraphics[width=5cm]{imarpe_logo_1.png}} \end{picture}}
+
+# - \fancypagestyle{firststyle}
+# - \fancyhead[L]{\includegraphics[width=5cm]{imarpe_logo_1.png}}
+# - \thispagestyle{firststyle}
+
+# fontsize: 14pt
+geometry: margin=-0.5cm
 output: pdf_document
-keep_tex: yes
-fontsize: 10pt
+fig_caption: yes
+number_sections: yes
+
 ---
+\setlength{\topmargin}{17mm}
+\setlength{\oddsidemargin}{27mm}
+\setlength{\evensidemargin}{20mm}
+
+<!-- \addtolength{\headheight}{1.0cm} -->
+\pagestyle{fancyplain}
+\lhead{\begin{picture}(5,5) \put(4,4){\includegraphics[width=90mm]{F:/reporte/imarpe_logo_5.png}} \end{picture}}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{gray}\leaders\hrule height \headrulewidth\hfill}}
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -25,169 +59,248 @@ labelSEMANA = imarpe:::rangeWeek(data = out.semana, semana = "semana", fecha = "
 
 # space
 space.perfil = -5
-space = (0:(length(unique(out_report$Sisesat_Point_Pesca_NC$semana))-1))*space.perfil
+space = (0:(length(unique(out_report$fishing_points$semana))-1))*space.perfil
 
 
-Sisesat_Point_Pesca_NC00 = out_report$Sisesat_Point_Pesca_NC
-for(i in 1:length(unique(Sisesat_Point_Pesca_NC00$semana))){
-  Sisesat_Point_Pesca_NC00[Sisesat_Point_Pesca_NC00$semana == rev(sort(unique(Sisesat_Point_Pesca_NC00$semana)))[i],"Lon"] = Sisesat_Point_Pesca_NC00[Sisesat_Point_Pesca_NC00$semana == rev(sort(unique(Sisesat_Point_Pesca_NC00$semana)))[i],"Lon"] + space[i]
+fishing_points00 = out_report$fishing_points
+for(i in 1:length(unique(fishing_points00$semana))){
+  fishing_points00[fishing_points00$semana == rev(sort(unique(fishing_points00$semana)))[i],"Lon"] = fishing_points00[fishing_points00$semana == rev(sort(unique(fishing_points00$semana)))[i],"Lon"] + space[i]
 }
 
-x = Sisesat_Point_Pesca_NC00$Lon
-y = Sisesat_Point_Pesca_NC00$Lat
+x = fishing_points00$Lon
+y = fishing_points00$Lat
+
 require(MASS)
-ker = kde2d(Sisesat_Point_Pesca_NC00$Lon,Sisesat_Point_Pesca_NC00$Lat,n = 1000, h = 2) # el h optimo es 2
+ker = kde2d(fishing_points00$Lon, fishing_points00$Lat, n = 2000, h = 0.3) # el h optimo es 0.3
 vmin = min(ker$z[ker$z != 0]) # identifico el valor minimo 
 vmax = max(ker$z[ker$z != 0]) # identifico el valor maximo
 
 # ker$z corresponde al valor de z
 ker$z = (ker$z - vmin)/(vmax-vmin) 
-
+ker$z[ker$z < 0.001] <- NA
 # hotspots
-
 require(fields)
 coor = contourLines(ker,levels = 0.4)
-col = designer.colors(n = 64, col = c("white","skyblue","green", "yellow", "orange", "red", "black"))
+col = designer.colors(n = 64, col = c("blue","cyan", "green4", "green","yellow","orange","red" ,"black","black"))
 wf = -84 + space[length(space)]
 
+
 ```
+\vspace{-3mm}
+<!-- \fbox{\begin{minipage}{45em} -->
+\footnotesize \textit{Año 1, N° 002 \hspace{90mm} Lunes, 11 de setiembre, 2017}
+\vspace{-3mm}
+<!-- \end{minipage}} -->
 
-```{r, echo=FALSE, message=FALSE , fig.height=9, fig.width=8}
+\section{\small I. Esfuerzo y CPUE}
+```{r , echo=FALSE, fig.height=7, fig.width=6}
 
-par(mfrow = c(4,2), mar = c(2,4.5,0,1), oma = c(0,0,0,0), cex = 0.8)
+par(mfrow = c(4,2), mar = c(2,5,1,1), oma = c(0,0,0,0))
 
-plot(out_report$effort$semana, out_report$effort$Dur.viaje, 
-     ylim = c(0, max(out_report$effort$Dur.viaje)*1.1), 
+
+## duracion del viaje
+plot(out_report$effort_ind$semana, out_report$effort_ind$Dur.viaje, 
+     ylim = c(0, max(out_report$effort_ind$Dur.viaje)*1.4), 
      pch = 16, type = "o", 
-     xlab = xlabNames, ylab = "Duración de viaje (horas)",
-     axes = F)
+     xlab = "Semanas", ylab = "Duración de viaje (horas)",
+     axes = F, col = 4)
 box()
-axis(1, at = out_report$effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
-axis(2, las = 2)
-segments(out_report$sdt_effort$semana,out_report$effort$Dur.viaje + out_report$sdt_effort$Dur.viaje, 
-         out_report$sdt_effort$semana,out_report$effort$Dur.viaje - out_report$sdt_effort$Dur.viaje)
+axis(1, at = out_report$effort_ind$semana, labels = labelSEMANA, cex.axis = 0.8)
+axis(2)
+segments(out_report$effort_ind$semana,out_report$effort_ind$Dur.viaje + out_report$sdt_effort_ind$Dur.viaje, 
+         out_report$effort_ind$semana,out_report$effort_ind$Dur.viaje - out_report$sdt_effort_ind$Dur.viaje, col = 4)
+
+lines(out_report$effort_indmad$semana, out_report$effort_indmad$Dur.viaje, type = "o", pch = 16, col = 2)
+segments(out_report$effort_indmad$semana,out_report$effort_indmad$Dur.viaje + out_report$sdt_effort_ind$Dur.viaje, 
+         out_report$effort_indmad$semana,out_report$effort_indmad$Dur.viaje - out_report$sdt_effort_ind$Dur.viaje, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
+legend("bottomlef", legend = "a)", bty = "n")
 
 
-plot(out_report$effort$semana, out_report$effort$Num.Calas, 
-     ylim = c(0, max(out_report$effort$Num.Calas)*1.1), 
+## numero de calas
+plot(out_report$effort_ind$semana, out_report$effort_ind$Num.Calas, 
+     ylim = c(0, max(out_report$effort_ind$Num.Calas)*1.4), 
      pch = 16, type = "o", 
-     xlab = xlabNames, ylab = "Número de lances",
-     axes = F)
+     xlab = "Semanas", ylab = "Número de lances",
+     axes = F, col = 4)
 box()
-axis(1, at = out_report$effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
-axis(2, las = 2)
-segments(out_report$sdt_effort$semana,out_report$effort$Num.Calas + out_report$sdt_effort$Num.Calas, 
-         out_report$sdt_effort$semana,out_report$effort$Num.Calas - out_report$sdt_effort$Num.Calas)
+axis(1, at = out_report$effort_ind$semana, labels = labelSEMANA, cex.axis = 0.8)
+axis(2)
+segments(out_report$effort_ind$semana,out_report$effort_ind$Num.Calas + out_report$sdt_effort_ind$Num.Calas, 
+         out_report$effort_ind$semana,out_report$effort_ind$Num.Calas - out_report$sdt_effort_ind$Num.Calas, col = 4)
+
+lines(out_report$effort_indmad$semana, out_report$effort_indmad$Num.Calas, type = "o", pch = 16, col = 2)
+segments(out_report$effort_indmad$semana,out_report$effort_indmad$Num.Calas + out_report$sdt_effort_ind$Num.Calas, 
+         out_report$effort_indmad$semana,out_report$effort_indmad$Num.Calas - out_report$sdt_effort_ind$Num.Calas, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
+legend("bottomlef", legend = "b)", bty = "n")
 
 
-plot(out_report$effort$semana, out_report$effort$cpueDv, 
-     ylim = c(0, max(out_report$effort$cpueDv)*1.1), 
+## cpue Dv
+plot(out_report$effort_ind$semana, out_report$effort_ind$cpueDv, 
+     ylim = c(0, max(out_report$effort_ind$cpueDv)*1.4), 
      pch = 16, type = "o", 
-     xlab = xlabNames, ylab = "CPUE (ton/horas de viaje)",
-     axes = F)
+     xlab = "Semanas", ylab = "CPUE (ton/horas de viaje)",
+     axes = F, col = 4)
 box()
-axis(1, at = out_report$sdt_effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
-axis(2, las = 2)
-segments(out_report$sdt_effort$semana,out_report$effort$cpueDv + out_report$sdt_effort$cpueDv, 
-         out_report$sdt_effort$semana,out_report$effort$cpueDv - out_report$sdt_effort$cpueDv)
+axis(1, at = out_report$effort_ind$semana, labels = labelSEMANA, cex.axis = 0.8)
+axis(2)
+segments(out_report$effort_ind$semana,out_report$effort_ind$cpueDv + out_report$sdt_effort_ind$cpueDv, 
+         out_report$effort_ind$semana,out_report$effort_ind$cpueDv - out_report$sdt_effort_ind$cpueDv, col = 4)
 
-plot(out_report$effort$semana, out_report$effort$cpueNcala, 
-     ylim = c(0, max(out_report$effort$cpueNcala)*1.1), 
+lines(out_report$effort_indmad$semana, out_report$effort_indmad$cpueDv, type = "o", pch = 16, col = 2)
+segments(out_report$effort_indmad$semana,out_report$effort_indmad$cpueDv + out_report$sdt_effort_indmad$cpueDv, 
+         out_report$effort_indmad$semana,out_report$effort_indmad$cpueDv - out_report$sdt_effort_indmad$cpueDv, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
+legend("bottomlef", legend = "c)", bty = "n")
+
+
+## cpue Ncala
+plot(out_report$effort_ind$semana, out_report$effort_ind$cpueNcala, 
+     ylim = c(0, max(out_report$effort_ind$cpueNcala)*1.4), 
      pch = 16, type = "o", 
-     xlab = xlabNames, ylab = "CPUE (ton/N° lances)",
-     axes = F)
+     xlab = "Semanas", ylab = "CPUE (ton/N° lances)",
+     axes = F, col = 4)
 box()
-axis(1, at = out_report$effort$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
-axis(2, las = 2)
-segments(out_report$sdt_effort$semana,out_report$effort$cpueNcala + out_report$sdt_effort$cpueNcala, 
-         out_report$sdt_effort$semana,out_report$effort$cpueNcala - out_report$sdt_effort$cpueNcala)
+axis(1, at = out_report$effort_ind$semana, labels = labelSEMANA, cex.axis = 0.8)
+axis(2)
+segments(out_report$effort_ind$semana,out_report$effort_ind$cpueNcala + out_report$sdt_effort_ind$cpueNcala, 
+         out_report$effort_ind$semana,out_report$effort_ind$cpueNcala - out_report$sdt_effort_ind$cpueNcala, col = 4)
+
+lines(out_report$effort_indmad$semana, out_report$effort_indmad$cpueNcala, type = "o", pch = 16, col = 2)
+segments(out_report$effort_indmad$semana,out_report$effort_indmad$cpueNcala + out_report$sdt_effort_indmad$cpueNcala, 
+         out_report$effort_indmad$semana,out_report$effort_indmad$cpueNcala - out_report$sdt_effort_indmad$cpueNcala, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
+legend("bottomlef", legend = "d)", bty = "n")
 
 
-# area
-plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$area_pesca, 
-     ylim = c(0, max(out_report$spatial_indicators$area_pesca)*1.1), 
-     pch = 16, type = "o", 
+# area cubierta por la flota
+plot(out_report$spatial_indicators_ind$semana, out_report$spatial_indicators_ind$area_pesca,
+     ylim = c(0, max(out_report$spatial_indicators_ind$area_pesca)*1.4),
+     pch = 16, type = "o",
      xlab = xlabNames, ylab = expression(paste("Área cubierta por la flota", " ",(mn^2))),
-     axes = F)
+     axes = F, col = 4)
 box()
-axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(1, at = out_report$spatial_indicators_ind$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
 axis(2, las = 2)
+legend("bottomlef", legend = "e)", bty = "n")
+lines(out_report$spatial_indicators_indmad$semana, out_report$spatial_indicators_indmad$area_pesca, type = "o", pch = 16, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
 
-# dc
-plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$dc_mean, 
-     ylim = c(0, max(out_report$spatial_indicators$dc_mean)*1.3), 
-     pch = 16, type = "o", 
+
+# distancia a costa media
+plot(out_report$spatial_indicators_ind$semana, out_report$spatial_indicators_ind$dc_mean,
+     ylim = c(0, max(out_report$spatial_indicators_ind$dc_mean)*1.4),
+     pch = 16, type = "o",
      xlab = xlabNames, ylab = "Distancia costa media (mn)",
-     axes = F)
+     axes = F, col = 4)
 box()
-axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(1, at = out_report$spatial_indicators_ind$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
 axis(2, las = 2)
-segments(out_report$spatial_indicators$semana,out_report$spatial_indicators$dc_mean - (out_report$spatial_indicators$dc_mean - out_report$spatial_indicators$dc_q_0.1), 
-         out_report$spatial_indicators$semana, out_report$spatial_indicators$dc_mean + out_report$spatial_indicators$dc_q_0.9 - out_report$spatial_indicators$dc_mean)
+segments(out_report$spatial_indicators_ind$semana,out_report$spatial_indicators_ind$dc_mean - (out_report$spatial_indicators_ind$dc_mean - out_report$spatial_indicators_ind$dc_lower),
+         out_report$spatial_indicators_ind$semana, out_report$spatial_indicators_ind$dc_mean + out_report$spatial_indicators_ind$dc_upper - out_report$spatial_indicators_ind$dc_mean, col = 4)
+legend("bottomlef", legend = "f)", bty = "n")
 
-# lat
-plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$Lat_mean, 
-     ylim = c(-16, -3), 
-     pch = 16, type = "o", 
+lines(out_report$spatial_indicators_indmad$semana, out_report$spatial_indicators_indmad$dc_mean, type = "o", pch = 16, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
+segments(out_report$spatial_indicators_indmad$semana,out_report$spatial_indicators_indmad$dc_mean - (out_report$spatial_indicators_indmad$dc_mean - out_report$spatial_indicators_indmad$dc_lower),
+         out_report$spatial_indicators_indmad$semana, out_report$spatial_indicators_indmad$dc_mean + out_report$spatial_indicators_indmad$dc_upper - out_report$spatial_indicators_indmad$dc_mean, col = 2)
+
+
+# latitud media
+plot(out_report$spatial_indicators_ind$semana, out_report$spatial_indicators_ind$Lat_mean,
+     ylim = c(-16, -3),
+     pch = 16, type = "o",
      xlab = xlabNames, ylab = "Latitud media (°S)",
-     axes = F)
+     axes = F, col = 4)
 box()
-axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(1, at = out_report$spatial_indicators_ind$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
 axis(2, las = 2)
+legend("bottomlef", legend = "g)", bty = "n")
+lines(out_report$spatial_indicators_indmad$semana, out_report$spatial_indicators_indmad$Lat_mean, type = "o", pch = 16, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
+
 
 # indice de agregacion
-plot(out_report$spatial_indicators$semana, out_report$spatial_indicators$Igini, 
-     pch = 16, type = "o", ylim = c(0.4, 1),
-     xlab = xlabNames, ylab = "Índice de agregación",
-     axes = F)
+plot(out_report$spatial_indicators_ind$semana, out_report$spatial_indicators_ind$Igini,
+     pch = 16, type = "o", ylim = c(0.2, 1),
+     xlab = xlabNames, ylab = "Indice de agregación",
+     axes = F, col = 4)
 
 box()
-axis(1, at = out_report$spatial_indicators$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
+axis(1, at = out_report$spatial_indicators_ind$semana, labels = labelSEMANA, cex.axis = 0.8, las = Nlas)
 axis(2, las = 2)
-
-
+legend("bottomlef", legend = "h)", bty = "n")
+lines(out_report$spatial_indicators_indmad$semana, out_report$spatial_indicators_indmad$Igini, type = "o", pch = 16, col = 2)
+legend("topleft", legend = c("Ind Acero", "Ind Madera"), col = c(4,2), lty = 1,pch = 16, bty = "n")
 ```
+\normalsize Figura 1. a) Duración del viaje, b) Número de lances, c) CPUE (captura/horas de viaje), d) CPUE (captura/número de lances), e) Área cubierta por la flota, f) Distancia costa media, g) Latidud media, h) Índice de agregación.
 
 \newpage
+<!-- \section{\small \'Areas de pesca} -->
 
-```{r echo=FALSE, message=FALSE, fig.height=10, fig.width=8}
-
-par(mfrow = c(2,1), mar=c(3,3,2,2))
-
-image(ker,  xlim = c(wf, -70), ylim = c(-21, -3), axes=FALSE, col = col)
-imarpe:::.mapa.peru.simple(xlim = c(wf, -70), add = TRUE, labelsxy = F, axis4L = F,perfil = TRUE)
-title("Áreas de pesca")
-
-for(i in 1:length(space)){
-  lines(linePeru$lon + space[i], linePeru$lat, col = "gray")
-  text(x = -72 + space[i], y = -19, labels = rev(labelSEMANA)[i], cex = 0.7)
-}
-
-require(geoR)
-legend.krige(x.leg = c(wf + 3 ,wf + 3.5),y.leg = c(-20.0,-14.5), scale.vals = c(0.2,0.5,0.8), cex = 0.7,
-             values = 0:1, vertical = T, col = col)
-text(x = wf + 2.9, y = -14, labels = "Densidad", cex = 0.8, font = 2)
-
-# map hotspots
-imarpe:::.mapa.peru(xlim = c(wf, -70), labelsxy = F, axis4L = F,perfil = TRUE)
-for(i in 1:length(space)){
-  lines(linePeru$lon + space[i], linePeru$lat, col = "gray")
-  text(x = -72 + space[i], y = -19, labels = rev(labelSEMANA)[i], cex = 0.7)
-}
-title("Área hotspot (densidad > 40%)")
-
-for(i in 1:length(coor)){
-  polygon(coor[[i]],col = "skyblue",lty = 2, lwd = 1, border = "red")
-}
-points(x,y, pch = ".", co = "gray", cex = 1)
-
-for(i in 1:length(coor)){
-  points(mean(coor[[i]]$x),mean(coor[[i]]$y),col="red", pch = 16, cex = 1.2, bg = "black")
-}
-
-legend("bottomleft", c("Hotspot","Puntos de pesca"), 
-                       pch = 16,  
-                       col = c("skyblue","gray"), bty = "n")
+\section{\small I. Áreas de pesca}
+```{r figs2, message=FALSE,  echo=FALSE, fig.height=8, fig.width=6}
+layout(matrix(1:3, nrow = 3), heights = c(1,0.1,1))
+       
+       par(mar=c(0.5,5,0.5,0))
+       
+      image(ker,  xlim = c(wf, -70), ylim = c(-21, -3), axes=FALSE, col = col)
+      imarpe:::.mapa.peru.simple(xlim = c(wf, -70), add = TRUE, labelsxy = F, axis4L = F,perfil = TRUE)
+      title("") # Areas de pesca
+      
+      for(i in 1:length(space)){
+        lines(linePeru$lon + space[i], linePeru$lat, col = "gray40")
+        text(x = -72 + space[i], y = -19, labels = rev(labelSEMANA)[i], cex = 0.6)
+      }
+      
+      require(geoR)
+      legend.krige(x.leg = c(wf + 3 ,wf + 3.5),y.leg = c(-20.0,-14.5), scale.vals = c(0.2,0.5,0.8), cex = 0.6,
+                   values = 0:1, vertical = T, col = col)
+      text(x = wf + 2.9, y = -14, labels = "Densidad", cex = 0.6, font = 2)
+      legend("topleft", legend = "a)", bty = "n", cex = 0.6)
+       
+       #
+       
+       par(mar=c(0.5,5,0,0))
+       
+       image(ker,  xlim = c(wf, -70), ylim = c(-21, -20), axes=FALSE, col = col)
+       for(i in 1:length(space)){
+         lines(linePeru$lon + space[i], linePeru$lat, col = "gray40")
+         text(x = -72 + space[i], y = -20.5, labels = rev(zonas_cerradas)[i], cex = 0.6)
+       }
+       mtext(2, text = "N° zonas \n cerradas", las = 2, cex = 0.6)
+       box()
+       
+      par(mar=c(0.5,5,0.5,0))
+      # map hotspots
+      imarpe:::.mapa.peru(xlim = c(wf, -70), labelsxy = F, axis4L = F,perfil = TRUE)
+      for(i in 1:length(space)){
+        lines(linePeru$lon + space[i], linePeru$lat, col = "gray40")
+        text(x = -72 + space[i], y = -19, labels = rev(labelSEMANA)[i], cex = 0.6)
+      }
+      title("") # Area hotspot (densidad > 40%)
+      
+      points(x, y, pch = ".", co = "gray", cex = 1)
+      
+      for(i in 1:length(coor)){
+        polygon(coor[[i]],col = "cyan",lty = 1, lwd = 1, border = "cyan")
+      }
+      
+      # for(i in 1:length(coor)){
+      #   points(mean(coor[[i]]$x),mean(coor[[i]]$y),col="red", pch = 16, cex = 0.5, bg = "black")
+      # }
+      
+      legend("bottomleft", c("Hotspot (densidad > 40%)","Puntos de pesca"), 
+             pch = c(19,16),  
+             col = c("skyblue","gray"), bty = "n", cex = 0.6)
+      legend("topleft", legend = "b)", bty = "n", cex = 0.6)
 
 ```
+\centering{\normalsize Figura 2. a) Áreas de pesca, b) Áreas de pesca de mayor densidad (Hostpot).}
 
+
+\fbox{\begin{minipage}{47em}
+El presente reporte se puede reproducir citando:
+Reporte semanal de la Pesquería Industrial del Stock Norte-Centro de anchoveta (Temporada 2013-II) [online]. Callao, Instituto del Mar del Per\'u, Año 1 N° 2, \textit{Lunes, 11 de setiembre de 2017}.
+\end{minipage}}
