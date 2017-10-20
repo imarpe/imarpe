@@ -41,7 +41,7 @@ number_sections: yes
 
 <!-- \addtolength{\headheight}{1.0cm} -->
 \pagestyle{fancyplain}
-\lhead{\begin{picture}(5,5) \put(4,4){\includegraphics[width=90mm]{F:/reporte/imarpe_logo_5.png}} \end{picture}}
+\lhead{\begin{picture}(5,5) \put(4,4){\includegraphics[width=90mm]{imarpe_logo_5.png}} \end{picture}}
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{gray}\leaders\hrule height \headrulewidth\hfill}}
 
