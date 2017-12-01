@@ -460,7 +460,8 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
                       format = ifelse(grepl(pattern = "-", x = colnames(catchData)[1]), "%Y-%m-%d", "%d/%m/%Y"))
   
   # BY WEEK
-  if(sum(grepl(x = weekdays(allDates), pattern = "lunes|monday")))
+  if(sum(grepl(x = weekdays(allDates), pattern = "lunes|monday"))) 2
+  
   index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
   index <- index[!duplicated(index)]
   index <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
