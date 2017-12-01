@@ -52,8 +52,10 @@ for(i in seq(length(allIndex) + 1)){
     tempData <- rowSums(tempData)
   }
   
-  tempJuvs <- c(sum(tempJuvs), sum(tempJuvs)/sum(tempData)*100, 
-                sum(x$a*x$allMarks[x$allMarks < 12]^x$b*tempJuvs), sum(x$a*x$allMarks[x$allMarks < 12]^x$b*tempJuvs)/sum(x$a*x$allMarks^x$b*tempData)*100)
+  tempJuvs <- c(sum(tempJuvs), 
+                sum(tempJuvs)/sum(tempData)*100, 
+                sum(x$a*x$allMarks[x$allMarks < 12]^x$b*tempJuvs), 
+                sum(x$a*x$allMarks[x$allMarks < 12]^x$b*tempJuvs)/sum(x$a*x$allMarks^x$b*tempData)*100)
   tempJuvs <- round(tempJuvs, 0)
   
   output <- rbind(output, tempJuvs)
@@ -154,9 +156,14 @@ ylim2 <- c(0, 60)
 
 
 plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim1)
-polygon(x = c(xValues2, rev(xValues2)), y = rep(c(24, 33), each = length(xValues2)), border = FALSE, col = "gray80")
+if(!is.null(juvLimits$number)){
+  polygon(x = c(xValues2, rev(xValues2)), 
+          y = rep(juvLimits$number[1] + juvLimits$number[2]*c(-1, 1), each = length(xValues2)), 
+          border = FALSE, col = "gray80")
+  abline(h = juvLimits$number[1], lty = "dotted")
+} 
 abline(v = startSeasonDate, lty = "dashed", col = "gray50")
-abline(h = 28.5, lty = "dotted")
+
 lines(xValues, juvN, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
 
 mtext(text = "% juveniles (número)", side = 3, line = -2, adj = 0.99)
@@ -164,9 +171,13 @@ axis(side = 4, at = seq(ylim1[1], ylim1[2], 10), labels = paste(seq(ylim1[1], yl
 box()
 
 plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim2)
-polygon(x = c(xValues2, rev(xValues2)), y = rep(c(12, 18), each = length(xValues2)), border = FALSE, col = "gray80")
+if(!is.null(juvLimits$weight)){
+  polygon(x = c(xValues2, rev(xValues2)), 
+          y = rep(juvLimits$weight[1] + juvLimits$weight[2]*c(-1, 1), each = length(xValues2)), 
+          border = FALSE, col = "gray80")
+  abline(h = juvLimits$weight[1], lty = "dotted")
+} 
 abline(v = startSeasonDate, lty = "dashed", col = "gray50")
-abline(h = 15, lty = "dotted")
 lines(xValues, juvB, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
 mtext(text = "% juveniles (peso)", side = 3, line = -2, adj = 0.99)
 axis(side = 2, at = seq(ylim2[1], ylim2[2], 10), labels = paste(seq(ylim2[1], ylim2[2], 10), "%"), las = 2)

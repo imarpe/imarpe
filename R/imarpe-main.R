@@ -60,8 +60,8 @@ NULL
 #' start = "2009-04-10", end = "2009-08-30")
 #'
 #' # If you can analyzed a specific port put the name of the port on \code{port}
-#' landing  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa",
-#' start = "2009-04-10", end = "2009-08-30", port = "PAITA")
+#' landing = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "landing", sp = "caballa",
+#'                          start = "2009-04-10", end = "2009-08-30", port = "PAITA")
 #'
 #' # Check the class of the landing object, it would be 'fishery'
 #' class(landing)
@@ -78,29 +78,32 @@ NULL
 #'
 #' # To analyze the effort information on the same data, use the parameter varType and
 #' # specify the type of effort in the parameter efforType
-#' effort  = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
-#'  sp = "caballa", efforType = "capacidad_bodega")
+#' effort = getFishingData(file = fisheryData, type = "fisheryinfo", varType = "effort",
+#'                         sp = "caballa", efforType = "capacidad_bodega")
 #'
 #' # To analyze the cpue information on the same data change the parameter type, specify
 #' the varType and specify the type of effort to calculate the catch per unit effort (cpue)
-#' cpue  = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
-#' sp = "caballa", efforType = "capacidad_bodega")
+#' cpue = getFishingData(file = fisheryData, type = "cpue", varType = "cpue",
+#'                       sp = "caballa", efforType = "capacidad_bodega")
 #'
 #' @export
 getFishingData =  function(file, type, varType, toTons=TRUE, sp, start=NULL, end = NULL, port = NULL,
                            efforType = "viaje", fleeType=NULL, ...){
-
+  
   dataBase = .convertBase(file=file, sp=sp, fleeType=fleeType, efforType=efforType)
   fleet    = .fleetData(file = file, varType = varType, toTons = toTons, sp = sp, efforType=efforType,
                         fleeType = fleeType, start = start, end = end, port = port, ...)
-
+  
   output = switch(tolower(type),
-                  fisheryinfo = .getFisheryData(x=dataBase, fileName = file, fleet = fleet, varType=varType,
-                                                toTons = toTons, sp=sp, start=start, end=end, port=port, efforType = efforType),
-                  cpue        = .getCPUEData(x=dataBase, fileName = file, fleet = fleet, varType=varType,
-                                             toTons = toTons, sp=sp, start=start, end=end, port=port, efforType = efforType),
+                  fisheryinfo = .getFisheryData(x = dataBase, fileName = file, fleet = fleet, varType = varType,
+                                                toTons = toTons, sp = sp, start = start, end = end, 
+                                                port = port, efforType = efforType),
+                  cpue        = .getCPUEData(x = dataBase, fileName = file, fleet = fleet, varType = varType,
+                                             toTons = toTons, sp = sp, start = start, end = end, 
+                                             port = port, efforType = efforType),
+                  
                   read.csv(file = dataBase, stringsAsFactors = FALSE, ...))
-
+  
   return(output)
 }
 
@@ -160,7 +163,7 @@ getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SAL
                            colHaul = "NUMERO_CALA", colHaulTotal = "TOTAL_CALAS", colCatchHaul = "CAPTURA_CALA",
                            capAnch = "CAPTURA_ANCHOVETA", capSar = "CAPTURA_SARDINA",
                            capJur = "CAPTURA_JUREL", capCab = "CAPTURA_CABALLA", capBon = "CAPTURA_BONITO"){
-
+  
   dataBase = .getBitacoraData(file = file, colTrip = colTrip, colPort = colPort,
                               colDateOut = colDateOut, colDateStart = colDateStart, colSearchTime = colSearchTime,
                               colStorageCapacity = colStorageCapacity, colLat = colLat, colLon = colLon,
@@ -174,7 +177,7 @@ getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SAL
 #' @description This function built a report for each class including on imarpe package.
 #' @param object Object of class \code{fishery}, \code{cpue} and \code{bitacora}.
 #' @param format The format to export the report.
-#' @param output The report.
+#' @param output Folder where the report will be saved.
 #' @param ... Extra arguments passed to \code{\link{report}} function.
 #' @return A report on specific format.
 #' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
@@ -242,35 +245,35 @@ report = function(object, format, output, ...) {
 getMainResults.bitacora = function(object, observedTrip = NULL, fishingHaul = NULL, fishingPoints = NULL,
                                    speciesComposition = NULL, distributionCatch = NULL, effortData = NULL,
                                    language = "spanish", latByPort = FALSE, specie = "anchoveta") {
-
+  
   if(is.null(observedTrip) & is.null(fishingHaul) & is.null(fishingPoints) &
      is.null(speciesComposition) & is.null(distributionCatch) & is.null(effortData)) {
     message("There is not output to return")
     return(invisible())
   }
-
+  
   #Check the output to return
   if(isTRUE(observedTrip)) {observedTrip = .observedTrip.bitacora(object, language) }
-
+  
   if(isTRUE(fishingHaul)) {fishingHaul = .fishingHaul.bitacora(object, language, latByPort)}
-
+  
   if(isTRUE(fishingPoints)) {fishingPoints = .fishingPoints.bitacora(object)}
-
+  
   if(isTRUE(speciesComposition)) {speciesComposition = .speciesComposition.bitacora(object, language)}
-
+  
   if(isTRUE(distributionCatch)) {distributionCatch = .distributionCatch.bitacora(object, language, specie)}
-
+  
   if(isTRUE(effortData)) {effortData = .effortData.bitacora(object) }
-
+  
   output = list(observedTrip       = observedTrip,
                 fishingHaul        = fishingHaul,
                 fishingPoints      = fishingPoints,
                 speciesComposition = speciesComposition,
                 distributionCatch  = distributionCatch,
                 effortData         = effortData)
-
+  
   class(output) = "bitacora_mainResults"
-
+  
   return(output)
 }
 
@@ -345,8 +348,8 @@ plotEffort = function(effort1, effort2, ...) {
 #' @param officialBiomass A official value of biomass.
 #' @param threshold Threshold for considering the number of individuals. By default \code{threshold = 30}.
 #' @param species The species that is going to be analyzed. By default is \code{species = "Anchoveta"}.
-#' @param a Length-weight ratio parameter.
-#' @param b Length-weight ratio parameter.
+#' @param a Length-weight ratio parameter. By default, it is \code{NULL}, check Details.
+#' @param b Length-weight ratio parameter. By default, it is \code{NULL}, check Details.
 #' @param growthParameters A \code{list} of growthParamters. By default this are:
 #' \itemize{
 #'  \item k = 0.83
@@ -355,150 +358,178 @@ plotEffort = function(effort1, effort2, ...) {
 #'  \item vectorM = rep(0.8, 3)
 #'  \item catchFactor = 1
 #' }
+#' 
+#' @details Allometric growth parameters \code{a} and \code{b} are completely necesary for calculations, if they
+#' are \code{NULL} (default), the users must be sure that the \code{dataCruise} file has them inside (that is true if 
+#' \code{dataCruise} comes from \code{TBE} package).
+#' 
 #' @return A object of fishingMonitoring class. It is saved on the working directory.
 #' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 #' @export
-getDailyReport = function(directory = NULL,
+getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCruise, officialBiomass, 
+                          savePorcentas = FALSE, threshold = 30, species = "Anchoveta",
                           urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
-                          datesList, simpleFreqSizes, dataCruise, officialBiomass, threshold = 30, species = "Anchoveta",
-                          a, b, growthParameters = list(k = 0.83, Linf = 19.21, sizeM = c(0, 8, 12), vectorM = rep(0.8, 3), catchFactor = 1)) {
-
+                          a = NULL, b = NULL, 
+                          growthParameters = list(k = 0.83, Linf = 19.21, sizeM = c(0, 8, 12), vectorM = c(1.29, 0.92, 0.83), 
+                                                  catchFactor = 1, scenario = "neutro")){
+  
   # COMPILAR PORCENTAS
   cat("\n-------COMPILING DAILY REPORTS-------\n")
-
+  
   if(is.null(directory) || !dir.exists(directory)){
     directory <- tempdir()
     dir.create(path = directory, showWarnings = FALSE)
   }
-
+  
+  if(!is.null(growthParameters$scenario)){
+    
+    growthParameters <- switch(growthParameters$scenario,
+                               favorable    = list(k = 0.95, Linf = 19.98, t0 = -0.13, sizeM = c(0, 8, 12), vectorM = c(1.29, 0.92, 0.83)),
+                               neutro       = list(k = 0.83, Linf = 19.21, t0 = -0.21, sizeM = c(0, 8, 12), vectorM = c(1.29, 0.92, 0.83)),
+                               desfavorable = list(k = 0.64, Linf = 18.60, t0 = -0.30, sizeM = c(0, 8, 12), vectorM = c(1.28, 1.08, 1.00)),
+                               paste("Invalid value for 'growthParameters$scenario'.", 
+                                     "If you prefer to specify the Growth parameters, set growthParameters$scenario = NULL"))
+  }
+  
   # Downloading daily reports
   # descarga los porcenta
-  DownloadPorcenta(directorio = directory, dirUrl = urlFishingMonitoring,
-                   inicio = datesList$startDate,
-                   fin = datesList$endDate)
-
+  if(isTRUE(savePorcentas)){
+    dirPorcentas <- paste0(directory, "/porcentas_xls_files")
+  }else{
+    dirPorcentas <- tempdir()
+  }
+  
+  dir.create(path = dirPorcentas, showWarnings = FALSE)
+  
+  DownloadPorcenta(directorio = dirPorcentas, dirUrl = urlFishingMonitoring, 
+                   inicio = datesList$startDate, fin = datesList$endDate)
+  
   # Leer porcentaes
-  porcentasSalida <- ReadPorcenta(directorio = directory, inicio = datesList$startDate, fin = datesList$endDate)
-
+  porcentasSalida <- ReadPorcenta(directorio = dirPorcentas, inicio = datesList$startDate, fin = datesList$endDate)
+  
   # Escribir tabla compilada
-  porcentasArchivo <- paste0("data/desembarque_UpTo", format(as.Date(datesList$endDate, "%Y-%m-%d"), "%d%m%Y"),".csv")
+  porcentasArchivo <- paste0(directory, "desembarque_UpTo", 
+                             format(as.Date(datesList$endDate, "%Y-%m-%d"), "%d%m%Y"),".csv")
   write.csv(x = porcentasSalida$desembarque, file = porcentasArchivo, row.names = FALSE)
-
-
+  
+  
   # PONDERAR DATOS DE FRECUENCIAS SIMPLES Y DESEMBARQUES
   cat("\n-------WEIGHTING SIMPLE FREQUENCY DATA AND LANDINGS-------\n")
-
+  
   # Leer frecuencias simples
   datosPonderacion <- leerData(muestreo = simpleFreqSizes, desembarque = porcentasArchivo)
-
+  
   # Hacer ponderaciones
   surveyData <- get(load(dataCruise))
-
+  
   # Si el objeto proviene de TBE, obtener valores de a y b
   if(!is.null(object$info$a_b)){
     a <- object$info$a_b$a
     b <- object$info$a_b$b
   }
-
+  
   DatosPonderados <- LC_ponderada(data = datosPonderacion, tallas = seq(5, 20, 0.5), especie = species,
                                   umbral = threshold, a = a, b = b)
-
+  
   # Guardar datos ponderados
   ponderadosArchivo <- paste0("data/ponderados_UpTo", format(as.Date(datesList$endDate, "%Y-%m-%d"), "%d%m%Y"),".csv")
   guardarPonderacion(data = DatosPonderados, filename = ponderadosArchivo)
-
-
+  
+  
   # GENERAR DATOS PARA REPORTE
   cat("\n-------GENERATE DATA FOR REPORTING-------\n")
-
+  
   sp <- tolower(species)
   allMarks <- seq(2, 20, 0.5)
-
+  
   catchData <- readAtLength(file = ponderadosArchivo, sp = sp, check.names = FALSE)
-
+  
   index <- as.Date(colnames(catchData))
   index <- index >= as.Date(datesList$startDate) & index <= as.Date(datesList$endDate)
   catchData <- catchData[,index]
-
+  
   if(is.null(officialBiomass)){
     officialBiomass <- surveyData$results$nc$biomass$total
   }
-
+  
   surveyVector <- as.numeric(surveyData$results$nc$biomass$length)
   surveyVector <- surveyVector/sum(surveyVector)*officialBiomass
   surveyVector <- surveyVector/(a*allMarks^b)
-
+  
   allDates <- as.Date(colnames(catchData),
                       format = ifelse(grepl(pattern = "-", x = colnames(catchData)[1]), "%Y-%m-%d", "%d/%m/%Y"))
-
-
+  
   # BY WEEK
+  if(sum(grepl(x = weekdays(allDates), pattern = "lunes|monday")))
   index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
   index <- index[!duplicated(index)]
   index <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
-
+  
   catchVector <- t(aggregate(t(catchData), by = list(index), FUN = sum))[-1,]
-
+  
   output <- as.matrix(surveyVector)
   for(i in seq(ncol(catchVector))){
-
+    
     tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
-                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
+                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
+                              sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 52, sp = sp, Ts = 1)
-
+    
     output <- cbind(output, tempOutput$N[2,])
   }
-
+  
   colnames(output) <- c("Crucero", paste("Semana", seq(1, ncol(output) - 1)))
   colnames(catchVector) <- paste("Semana", 1:ncol(catchVector))
-
+  
   outputByWeek <- cbind(allMarks, output)
-
-
+  
+  
   # BY DAY (LAST WEEK)
   index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
   index <- index[!duplicated(index)]
   index <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
-
+  
   index <- index == max(index)
-
+  
   catchVector <- as.matrix(catchData[,index])
-
+  
   output <- as.matrix(outputByWeek[,ncol(outputByWeek) - 1])
   for(i in seq(sum(index))){
-
+    
     tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
-                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
+                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
+                              sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 365, sp = sp, Ts = 1)
-
+    
     output <- cbind(output, tempOutput$N[2,])
   }
-
+  
   colnames(output) <- c(ifelse(ncol(outputByWeek) > 3, paste("Semana", ncol(outputByWeek) - 3), "Crucero"),
                         paste("D\u00eda", seq_len(ncol(output) - 1)))
   colnames(catchVector) <- paste("D\u00eda", 1:ncol(catchVector))
-
+  
   outputByDay <- cbind(allMarks, output)
   outputByDay <- outputByDay[,-2]
-
-
+  
+  
   # BY DAY (all season)
   outputByDayAll <- as.matrix(surveyVector)
   for(i in seq(ncol(catchData))){
-
+    
     tempOutput <- projectPOPE(N = cbind(outputByDayAll[,i], outputByDayAll[,i]), catch = catchData[,i],
-                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
+                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
+                              sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 365, sp = sp, Ts = 1)
-
+    
     outputByDayAll <- cbind(outputByDayAll, tempOutput$N[2,])
   }
-
+  
   dimnames(outputByDayAll) <- list(allMarks, c("crucero", as.character(allDates)))
-
+  
   updatedTo <- allDates[match(as.Date(datesList$endDate, format = "%Y-%m-%d"), as.Date(colnames(catchData)))]
-
+  
   directorioTrabajo <- getwd()
-
+  
   output = list(directorioTrabajo = directorioTrabajo,
                 catchData = catchData,
                 allMarks = allMarks,
@@ -517,9 +548,9 @@ getDailyReport = function(directory = NULL,
                 startSeasonDate = datesList$startSeasonDate,
                 endSeasonDate   = datesList$endSeasonDate,
                 allDates = allDates)
-
+  
   class(output) = "fishingMonitoring"
   save(output, file = "output.RData")
-
+  
   return(output)
 }
