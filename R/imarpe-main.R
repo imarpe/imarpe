@@ -381,6 +381,9 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
     dir.create(path = directory, showWarnings = FALSE)
   }
   
+  datesList <- lapply(datesList, function(x) as.Date(x, format = ifelse(grepl(pattern = "-", x = x), "%Y-%m-%d", "%d/%m/%Y")))
+  
+  catchFactor <- ifelse(is.null(growthParameters$catchFactor), 1, growthParameters$catchFactor[1])
   if(!is.null(growthParameters$scenario)){
     
     growthParameters <- switch(growthParameters$scenario,
@@ -390,6 +393,7 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
                                paste("Invalid value for 'growthParameters$scenario'.", 
                                      "If you prefer to specify the Growth parameters, set growthParameters$scenario = NULL"))
   }
+  growthParameters$catchFactor <- catchFactor
   
   # Downloading daily reports
   # descarga los porcenta
@@ -409,7 +413,7 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   
   # Escribir tabla compilada
   porcentasArchivo <- paste0(directory, "desembarque_UpTo", 
-                             format(as.Date(datesList$endDate, "%Y-%m-%d"), "%d%m%Y"),".csv")
+                             format(datesList$endDate, "%d%m%Y"),".csv")
   write.csv(x = porcentasSalida$desembarque, file = porcentasArchivo, row.names = FALSE)
   
   
@@ -432,7 +436,7 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
                                   umbral = threshold, a = a, b = b)
   
   # Guardar datos ponderados
-  ponderadosArchivo <- paste0("data/ponderados_UpTo", format(as.Date(datesList$endDate, "%Y-%m-%d"), "%d%m%Y"),".csv")
+  ponderadosArchivo <- paste0("data/ponderados_UpTo", format(datesList$endDate, "%d%m%Y"),".csv")
   guardarPonderacion(data = DatosPonderados, filename = ponderadosArchivo)
   
   
@@ -445,8 +449,9 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   catchData <- readAtLength(file = ponderadosArchivo, sp = sp, check.names = FALSE)
   
   index <- as.Date(colnames(catchData))
-  index <- index >= as.Date(datesList$startDate) & index <= as.Date(datesList$endDate)
+  index <- index >= datesList$startDate & index <= datesList$endDate
   catchData <- catchData[,index]
+  rownames(catchData) <- allMarks
   
   if(is.null(officialBiomass)){
     officialBiomass <- surveyData$results$nc$biomass$total
@@ -459,65 +464,93 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   allDates <- as.Date(colnames(catchData),
                       format = ifelse(grepl(pattern = "-", x = colnames(catchData)[1]), "%Y-%m-%d", "%d/%m/%Y"))
   
+  # MAKE PROJECTIONS
+  
   # BY WEEK
-  if(sum(grepl(x = weekdays(allDates), pattern = "lunes|monday"))) 2
+  # Get index on starting days on weeks
+  weekIndex <- cumsum(grepl(x = weekdays(allDates), pattern = "lunes|monday"))
+  weekIndex <- weekIndex - ifelse(weekIndex[1] == 1, 1, 0)
   
-  index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
-  index <- index[!duplicated(index)]
-  index <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
+  # Start week matrix with survey data
+  outputByWeek <- as.matrix(surveyVector)
+  dimnames(outputByWeek) <- list(allMarks, "Crucero")
   
-  catchVector <- t(aggregate(t(catchData), by = list(index), FUN = sum))[-1,]
-  
-  output <- as.matrix(surveyVector)
-  for(i in seq(ncol(catchVector))){
+  # Make an index of the number of days in each week
+  repWeekIndex <- table(weekIndex)
+
+  # If the 1st day is not Monday, then make a daily projection until the nearest one
+  if(repWeekIndex[1] < 7){
+    index <- weekIndex == 0
+    catchVector <- as.matrix(catchData[,index])
     
-    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
-                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
-                              sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
-                              freq = 52, sp = sp, Ts = 1)
+    output <- outputByWeek
+    for(i in seq(sum(index))){
+      tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+                                a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
+                                sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
+                                freq = 365, sp = sp, Ts = 1)
+      
+      output <- cbind(output, tempOutput$N[2,])
+    }
     
-    output <- cbind(output, tempOutput$N[2,])
+    outputByDay <- output
+    colnames(outputByDay)[-1] <- as.character(allDates[index])
+    
+    outputByWeek <- cbind(outputByWeek, output[,ncol(output)])
+    colnames(outputByWeek)[-1] <- paste(format(allDates[which(index)[c(1, sum(index))]], "%d/%m"), collapse = " - ")
   }
   
-  colnames(output) <- c("Crucero", paste("Semana", seq(1, ncol(output) - 1)))
-  colnames(catchVector) <- paste("Semana", 1:ncol(catchVector))
-  
-  outputByWeek <- cbind(allMarks, output)
-  
-  
-  # BY DAY (LAST WEEK)
-  index <- c(1, grep(x = weekdays(allDates), pattern = "lunes|monday"), length(allDates) + 1)
-  index <- index[!duplicated(index)]
-  index <- do.call(c, mapply(rep, seq(length(index) - 1), diff(index)))
-  
-  index <- index == max(index)
-  
-  catchVector <- as.matrix(catchData[,index])
-  
-  output <- as.matrix(outputByWeek[,ncol(outputByWeek) - 1])
-  for(i in seq(sum(index))){
+  # If there is (at least) a Monday with more than 6 days, then make a weekly projection
+  index <- repWeekIndex == 7
+  if(sum(index) > 0){
+    index <- is.element(weekIndex, names(repWeekIndex)[index])
+    catchVector <- as.matrix(catchData[,index])
     
-    tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
-                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
-                              sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
-                              freq = 365, sp = sp, Ts = 1)
+    output <- as.matrix(outputByWeek[,ncol(outputByWeek)])
+    for(i in seq(sum(index))){
+      tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+                                a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
+                                sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
+                                freq = 52, sp = sp, Ts = 1)
+      
+      output <- cbind(output, tempOutput$N[2,])
+    }
     
-    output <- cbind(output, tempOutput$N[2,])
+    namesColumns <- as.character(format(allDates[which(index)[c(1, sum(index))]], "%d/%m"))
+    namesColumns <- cbind(namesColumns[-length(namesColumns)], namesColumns[-1])
+    namesColumns <- apply(namesColumns, 1, function(x) paste(x, collapse = " - "))
+    
+    output <- output[,-1]
+    colnames(output) <- namesColumns
+    outputByWeek <- cbind(outputByWeek, output)
   }
   
-  colnames(output) <- c(ifelse(ncol(outputByWeek) > 3, paste("Semana", ncol(outputByWeek) - 3), "Crucero"),
-                        paste("D\u00eda", seq_len(ncol(output) - 1)))
-  colnames(catchVector) <- paste("D\u00eda", 1:ncol(catchVector))
-  
-  outputByDay <- cbind(allMarks, output)
-  outputByDay <- outputByDay[,-2]
-  
+  # If the last week has less than 7 days, then make a daily projection until the end
+  if(length(repWeekIndex) > 1 && tail(repWeekIndex, 1) < 7){
+    
+    index <- weekIndex == tail(names(repWeekIndex), 1)
+    catchVector <- as.matrix(catchData[,index])
+    
+    outputByDay <- as.matrix(outputByWeek[,ncol(outputByWeek)])
+    for(i in seq(sum(index))){
+      tempOutput <- projectPOPE(N = cbind(outputByDay[,i], outputByDay[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+                                a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
+                                sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
+                                freq = 365, sp = sp, Ts = 1)
+      
+      outputByDay <- cbind(outputByDay, tempOutput$N[2,])
+    }
+    
+    outputByDay <- outputByDay[,-1]
+    dimnames(outputByDay) <- list(allMarks, allDates[index])
+  }
   
   # BY DAY (all season)
   outputByDayAll <- as.matrix(surveyVector)
+  dimnames(outputByDayAll) <- list(allMarks, "Crucero")
   for(i in seq(ncol(catchData))){
     
-    tempOutput <- projectPOPE(N = cbind(outputByDayAll[,i], outputByDayAll[,i]), catch = catchData[,i],
+    tempOutput <- projectPOPE(N = cbind(outputByDayAll[,i], outputByDayAll[,i]), catch = catchData[,i]*growthParameters$catchFactor,
                               a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
                               sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 365, sp = sp, Ts = 1)
@@ -525,30 +558,31 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
     outputByDayAll <- cbind(outputByDayAll, tempOutput$N[2,])
   }
   
-  dimnames(outputByDayAll) <- list(allMarks, c("crucero", as.character(allDates)))
+  colnames(outputByDayAll)[-1] <- as.character(allDates)
   
-  updatedTo <- allDates[match(as.Date(datesList$endDate, format = "%Y-%m-%d"), as.Date(colnames(catchData)))]
+  # Build catch matrix by weeks
+  catchByWeek <- aggregate(x = t(catchData), by = list(weekIndex), FUN = sum)
+  catchByWeek <- cbind(surveyVector, t(catchByWeek[,-1]), catchData[,ncol(catchData)])
+  dimnames(catchByWeek) <- list(allMarks,
+                                c(colnames(outputByWeek), colnames(outputByDay)[ncol(outputByDay)]))
   
-  directorioTrabajo <- getwd()
-  
-  output = list(directorioTrabajo = directorioTrabajo,
-                catchData = catchData,
-                allMarks = allMarks,
-                a = a,
-                b = b,
-                updatedTo = updatedTo,
-                surveyVector = surveyVector,
-                outputByWeek = outputByWeek,
-                outputByDay = outputByDay,
-                getInfo = getInfo,
-                outputByDayAll = outputByDayAll,
-                startDate = datesList$startDate,
-                endDate   = datesList$endDate,
-                startExploringDate = datesList$startExploringDate,
-                endExploringDate   = datesList$endExploringDate,
-                startSeasonDate = datesList$startSeasonDate,
-                endSeasonDate   = datesList$endSeasonDate,
-                allDates = allDates)
+  # Concatenate object as a list
+  output <- list(catchData        = catchData,
+                 catchByWeek      = catchByWeek,
+                 allMarks         = allMarks,
+                 a                = a,
+                 b                = b,
+                 surveyVector     = surveyVector,
+                 outputByWeek     = outputByWeek,
+                 outputByDay      = outputByDay,
+                 weekIndex        = weekIndex,
+                 getInfo          = getInfo,
+                 outputByDayAll   = outputByDayAll,
+                 startDate        = datesList$startDate,
+                 endDate          = datesList$endDate,
+                 endExploringDate = datesList$endExploringDate,
+                 endSeasonDate    = datesList$endSeasonDate,
+                 allDates         = allDates)
   
   class(output) = "fishingMonitoring"
   save(output, file = "output.RData")

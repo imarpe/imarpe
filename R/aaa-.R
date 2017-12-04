@@ -4,11 +4,10 @@
 #' @import maps
 #' @import fields
 #' @import sp
+#' @import lubridate
 #' @import rJava
 #' @importFrom plotrix pie3D
 #' @importFrom Hmisc monthDays yearDays
 #' @importFrom RCurl url.exists
 #' @importFrom XLConnect loadWorkbook readWorksheet
-#' @importFrom lubridate day
-#' @importFrom kali
-#' @importFrom Rgeo MASS fields
+#' #importFrom rgeo MASS fields
