@@ -1,6 +1,6 @@
 ---
-title: "Reporte diario de Pesquer√≠a Anchoveta NC"
-author: "IMARPE - Direcci√≥n General de Investigaciones de Recursos Pel√°gicos"
+title: "Reporte diario de PesquerÌa Anchoveta NC"
+author: "IMARPE - DirecciÛn General de Investigaciones de Recursos Pel·gicos"
 header-includes:
   - \usepackage{fancyhdr}
   - \fancyfoot[LE,RO]{DGIRP}
@@ -54,7 +54,7 @@ pander::pander(firstTable, align = "c", keep.line.breaks = TRUE, split.table = 1
 
 secondTable <- matrix(data = character(), nrow = 2, ncol = 6, 
                       dimnames = list(c("", paste("Al", format(x$endDate, format = "%d/%m/%y"))), 
-                                      c("Pesca acum N", "Pesca acum P", "Juv N", "Juv Peso", "Poblaci√≥n---", "---remanente")))
+                                      c("Pesca acum N", "Pesca acum P", "Juv N", "Juv Peso", "PoblaciÛn---", "---remanente")))
 
 secondTable[1,] <- c("$N (x10~^6)$", "Peso (t)", "En N (%)", "En peso (%)", "$N (x10~^6)$", "B (millones t)")
 
@@ -74,17 +74,17 @@ pander::pander(secondTable, keep.line.breaks = TRUE, split.table = 250)
 <!-- Plot 1 -->
 ```{r, echo=FALSE, message=FALSE, fig.height=5, fig.width=8, cache=FALSE}
 
-# Plot 1
+# Subplot 1-1
 xlim <- c(x$startDate, x$endSeasonDate)
-ylim <- c(0, ((sum(x$a*x$allMarks^x$b*x$surveyVector) %/% 1e6) + 1)*1e6)
-ylim2 <- c(axisPlot$plot1Lab2[1], axisPlot$plot1Lab2[2])
+ylim1 <- axisPlot$ylim_p1$axis2_1
+ylim2 <- axisPlot$ylim_p1$axis4_1
 
 # layout(matrix(c(1, 1, 2, 3), nrow = 2, byrow = TRUE))
 par(mar = c(0, 0, 0, 0), oma = c(6, 4, 1, 4), yaxs = "i", xaxs = "i", mfrow = c(3, 1))
 
-plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim)
+plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim1[1:2])
 
-lines(x$allDates, cumsum(colSums(sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")))*ylim[2]/ylim2[2],
+lines(x$allDates, cumsum(colSums(sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")))*ylim1[2]/ylim2[2],
       col = "blue", lwd = 2)
 lines(x$allDates, colSums(sweep(x = x$outputByDayAll[,-1], MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")), 
       col = "red", lwd = 2)
@@ -94,16 +94,15 @@ mtext(text = "Captura (millones t)", side = 4, line = 3)
 
 legend("topright", legend = c("Biomasa", "Captura"), bty = "n", col = c("red", "blue"), lwd = 2, cex = 1.2)
 
-yLabs <- seq(ylim[1], ylim[2], 1e6)
+yLabs <- seq(ylim1[1], ylim1[2], ylim1[3])
 axis(side = 2, at = yLabs, labels = yLabs/1e6, las = 2)
 
-yLabs2 <- seq(ylim2[1], ylim2[2], axisPlot$plot1Lab2[3])
+yLabs2 <- seq(ylim2[1], ylim2[2], ylim2[3])
 yLabs2[1] <- NA
-axis(side = 4, at = seq(ylim[1], ylim[2], length.out = length(yLabs2)), labels = yLabs2/1e6, las = 2)
+axis(side = 4, at = seq(ylim1[1], ylim1[2], length.out = length(yLabs2)), labels = yLabs2/1e6, las = 2)
 box()
 
-
-# Plot 2
+# Subplot 1-2
 juvN <- apply(x$catchData, 2, function(z) sum(z[x$allMarks < 12])/sum(z))*100
 
 juvB <- sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")
@@ -113,10 +112,10 @@ xValues <- as.Date(colnames(x$catchData))
 xValues2 <- c(min(xValues) - 1e3, xValues, max(xValues) + 1e3)
 
 xlim <- c(x$startDate, x$endSeasonDate)
-ylim1 <- c(0, 80)
-ylim2 <- c(0, 60)
+ylim1 <- axisPlot$ylim_p1$axis4_2
+ylim2 <- axisPlot$ylim_p1$axis2_3
 
-plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim1)
+plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim1[1:2])
 if(!is.null(juvLimits$number)){
   polygon(x = c(xValues2, rev(xValues2)), 
           y = rep(juvLimits$number[1] + juvLimits$number[2]*c(-1, 1), each = length(xValues2)), 
@@ -127,11 +126,12 @@ abline(v = x$startDate, lty = "dashed", col = "gray50")
 
 lines(xValues, juvN, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
 
-mtext(text = "% juveniles (n√∫mero)", side = 3, line = -2, adj = 0.99)
-axis(side = 4, at = seq(ylim1[1], ylim1[2], 10), labels = paste(seq(ylim1[1], ylim1[2], 10), "%"), las = 2)
+mtext(text = "% juveniles (n˙mero)", side = 3, line = -2, adj = 0.99)
+axis(side = 4, at = seq(ylim1[1], ylim1[2], ylim1[3]), labels = paste(seq(ylim1[1], ylim1[2], ylim1[3]), "%"), las = 2)
 box()
 
-plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim2)
+# Subplot 1-3
+plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim2[1:2])
 if(!is.null(juvLimits$weight)){
   polygon(x = c(xValues2, rev(xValues2)), 
           y = rep(juvLimits$weight[1] + juvLimits$weight[2]*c(-1, 1), each = length(xValues2)), 
@@ -141,7 +141,7 @@ if(!is.null(juvLimits$weight)){
 abline(v = x$startDate, lty = "dashed", col = "gray50")
 lines(xValues, juvB, col = "blue", lty = "solid", lwd = 2, type = "o", pch = 19, cex = 0.8)
 mtext(text = "% juveniles (peso)", side = 3, line = -2, adj = 0.99)
-axis(side = 2, at = seq(ylim2[1], ylim2[2], 10), labels = paste(seq(ylim2[1], ylim2[2], 10), "%"), las = 2)
+axis(side = 2, at = seq(ylim2[1], ylim2[2], ylim2[3]), labels = paste(seq(ylim2[1], ylim2[2], ylim2[3]), "%"), las = 2)
 box()
 
 xValues <- seq(xlim[1], xlim[2], by = "day")
@@ -158,7 +158,7 @@ axis(side = 1, at = xValues2, labels = as.character(format(xValues2, format = "%
 ```{r, echo=FALSE, cache=FALSE}
 
 # Tabla diaria
-index <- match(as.Date(x$endDate, format = "%Y-%m-%d"), x$allDates)
+index <- match(x$endDate, x$allDates)
 output <- x$getInfo(x = x$catchData[,index], allMarks = x$allMarks, a = x$a, b = x$b, nDecimalsBiomass = 3)
 dailyTable <- matrix(data = output, ncol = 1, 
                      dimnames = list(names(output), format(x$endDate, "%d/%m/%Y")))
@@ -170,8 +170,10 @@ weeklyTable <- apply(output, 2, x$getInfo, allMarks = x$allMarks, a = x$a, b = x
 
 # Bind tables
 outputTable <- cbind.data.frame(dailyTable, weeklyTable)
-colnames(outputTable) <- c(paste0("Pesca d√≠a\n", format(x$endDate, "%d/%m/%Y")), 
-                           "Acumulado\nPesca", "Poblaci√≥n inicio\nCrucero", "\nSobrevivientes")
+colnames(outputTable) <- c(paste0("Pesca dÌa\n", format(x$endDate, "%d/%m/%Y")), 
+                           "Acumulado\nPesca", "PoblaciÛn inicio\nCrucero", "\nSobrevivientes")
+
+outputTable[is.na(outputTable)] <- " "
 
 pander::pander(outputTable, justify = "center", keep.line.breaks = TRUE, split.table = 140)
 ```
@@ -180,78 +182,84 @@ pander::pander(outputTable, justify = "center", keep.line.breaks = TRUE, split.t
 <!-- Plot 2 -->
 ```{r, echo=FALSE, message=FALSE, fig.height=3, fig.width=8, cache=FALSE}
 
-index <- match(as.Date(x$endDate, format = "%Y-%m-%d"), x$allDates)
+index <- match(x$endDate, x$allDates)
 output <- cbind(x$allMarks, x$catchData[,index], x$catchData[,index]*x$a*x$allMarks^x$b)
 colnames(output) <- c("Talla", "Abundancia", "Biomasa")
 
+# Get axis limits
 xlim <- range(x$allMarks)
+ylim1 <- axisPlot$ylim_p2$axis2
+ylim2 <- axisPlot$ylim_p2$axis4
 
+# Make empty plot
 par(mar = c(3, 5, 1, 4), xaxs = "i", yaxs = "i")
+plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim1[1:2], xlab = NA, ylab = NA)
 
-yInterval1 <- 10^(nchar(floor(max(output[,2], na.rm = TRUE))) - 1)/2
-yMax1 <- ceiling(max(output[,2], na.rm = TRUE)/yInterval1)*yInterval1
+if(sum(output[,2],  na.rm = TRUE)){
+  # Make plot and lines Abundance
+  tempLines <- output[,2]
+  tempLines[tempLines < 0.001] <- NA
+  lines(x$allMarks, tempLines, lwd = 2, col = "blue4")
 
-ylim <- c(0, yMax1)
-plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim, xlab = NA, ylab = NA)
+  # Make plot and lines Biomass
+  tempLines <- output[,3]/ylim2[3]*ylim1[3]
+  tempLines[tempLines < 0.001] <- NA
+  lines(x$allMarks, tempLines, type = "o", lwd = 2, col = "red4", pch = 16)
+}
 
-tempLines <- output[,2]
-tempLines[tempLines < 0.001] <- NA
-lines(x$allMarks, tempLines, lwd = 2, col = "blue4")
+# Add left axis
+axis(side = 2, at = seq(ylim1[1], ylim1[2], ylim1[3]), las = 2, cex.axis = 0.8)
+
+# Add right axis
+yLabs <- seq(ylim2[1], ylim2[2], ylim2[3])
+axis(side = 4, at = seq(ylim1[1], ylim1[2], length.out = length(yLabs)), labels = yLabs, las = 2, cex.axis = 0.8)
+
+# Add juvenile limit
 abline(v = 12, lty = "dotted", col = "red", lwd = 2)
 
-axis(side = 2, at = seq(ylim[1], yMax1, yInterval1), las = 2, cex.axis = 0.8)
-mtext(text = "Abundancia (millones ind)", side = 2, line = 3)
-
-box()
-
-yInterval2 <- 10^(nchar(floor(max(output[,3], na.rm = TRUE))) - 1)/2
-yMax2 <- ceiling(max(output[,3], na.rm = TRUE)/yInterval2)*yInterval2
-
-tempLines <- output[,3]/yMax2*yMax1
-tempLines[tempLines < 0.001] <- NA
-lines(x$allMarks, tempLines, type = "o", lwd = 2, col = "red4", pch = 16)
-abline(v = 12, lty = "dotted", col = "red", lwd = 2)
-
+# Add legend
 legend("topleft", legend = c("Abundancia", "Peso"), col = c("blue4", "red4"), 
        pch = c(NA, 16), lty = rep("solid", 2), lwd = 2)
 
+# Add date text
 mtext(text = format(x$endDate, "%d/%m/%Y"), side = 3, line = -2, adj = .99)
 
+# Add axis labels 
 mtext(text = "Peso (t)", side = 4, line = 3)
-
+mtext(text = "Abundancia (millones ind)", side = 2, line = 3)
 mtext(text = "Longitud total (cm)", side = 1, line = 2, outer = TRUE)
 
+# Add axis X label
 axis(side = 1, at = x$allMarks, labels = NA, tcl = -0.25)
 axis(side = 1, at = seq(xlim[1], xlim[2]), cex.axis = 0.8)
-axis(side = 4, at = seq(ylim[1], yMax1, length.out = 6), 
-     labels = seq(ylim[1], yMax2, length.out = 6), las = 2, cex.axis = 0.8)
+
 box()
 
 ```
 
 <!-- Plot 3 -->
 ```{r, echo=FALSE, message=FALSE, fig.height=4.5, fig.width=8, cache=FALSE}
-output <- cbind(x$allMarks, x$surveyVector, rowSums(x$catchData), x$outputByDay[,ncol(x$outputByDay)])
-colnames(output) <- c("Talla", "Crucero", "Capturas", "Sobrevivientes")
+output <- cbind(x$surveyVector, rowSums(x$catchData), x$outputByDay[,ncol(x$outputByDay)])
+colnames(output) <- c("Crucero", "Capturas", "Sobrevivientes")
 
 output[output < 1e-5] <- NA
 
-allMarks <- output[,1]
+allMarks <- x$allMarks
 
 cols <- c("red3", "blue3", "green4")
 
 par(mar = rep(0, 4), oma = c(4, 6.5, 1, 5), xaxs = "i", yaxs = "i", mfrow = c(3, 1))
 
-for(i in seq(2, ncol(output))){
+for(i in seq(ncol(output))){
   
   xlim <- range(allMarks)
-  ylim <- axisPlot$plot3Lab1[[i - 1]]
-  ylim2 <- axisPlot$plot3Lab2[[i - 1]]
+  ylim1 <- axisPlot$ylim_p3[[paste0("axis2_", i)]]
+  ylim2 <- axisPlot$ylim_p3[[paste0("axis4_", i)]]
   
-  plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim[1:2], xlab = NA, ylab = NA)
+  plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim1[1:2], xlab = NA, ylab = NA)
   
-  lines(allMarks, output[,i], col = cols[i - 1], lwd = 2)
-  lines(allMarks, output[,i]*x$a*x$allMarks^x$b*(ylim[2]/ylim2[2]), col = cols[i - 1], lwd = 2, lty = "dashed")
+  lines(allMarks, output[,i], col = cols[i], lwd = 2)
+  lines(allMarks, output[,i]*x$a*x$allMarks^x$b*(ylim1[2]/ylim2[2]), col = cols[i], lwd = 2, lty = "dashed")
   
   abline(v = 12, col = "red", lwd = 2, lty = "dotted")
   
@@ -269,20 +277,30 @@ for(i in seq(2, ncol(output))){
     axis(side = 1, at = allMarks, labels = NA, tcl = -0.25)
     axis(side = 1, at = seq(xlim[1], xlim[2]))
   }else if(i == 2){
-    legend("bottomright", legend = c("Abundancia", "Biomasa"), col = cols[i - 1], lty = c("solid", "dashed"), 
+    legend("bottomright", legend = c("Abundancia", "Biomasa"), col = cols[i], lty = c("solid", "dashed"), 
            lwd = 2, pch = NA, bty = "n")
   }
   
-  axis(side = 2, at = seq(ylim[ifelse(i == ncol(output), 1, 3)], ylim[2], ylim[3]), las = 2)
+  axis(side = 2, at = seq(ylim1[ifelse(i == ncol(output), 1, 3)], ylim1[2], ylim1[3]), las = 2)
   
-  ylabs2 <- seq(ylim2[1], ylim2[2], ylim2[3])/1e6
-  axis(side = 4, at = seq(ylim[ifelse(i == ncol(output), 1, 3)], ylim[2], length.out = length(ylabs2)), 
-       labels = ylabs2, las = 2)
+  yLabs2 <- seq(ylim2[1], ylim2[2], ylim2[3])
+  if(i != 2){
+    yLabs2 <- paste(yLabs2/1e6, "m")
+  }
+  
+  if(i != ncol(output)){
+    yLabs2[1] <- NA
+  }
+  
+  axis(side = 4, at = seq(ylim1[1], ylim1[2], length.out = length(yLabs2)), 
+       labels = yLabs2, las = 2)
   
   box()
 }
 
 mtext(text = "Longitud total (cm)", side = 1, outer = TRUE, line = 3)
-mtext(text = "Abundancia (millones ind)", side = 2, outer = TRUE, line = 4.5)
-mtext(text = "Biomasa (millones t)", side = 4, outer = TRUE, line = 3)
+mtext(text = "m: millones", side = 1, outer = TRUE, line = 3, adj = .99, cex = 0.8)
+mtext(text = "Abundancia (millones ind)", side = 2, outer = TRUE, line = 5)
+mtext(text = "Biomasa (t)", side = 4, outer = TRUE, line = 4)
 ```
+

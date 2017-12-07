@@ -170,6 +170,9 @@ leerData <- function(muestreo = NULL, desembarque = NULL, ...){
     baseMuestreo[,i] <- suppressWarnings(as.numeric(baseMuestreo[,i]))
   }
   
+  index <- !duplicated(baseMuestreo)
+  baseMuestreo <- baseMuestreo[index,]
+  
   baseDesembarque <- read.csv(desembarque, skip = 1, stringsAsFactors = FALSE)
   names(baseDesembarque) <- colnames(read.csv(desembarque))
   names(baseDesembarque)[1] <- "fecha"
@@ -213,7 +216,7 @@ filtroMuestreo <- function(data, tallas, especie, umbral, ...){
   }
   tallas <- as.character(tallas)
   data <- data[data$especie == especie, ]
-  data[, tallas][is.na(data[, tallas])] <- 0
+  data[,tallas][is.na(data[, tallas])] <- 0
   data <- data[!is.na(data$captura), ]
   data$total <- apply(data[,tallas], 1, sum, na.rm = TRUE)
   output <- data[data$total > umbral, ]
@@ -435,6 +438,145 @@ projectPOPE <- function(N, catch, a, b, k, Linf, sizeM, vectorM, freq, sp, Ts){
   class(output) <- "surveyProj"
   
   return(output)
+}
+
+anc <- function(x, ...){
+  return(as.numeric(as.character(x, ...)))
+}
+
+an <- match.fun(as.numeric)
+ac <- match.fun(as.character)
+
+convertImarsisData <- function(imarsisData){
+  imarsisData_1 <- data.frame(FECHA = paste(imarsisData$dia, imarsisData$mes, imarsisData$anho, sep = "/"),
+                              LONGITUD_INICIAL = imarsisData$long,
+                              LATITUD_INICIAL = imarsisData$lat,
+                              LONGITUD = NA,
+                              FRECUENCIA_SIMPLE = NA,
+                              EMBARCACION_COD = imarsisData$matricula,
+                              EMBARCACION_BOD = imarsisData$cb,
+                              ESPECIE_NOM_COMUN = "ANCHOVETA",
+                              ESPECIE_CAPTURA = imarsisData$captura*1e3,
+                              stringsAsFactors = FALSE)
+  
+  imarsisData_2 <- NULL
+  for(i in seq(nrow(imarsisData_1))){
+    tempData <- imarsisData[i, 14:43]
+    
+    tempData <- data.frame(LONGITUD = as.numeric(colnames(tempData)), 
+                           FRECUENCIA_SIMPLE = as.numeric(tempData),
+                           stringsAsFactors = FALSE)
+    
+    tempData_1 <- tempData[!is.na(tempData$FRECUENCIA_SIMPLE),]
+    
+    tempData_2 <- NULL
+    for(j in seq(nrow(tempData_1))){
+      tempData_2 <- rbind(tempData_2, imarsisData_1[i,])
+    }
+    
+    tempData_2$LONGITUD <- tempData_1$LONGITUD
+    tempData_2$FRECUENCIA_SIMPLE <- tempData_1$FRECUENCIA_SIMPLE
+    
+    imarsisData_2 <- rbind(imarsisData_2, tempData_2)
+  }
+  
+  return(imarsisData_2)
+}
+
+getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
+  # cargar datos de IMARSIS
+  imarsisData <- convertImarsisData(imarsisData = imarsisData)
+  
+  # Mantener solo filas con información válida en las siguientes columnas
+  index <- c("FECHA", "LONGITUD_INICIAL", "LATITUD_INICIAL", "LONGITUD", "ESPECIE_NOM_COMUN", "ESPECIE_CAPTURA")
+  index <- complete.cases(imarsisData[,index])
+  imarsisData <- imarsisData[index,]
+  
+  # Mantener filas de anchoveta
+  index <- grepl(pattern = "ANCHOVETA", x = imarsisData$ESPECIE_NOM_COMUN, perl = TRUE)
+  imarsisData <- imarsisData[index,]
+  
+  # Corregir valores raros de tallas
+  imarsisData$LONGITUD <- anc(cut(x = imarsisData$LONGITUD, breaks = seq(1, 25, 0.5), labels = seq(1, 24.5, 0.5)))
+  
+  # Obtener valores de fecha y ordenar la base según esos valores
+  imarsisData$date <- as.Date(imarsisData$FECHA, format = "%d/%m/%Y")
+  imarsisData <- imarsisData[order(imarsisData$date),]
+  
+  # Obtener una variable indicadora de viaje
+  imarsisData$cod_viaje <- paste0(format(imarsisData$date, format = "%Y%m%d"), "-", imarsisData$EMBARCACION_COD)
+  
+  # Crear una tabla de valores de fecha y capacidad de bodega según código de viaje
+  indexSamples <- !duplicated(imarsisData$cod_viaje)
+  indexSamples <- imarsisData[indexSamples, c("cod_viaje", "date", "EMBARCACION_BOD")]
+  
+  # Obtener una tabla de valores de frecuencias de tallas por viaje
+  lengthData <- with(imarsisData, tapply(FRECUENCIA_SIMPLE, list(cod_viaje, LONGITUD), sum, na.rm = TRUE))
+  
+  # Armar una base de tallas por viaje, con fecha, captura y capacidad de bodega
+  index <- match(rownames(lengthData), indexSamples$cod_viaje)
+  simpleSamples <- data.frame(date = indexSamples$date[index], 
+                              hold_capacity = indexSamples$EMBARCACION_BOD[index],
+                              catch = tapply(imarsisData$ESPECIE_CAPTURA, imarsisData$cod_viaje, sum, na.rm = TRUE),
+                              lengthData, stringsAsFactors = FALSE)
+  
+  # Quitar filas que NO hayan tenido individuos entre tallas 9 y 13 cm
+  index <- an(colnames(lengthData)) > 9 & an(colnames(lengthData)) < 13
+  index <- rowSums(lengthData[index,], na.rm = TRUE) > 0
+  simpleSamples <- simpleSamples[index,]
+  
+  # # Quitar filas con outliers en capturas (Método de Tukey)
+  # k <- 1.5
+  # qValues <- quantile(x = simpleSamples$catch, probs = c(0.25, 0.5, 0.75), na.rm = TRUE)
+  # qRange <- c(qValues[1] - k*(qValues[3] - qValues[1]), qValues[3] + k*(qValues[3] - qValues[1]))
+  # simpleSamples <- simpleSamples[simpleSamples$catch >= qRange[1] & simpleSamples$catch <= qRange[2],]
+  
+  # Ponderar las frecuencias por talla a la captura
+  lengthData <- simpleSamples[,seq(4, ncol(simpleSamples))]
+  allMarks <- an(gsub(x = colnames(lengthData), pattern = "^[[:alpha:]]+", replacement = "", perl = TRUE))
+  
+  # Obtener tabla de frecuencia en peso
+  lengthDataW <- sweep(x = lengthData, MARGIN = 2, STATS = a*allMarks^b, FUN = "*")
+  lengthDataW <- t(apply(X = lengthDataW, MARGIN = 1, FUN = function(x) x/sum(x, na.rm = TRUE)))
+  
+  # Hacer las ponderaciones y reconvertir a valores en número
+  lengthData <- sweep(x = lengthDataW, MARGIN = 1, STATS = simpleSamples$catch, FUN = "*")
+  lengthData <- floor(sweep(x = lengthData*10e6, MARGIN = 2, STATS = a*allMarks^b, FUN = "/"))
+  colnames(lengthData) <- gsub(x = colnames(lengthData), pattern = "^[[:alpha:]]+", replacement = "", perl = TRUE)
+  
+  meanValues <- apply(lengthData, 1, function(x, ...) sum(x*allMarks, ...)/sum(x, ...), na.rm = TRUE)
+  
+  # Volver a armar la base con frecuencias ponderadas
+  simpleSamples <- data.frame(date = simpleSamples$date, 
+                              hold_capacity = simpleSamples$hold_capacity,
+                              catch = an(simpleSamples$catch),
+                              mean = round(meanValues, 3),
+                              lengthData, stringsAsFactors = FALSE, check.names = FALSE)
+  
+  # Definir distribución de tallas de individuos que se enmallan
+  simpleSamples$enmalleFactor <- pnorm(q = enmalleParams$mean - abs(simpleSamples$mean - enmalleParams$mean),
+                                       mean = enmalleParams$mean, sd = enmalleParams$sd)*2*enmalleParams$maxProportion
+  
+  # Obtener valores estimados de área de red en base a capacidad de bodega
+  simpleSamples$netArea <- predict(object = areaHC_model, 
+                                   newdata = data.frame(capacidad_bodega_registrada = simpleSamples$hold_capacity),  
+                                   type = "response")*128^2
+  
+  # Obtener número de mallas con anchoveta (enmallada) por viaje
+  enmalladas <- floor(simpleSamples$netArea*simpleSamples$enmalleFactor)
+  
+  # Obtener tallas de anchoveta presentes en simpleSamples
+  lengthMarks <- an(colnames(simpleSamples)[grepl(x = colnames(simpleSamples), pattern = "[([:digit:].[:digit:])^]")])
+  
+  # Multiplicar número de anchovetas enmalladas por distribución de anchovetas que se enmallan
+  enmalleMatrix <- t(sapply(enmalladas, "*", dnorm(x = lengthMarks, mean = enmalleParams$mean, sd = enmalleParams$sd)))
+  dimnames(enmalleMatrix) <- list(ac(simpleSamples$date), lengthMarks)
+  enmalleMatrix <- enmalleMatrix[order(simpleSamples$date),]
+  
+  # Obtener frecuencia en peso de las anchovetas enmalladas
+  enmalleMatrixW <- sweep(x = enmalleMatrix, MARGIN = 2, STATS = a*lengthMarks^b, FUN = "*")*1e-6
+  
+  return(list(simpleSamples = simpleSamples, enmalleMatrix = enmalleMatrix, enmalleMatrixW = enmalleMatrixW))
 }
 
 

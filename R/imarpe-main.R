@@ -182,7 +182,7 @@ getBitacoraData = function(file, colTrip = "CODIGO_VIAJE", colPort = "PUERTO_SAL
 #' @return A report on specific format.
 #' @author Criscely Lujan-Paredes, \email{criscelylujan@gmail.com}.
 #' @export
-report = function(object, format, output, ...) {
+report = function(x, format, output, ...) {
   UseMethod("report")
 }
 
@@ -367,6 +367,7 @@ plotEffort = function(effort1, effort2, ...) {
 #' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 #' @export
 getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCruise, officialBiomass, 
+                          enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.15),  addEnmalle = TRUE, 
                           savePorcentas = FALSE, threshold = 30, species = "Anchoveta",
                           urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
                           a = NULL, b = NULL, 
@@ -432,6 +433,7 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
     b <- object$info$a_b$b
   }
   
+  # Get weighted data  
   DatosPonderados <- LC_ponderada(data = datosPonderacion, tallas = seq(5, 20, 0.5), especie = species,
                                   umbral = threshold, a = a, b = b)
   
@@ -446,25 +448,69 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   sp <- tolower(species)
   allMarks <- seq(2, 20, 0.5)
   
+  # Read catch data
   catchData <- readAtLength(file = ponderadosArchivo, sp = sp, check.names = FALSE)
-  
-  index <- as.Date(colnames(catchData))
-  index <- index >= datesList$startDate & index <= datesList$endDate
-  catchData <- catchData[,index]
   rownames(catchData) <- allMarks
   
-  if(is.null(officialBiomass)){
-    officialBiomass <- surveyData$results$nc$biomass$total
-  }
+  # Create an empty matrix of catches
+  allDates <- seq(from = datesList$startDate, to = datesList$endDate, by = "day")
+  newCatch <- matrix(data = 0, nrow = length(allMarks), ncol = length(allDates), 
+                     dimnames = list(allMarks, as.character(allDates)))
   
+  # Replace read catchData over the pattern
+  newCatch[,match(colnames(catchData), as.character(allDates))] <- catchData
+  catchData <- newCatch
+  
+  # Weight to official biomass
+  officialBiomass <- ifelse(is.null(officialBiomass), surveyData$results$nc$biomass$total, officialBiomass)
   surveyVector <- as.numeric(surveyData$results$nc$biomass$length)
   surveyVector <- surveyVector/sum(surveyVector)*officialBiomass
   surveyVector <- surveyVector/(a*allMarks^b)
   
-  allDates <- as.Date(colnames(catchData),
-                      format = ifelse(grepl(pattern = "-", x = colnames(catchData)[1]), "%Y-%m-%d", "%d/%m/%Y"))
+  # Get Enmalle info
+  if(isTRUE(addEnmalle)){
+    # Get enmalle info
+    enmalleInfo <- getEnmallamiento(imarsisData = datosPonderacion$baseMuestreo, enmalleParams = enmalleParams, 
+                                    a = a, b = b)
+    
+    # Add enmalle info to catchData
+    enmalleInfo <- aggregate(x = enmalleInfo$enmalleMatrix, by = list(rownames(enmalleInfo$enmalleMatrix)), 
+                             FUN = sum, na.rm = TRUE)
+    enmalleNames <- enmalleInfo[,1]
+    
+    # Get Factoor by day
+    index <- match(enmalleInfo[,1], colnames(catchData))
+    weightFactor <- colSums(catchData[,index])/(rowSums(enmalleInfo[,-1])*1e-6)
+    weightFactor[is.infinite(weightFactor)] <- 0
+    
+    # Weighting values of catch
+    enmalleInfo <- sweep(t(enmalleInfo[,-1])*1e-6, 2, weightFactor, "*")
+    colnames(enmalleInfo) <- enmalleNames
+    
+    # Add enmalle info to catchData matrix
+    for(i in seq(ncol(enmalleInfo))){
+      indexCol <- colnames(catchData) == colnames(enmalleInfo)[i]
+      indexRow <- match(rownames(enmalleInfo), rownames(catchData))
+      catchData[indexRow, indexCol] <- rowSums(cbind(catchData[indexRow, indexCol], enmalleInfo[,i]), na.rm = TRUE)
+    }  
+  }
   
   # MAKE PROJECTIONS
+  # Projection from end of survey to the start of season
+  index <- seq(from = datesList$surveyDate, to = datesList$startDate - 1, by = "day")
+  catchVector <- matrix(data = 0, nrow = length(allMarks), ncol = length(index), 
+                        dimnames = list(allMarks, as.character(index)))
+  
+  preSeasonProj <- as.matrix(surveyVector)
+  for(i in seq_along(index)){
+    tempOutput <- projectPOPE(N = cbind(preSeasonProj[,i], preSeasonProj[,i]), 
+                              catch = catchVector[,i],
+                              a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
+                              sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
+                              freq = 365, sp = sp, Ts = 1)
+    
+    preSeasonProj <- cbind(preSeasonProj, tempOutput$N[2,])
+  }
   
   # BY WEEK
   # Get index on starting days on weeks
@@ -472,7 +518,7 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   weekIndex <- weekIndex - ifelse(weekIndex[1] == 1, 1, 0)
   
   # Start week matrix with survey data
-  outputByWeek <- as.matrix(surveyVector)
+  outputByWeek <- as.matrix(preSeasonProj[,ncol(preSeasonProj)])
   dimnames(outputByWeek) <- list(allMarks, "Crucero")
   
   # Make an index of the number of days in each week
@@ -542,11 +588,11 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
     }
     
     outputByDay <- outputByDay[,-1]
-    dimnames(outputByDay) <- list(allMarks, allDates[index])
+    dimnames(outputByDay) <- list(allMarks, as.character(allDates[index]))
   }
   
   # BY DAY (all season)
-  outputByDayAll <- as.matrix(surveyVector)
+  outputByDayAll <- as.matrix(preSeasonProj[,ncol(preSeasonProj)])
   dimnames(outputByDayAll) <- list(allMarks, "Crucero")
   for(i in seq(ncol(catchData))){
     
@@ -563,9 +609,12 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   # Build catch matrix by weeks
   catchByWeek <- aggregate(x = t(catchData), by = list(weekIndex), FUN = sum)
   catchByWeek <- cbind(surveyVector, t(catchByWeek[,-1]), catchData[,ncol(catchData)])
-  dimnames(catchByWeek) <- list(allMarks,
-                                c(colnames(outputByWeek), colnames(outputByDay)[ncol(outputByDay)]))
   
+  rownames(catchByWeek) <- allMarks
+  colnames(catchByWeek) <- c("Crucero",
+                             tapply(allDates, weekIndex, function(x) paste(format(range(x), format = "%d/%m"), collapse = " - ")),
+                             colnames(catchData)[ncol(catchData)])
+
   # Concatenate object as a list
   output <- list(catchData        = catchData,
                  catchByWeek      = catchByWeek,
@@ -573,6 +622,7 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
                  a                = a,
                  b                = b,
                  surveyVector     = surveyVector,
+                 preSeasonProj    = preSeasonProj,
                  outputByWeek     = outputByWeek,
                  outputByDay      = outputByDay,
                  weekIndex        = weekIndex,
