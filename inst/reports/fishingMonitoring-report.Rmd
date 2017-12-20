@@ -58,9 +58,9 @@ secondTable <- matrix(data = character(), nrow = 2, ncol = 6,
 
 secondTable[1,] <- c("$N (x10~^6)$", "Peso (t)", "En N (%)", "En peso (%)", "$N (x10~^6)$", "B (millones t)")
 
-sobrevivientes <- x$outputByDay[,ncol(x$outputByDay)]
+sobrevivientes <- x$projByWeek[,ncol(x$projByWeek)]
 
-catchInfo <- x$getInfo(x = rowSums(x$catchData), millionT = FALSE, allMarks = x$allMarks, a = x$a, b = x$b)
+catchInfo <- x$getInfo(x = rowSums(x$catchByDay), millionT = FALSE, allMarks = x$allMarks, a = x$a, b = x$b)
 
 secondTable[2, 1:4] <- c(round(catchInfo[c(1, 2)], 0), round(catchInfo[c(5, 6)], 2))
 
@@ -84,9 +84,9 @@ par(mar = c(0, 0, 0, 0), oma = c(6, 4, 1, 4), yaxs = "i", xaxs = "i", mfrow = c(
 
 plot(1, 1, axes = FALSE, xlab = NA, ylab = NA, xlim = xlim, ylim = ylim1[1:2])
 
-lines(x$allDates, cumsum(colSums(sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")))*ylim1[2]/ylim2[2],
+lines(x$allDates, cumsum(colSums(sweep(x = x$catchByDay, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")))*ylim1[2]/ylim2[2],
       col = "blue", lwd = 2)
-lines(x$allDates, colSums(sweep(x = x$outputByDayAll[,-1], MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")), 
+lines(x$allDates, colSums(sweep(x = x$projByDay[,-1], MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")), 
       col = "red", lwd = 2)
 
 mtext(text = "Biomasa (millones t)", side = 2, line = 2.5)
@@ -103,12 +103,12 @@ axis(side = 4, at = seq(ylim1[1], ylim1[2], length.out = length(yLabs2)), labels
 box()
 
 # Subplot 1-2
-juvN <- apply(x$catchData, 2, function(z) sum(z[x$allMarks < 12])/sum(z))*100
+juvN <- apply(x$catchByDay, 2, function(z) sum(z[x$allMarks < 12])/sum(z))*100
 
-juvB <- sweep(x = x$catchData, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")
+juvB <- sweep(x = x$catchByDay, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")
 juvB <- apply(juvB, 2, function(z) sum(z[x$allMarks < 12])/sum(z))*100
 
-xValues <- as.Date(colnames(x$catchData))
+xValues <- as.Date(colnames(x$catchByDay))
 xValues2 <- c(min(xValues) - 1e3, xValues, max(xValues) + 1e3)
 
 xlim <- c(x$startDate, x$endSeasonDate)
@@ -159,12 +159,12 @@ axis(side = 1, at = xValues2, labels = as.character(format(xValues2, format = "%
 
 # Tabla diaria
 index <- match(x$endDate, x$allDates)
-output <- x$getInfo(x = x$catchData[,index], allMarks = x$allMarks, a = x$a, b = x$b, nDecimalsBiomass = 3)
+output <- x$getInfo(x = x$catchByDay[,index], allMarks = x$allMarks, a = x$a, b = x$b, nDecimalsBiomass = 3)
 dailyTable <- matrix(data = output, ncol = 1, 
                      dimnames = list(names(output), format(x$endDate, "%d/%m/%Y")))
 
 # Tabla de datos acumulados
-output <- cbind(rowSums(x$catchData), x$surveyVector, x$outputByDay[,ncol(x$outputByDay)])
+output <- cbind(rowSums(x$catchByDay), x$surveyVector, x$projByWeek[,ncol(x$projByWeek)])
 
 weeklyTable <- apply(output, 2, x$getInfo, allMarks = x$allMarks, a = x$a, b = x$b)
 
@@ -183,7 +183,7 @@ pander::pander(outputTable, justify = "center", keep.line.breaks = TRUE, split.t
 ```{r, echo=FALSE, message=FALSE, fig.height=3, fig.width=8, cache=FALSE}
 
 index <- match(x$endDate, x$allDates)
-output <- cbind(x$allMarks, x$catchData[,index], x$catchData[,index]*x$a*x$allMarks^x$b)
+output <- cbind(x$allMarks, x$catchByDay[,index], x$catchByDay[,index]*x$a*x$allMarks^x$b)
 colnames(output) <- c("Talla", "Abundancia", "Biomasa")
 
 # Get axis limits
@@ -239,7 +239,7 @@ box()
 
 <!-- Plot 3 -->
 ```{r, echo=FALSE, message=FALSE, fig.height=4.5, fig.width=8, cache=FALSE}
-output <- cbind(x$surveyVector, rowSums(x$catchData), x$outputByDay[,ncol(x$outputByDay)])
+output <- cbind(x$surveyVector, rowSums(x$catchByDay), x$projByWeek[,ncol(x$projByWeek)])
 colnames(output) <- c("Crucero", "Capturas", "Sobrevivientes")
 
 output[output < 1e-5] <- NA

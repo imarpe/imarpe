@@ -329,23 +329,31 @@ plotEffort = function(effort1, effort2, ...) {
 #' @title Get daily report of fishing monitoring
 #' @description This function download anchovy landing information from an official
 #' repository of the IMARPE to compare this landings with the biomass estimated.
+#'
 #' @param directory Directory where the anchovy landing reports are stored. By default it
 #' is \code{NULL}, temporarily saved and then deleted. If you want to keep this parameter
 #' must be changed.
-#' @param urlFishingMonitoring The web address (url - Uniform Resource Locator) for downloading
-#' the landings. By default it is \url{http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal}.
 #' @param datesList A \code{list} of six dates (format: YEAR-month-day) with the names:
 #'  \itemize{
+#'   \item surveyDate: finish date of reference survey.
 #'   \item startDate: start date to download the landing files.
 #'   \item endDate: end date to download the landing files.
-#'   \item startExploringDate: start date of exploratory analysis.
-#'   \item endExploringDate: end date of exploratory analysis.
-#'   \item startSeasonDate: start date of fishing season.
 #'   \item endSeasonDate: end date of fishing season.
 #' }
 #' @param simpleFreqSizes A comma delimited file (.csv) with simple frequency data per size.
 #' @param dataCruise A RData with the outputs of the cruise.
 #' @param officialBiomass A official value of biomass.
+#' @param addEnmalle \code{logical} which indicates whether to add or not (default) 'enmalle' influence to catches.
+#' @param enmalleParams If \code{addEnmalle = TRUE}, a \code{list} with main parameters to describe 'enmalle':
+#'  \itemize{
+#'   \item mean: the meanfor 'enmallados' length.
+#'   \item sd: the SD for 'enmallados' length.
+#'   \item maxProportion: factor of 'enmallados'.
+#' }
+#' @param savePorcentas If \code{TRUE}, save download and save porcentas on a directory called '/porcentas_xls_files'. 
+#' By default (\code{FALSE}) the function saves porcentas as tempory files.
+#' @param urlFishingMonitoring The web address (url - Uniform Resource Locator) for downloading
+#' the landings. By default it is \url{http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal}.
 #' @param threshold Threshold for considering the number of individuals. By default \code{threshold = 30}.
 #' @param species The species that is going to be analyzed. By default is \code{species = "Anchoveta"}.
 #' @param a Length-weight ratio parameter. By default, it is \code{NULL}, check Details.
@@ -357,7 +365,9 @@ plotEffort = function(effort1, effort2, ...) {
 #'  \item sizeM = c(0, 8, 12)
 #'  \item vectorM = rep(0.8, 3)
 #'  \item catchFactor = 1
+#'  \item scenario = "neutro"
 #' }
+#' 
 #' 
 #' @details Allometric growth parameters \code{a} and \code{b} are completely necesary for calculations, if they
 #' are \code{NULL} (default), the users must be sure that the \code{dataCruise} file has them inside (that is true if 
@@ -366,13 +376,14 @@ plotEffort = function(effort1, effort2, ...) {
 #' @return A object of fishingMonitoring class. It is saved on the working directory.
 #' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 #' @export
-getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCruise, officialBiomass, 
-                          enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.15),  addEnmalle = TRUE, 
-                          savePorcentas = FALSE, threshold = 30, species = "Anchoveta",
-                          urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
-                          a = NULL, b = NULL, 
-                          growthParameters = list(k = 0.83, Linf = 19.21, sizeM = c(0, 8, 12), vectorM = c(1.29, 0.92, 0.83), 
-                                                  catchFactor = 1, scenario = "neutro")){
+getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCruise, officialBiomass, 
+                           addEnmalle = TRUE, enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.15),
+                           savePorcentas = FALSE, 
+                           urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
+                           threshold = 30, species = "Anchoveta",
+                           a = NULL, b = NULL, 
+                           growthParameters = list(k = 0.83, Linf = 19.21, sizeM = c(0, 8, 12), vectorM = c(1.29, 0.92, 0.83), 
+                                                   catchFactor = 1, scenario = "neutro")){
   
   # COMPILAR PORCENTAS
   cat("\n-------COMPILING DAILY REPORTS-------\n")
@@ -523,7 +534,7 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   
   # Make an index of the number of days in each week
   repWeekIndex <- table(weekIndex)
-
+  
   # If the 1st day is not Monday, then make a daily projection until the nearest one
   if(repWeekIndex[1] < 7){
     index <- weekIndex == 0
@@ -531,7 +542,8 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
     
     output <- outputByWeek
     for(i in seq(sum(index))){
-      tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+      tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), 
+                                catch = catchVector[,i]*growthParameters$catchFactor,
                                 a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
                                 sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                                 freq = 365, sp = sp, Ts = 1)
@@ -539,22 +551,21 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
       output <- cbind(output, tempOutput$N[2,])
     }
     
-    outputByDay <- output
-    colnames(outputByDay)[-1] <- as.character(allDates[index])
-    
     outputByWeek <- cbind(outputByWeek, output[,ncol(output)])
     colnames(outputByWeek)[-1] <- paste(format(allDates[which(index)[c(1, sum(index))]], "%d/%m"), collapse = " - ")
   }
   
   # If there is (at least) a Monday with more than 6 days, then make a weekly projection
-  index <- repWeekIndex == 7
-  if(sum(index) > 0){
-    index <- is.element(weekIndex, names(repWeekIndex)[index])
-    catchVector <- as.matrix(catchData[,index])
+  index7days <- repWeekIndex == 7
+  if(sum(index7days) > 0){
+    catchVector <- aggregate(t(catchData), list(weekIndex), sum, na.rm = TRUE)
+    index <- is.element(catchVector[,1], names(repWeekIndex)[index7days])
+    catchVector <- as.matrix(t(catchVector[index,])[-1,])
     
     output <- as.matrix(outputByWeek[,ncol(outputByWeek)])
-    for(i in seq(sum(index))){
-      tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+    for(i in seq(ncol(catchVector))){
+      tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), 
+                                catch = catchVector[,i]*growthParameters$catchFactor,
                                 a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
                                 sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                                 freq = 52, sp = sp, Ts = 1)
@@ -562,11 +573,12 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
       output <- cbind(output, tempOutput$N[2,])
     }
     
-    namesColumns <- as.character(format(allDates[which(index)[c(1, sum(index))]], "%d/%m"))
-    namesColumns <- cbind(namesColumns[-length(namesColumns)], namesColumns[-1])
-    namesColumns <- apply(namesColumns, 1, function(x) paste(x, collapse = " - "))
+    index <- !duplicated(weekIndex) & is.element(weekIndex, names(repWeekIndex[repWeekIndex == 7]))
+    namesColumns <- allDates[index]
+    namesColumns <- data.frame(namesColumns, namesColumns + 6)
+    namesColumns <- apply(namesColumns, 1, function(x) paste(format(as.Date(x), "%d/%m"), collapse = " - "))
     
-    output <- output[,-1]
+    output <- as.matrix(output[,-1])
     colnames(output) <- namesColumns
     outputByWeek <- cbind(outputByWeek, output)
   }
@@ -577,18 +589,23 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
     index <- weekIndex == tail(names(repWeekIndex), 1)
     catchVector <- as.matrix(catchData[,index])
     
-    outputByDay <- as.matrix(outputByWeek[,ncol(outputByWeek)])
+    output <- as.matrix(outputByWeek[,ncol(outputByWeek)])
     for(i in seq(sum(index))){
-      tempOutput <- projectPOPE(N = cbind(outputByDay[,i], outputByDay[,i]), catch = catchVector[,i]*growthParameters$catchFactor,
+      tempOutput <- projectPOPE(N = cbind(output[,i], output[,i]), 
+                                catch = catchVector[,i]*growthParameters$catchFactor,
                                 a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
                                 sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                                 freq = 365, sp = sp, Ts = 1)
       
-      outputByDay <- cbind(outputByDay, tempOutput$N[2,])
+      output <- cbind(output, tempOutput$N[2,])
     }
     
-    outputByDay <- outputByDay[,-1]
-    dimnames(outputByDay) <- list(allMarks, as.character(allDates[index]))
+    output <- output[,-1]
+    dimnames(output) <- list(allMarks, as.character(allDates[index]))
+    
+    output <- as.matrix(output[,ncol(output)])
+    colnames(output) <- paste(format(range(allDates[index]), "%d/%m"), collapse = " - ")
+    outputByWeek <- cbind(outputByWeek, output)
   }
   
   # BY DAY (all season)
@@ -596,7 +613,8 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   dimnames(outputByDayAll) <- list(allMarks, "Crucero")
   for(i in seq(ncol(catchData))){
     
-    tempOutput <- projectPOPE(N = cbind(outputByDayAll[,i], outputByDayAll[,i]), catch = catchData[,i]*growthParameters$catchFactor,
+    tempOutput <- projectPOPE(N = cbind(outputByDayAll[,i], outputByDayAll[,i]), 
+                              catch = catchData[,i]*growthParameters$catchFactor,
                               a = a, b = b, k = growthParameters$k, Linf = growthParameters$Linf, 
                               sizeM = growthParameters$sizeM, vectorM = growthParameters$vectorM,
                               freq = 365, sp = sp, Ts = 1)
@@ -614,20 +632,19 @@ getDailyReport = function(directory = NULL, datesList, simpleFreqSizes, dataCrui
   colnames(catchByWeek) <- c("Crucero",
                              tapply(allDates, weekIndex, function(x) paste(format(range(x), format = "%d/%m"), collapse = " - ")),
                              colnames(catchData)[ncol(catchData)])
-
+  
   # Concatenate object as a list
-  output <- list(catchData        = catchData,
-                 catchByWeek      = catchByWeek,
-                 allMarks         = allMarks,
+  output <- list(allMarks         = allMarks,
                  a                = a,
                  b                = b,
                  surveyVector     = surveyVector,
-                 preSeasonProj    = preSeasonProj,
-                 outputByWeek     = outputByWeek,
-                 outputByDay      = outputByDay,
+                 catchByDay       = catchData,
+                 catchByWeek      = catchByWeek,
+                 projPreSeason    = preSeasonProj,
+                 projByWeek       = outputByWeek,
+                 projByDay        = outputByDayAll,
                  weekIndex        = weekIndex,
                  getInfo          = getInfo,
-                 outputByDayAll   = outputByDayAll,
                  startDate        = datesList$startDate,
                  endDate          = datesList$endDate,
                  endExploringDate = datesList$endExploringDate,

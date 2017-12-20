@@ -487,7 +487,7 @@ getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
   # cargar datos de IMARSIS
   imarsisData <- convertImarsisData(imarsisData = imarsisData)
   
-  # Mantener solo filas con información válida en las siguientes columnas
+  # Mantener solo filas con informacion valida en las siguientes columnas
   index <- c("FECHA", "LONGITUD_INICIAL", "LATITUD_INICIAL", "LONGITUD", "ESPECIE_NOM_COMUN", "ESPECIE_CAPTURA")
   index <- complete.cases(imarsisData[,index])
   imarsisData <- imarsisData[index,]
@@ -499,7 +499,7 @@ getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
   # Corregir valores raros de tallas
   imarsisData$LONGITUD <- anc(cut(x = imarsisData$LONGITUD, breaks = seq(1, 25, 0.5), labels = seq(1, 24.5, 0.5)))
   
-  # Obtener valores de fecha y ordenar la base según esos valores
+  # Obtener valores de fecha y ordenar la base segun esos valores
   imarsisData$date <- as.Date(imarsisData$FECHA, format = "%d/%m/%Y")
   imarsisData <- imarsisData[order(imarsisData$date),]
   
