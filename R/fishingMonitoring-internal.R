@@ -182,6 +182,8 @@ leerData <- function(muestreo = NULL, desembarque = NULL, ...){
     baseDesembarque[,i] <- suppressWarnings(as.numeric(baseDesembarque[,i]))
   }
   
+  baseMuestreo$date <- as.Date(with(baseMuestreo, paste(anho, mes, dia, sep = "-")))
+  
   return(list(baseMuestreo = baseMuestreo, baseDesembarque = baseDesembarque))
 }
 

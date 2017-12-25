@@ -377,7 +377,7 @@ plotEffort = function(effort1, effort2, ...) {
 #' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 #' @export
 getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCruise, officialBiomass, 
-                           addEnmalle = TRUE, enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.15),
+                           addEnmalle = TRUE, enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.20*0.05),
                            savePorcentas = FALSE, 
                            urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
                            threshold = 30, species = "Anchoveta",
@@ -439,9 +439,13 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
   surveyData <- get(load(dataCruise))
   
   # Si el objeto proviene de TBE, obtener valores de a y b
-  if(!is.null(object$info$a_b)){
-    a <- object$info$a_b$a
-    b <- object$info$a_b$b
+  if(is.null(a) | is.null(b)){
+    if(!is.null(object$info$a_b)){
+      a <- object$info$a_b$a
+      b <- object$info$a_b$b
+    }else{
+      stop("'a' and 'b' are missing.")
+    }
   }
   
   # Get weighted data  
@@ -490,8 +494,12 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
     enmalleNames <- enmalleInfo[,1]
     
     # Get Factoor by day
+    index <- which(grepl(x = colnames(datosPonderacion$baseMuestreo), pattern = "[[:digit:]^]", perl = TRUE))
+    catchMuestreo <- aggregate(x = datosPonderacion$baseMuestreo[,index], 
+                               by = list(datosPonderacion$baseMuestreo$date), sum, na.rm = TRUE)
+    
     index <- match(enmalleInfo[,1], colnames(catchData))
-    weightFactor <- colSums(catchData[,index])/(rowSums(enmalleInfo[,-1])*1e-6)
+    weightFactor <- colSums(catchData[,index])/rowSums(as.matrix(catchMuestreo[,-1]), na.rm = TRUE)
     weightFactor[is.infinite(weightFactor)] <- 0
     
     # Weighting values of catch
@@ -600,7 +608,7 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
       output <- cbind(output, tempOutput$N[2,])
     }
     
-    output <- output[,-1]
+    output <- as.matrix(output[,-1])
     dimnames(output) <- list(allMarks, as.character(allDates[index]))
     
     output <- as.matrix(output[,ncol(output)])
