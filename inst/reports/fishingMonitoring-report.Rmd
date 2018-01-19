@@ -76,8 +76,16 @@ pander::pander(secondTable, keep.line.breaks = TRUE, split.table = 250)
 
 # Subplot 1-1
 xlim <- c(x$startDate, x$endSeasonDate)
-ylim1 <- axisPlot$ylim_p1$axis2_1
-ylim2 <- axisPlot$ylim_p1$axis4_1
+y1 <- colSums(sweep(x = x$projByDay[,-1], MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*"))
+y2 <- cumsum(colSums(sweep(x = x$catchByDay, MARGIN = 1, STATS = x$a*x$allMarks^x$b, FUN = "*")))
+pretty_y1 <- pretty(c(0, 1.01 * y1))
+pretty_y2 <- pretty(c(0, cuota))
+by_y1 <- (range(pretty_y1)[2]-range(pretty_y1)[1])/(length(pretty_y1)-1)
+by_y2 <- (range(pretty_y2)[2]-range(pretty_y2)[1])/(length(pretty_y2)-1)
+# ylim1 <- axisPlot$ylim_p1$axis2_1
+# ylim2 <- axisPlot$ylim_p1$axis4_1
+ylim1 <- c(range(pretty_y1), by_y1)
+ylim2 <- c(range(pretty_y2), by_y2)
 
 # layout(matrix(c(1, 1, 2, 3), nrow = 2, byrow = TRUE))
 par(mar = c(0, 0, 0, 0), oma = c(6, 4, 1, 4), yaxs = "i", xaxs = "i", mfrow = c(3, 1))
@@ -92,7 +100,7 @@ lines(x$allDates, colSums(sweep(x = x$projByDay[,-1], MARGIN = 1, STATS = x$a*x$
 mtext(text = "Biomasa (millones t)", side = 2, line = 2.5)
 mtext(text = "Captura (millones t)", side = 4, line = 3)
 
-legend("topright", legend = c("Biomasa", "Captura"), bty = "n", col = c("red", "blue"), lwd = 2, cex = 1.2)
+legend("topright", legend = c("Biomasa", "Captura acum"), bty = "n", col = c("red", "blue"), lwd = 2, cex = 1.2)
 
 yLabs <- seq(ylim1[1], ylim1[2], ylim1[3])
 axis(side = 2, at = yLabs, labels = yLabs/1e6, las = 2)
@@ -188,8 +196,16 @@ colnames(output) <- c("Talla", "Abundancia", "Biomasa")
 
 # Get axis limits
 xlim <- range(x$allMarks)
-ylim1 <- axisPlot$ylim_p2$axis2
-ylim2 <- axisPlot$ylim_p2$axis4
+y1 <- output[,2]
+y2 <- output[,3]
+pretty_y1 <- pretty(c(0, 1.01 * y1))
+pretty_y2 <- pretty(c(0, 1.01 * y2))
+by_y1 <- (range(pretty_y1)[2]-range(pretty_y1)[1])/(length(pretty_y1)-1)
+by_y2 <- (range(pretty_y2)[2]-range(pretty_y2)[1])/(length(pretty_y2)-1)
+# ylim1 <- axisPlot$ylim_p2$axis2
+# ylim2 <- axisPlot$ylim_p2$axis4
+ylim1 <- c(range(pretty_y1), by_y1)
+ylim2 <- c(range(pretty_y2), by_y2)
 
 # Make empty plot
 par(mar = c(3, 5, 1, 4), xaxs = "i", yaxs = "i")
@@ -202,7 +218,7 @@ if(sum(output[,2],  na.rm = TRUE)){
   lines(x$allMarks, tempLines, lwd = 2, col = "blue4")
 
   # Make plot and lines Biomass
-  tempLines <- output[,3]/ylim2[3]*ylim1[3]
+  tempLines <- output[,3]/ylim2[2]*ylim1[2]
   tempLines[tempLines < 0.001] <- NA
   lines(x$allMarks, tempLines, type = "o", lwd = 2, col = "red4", pch = 16)
 }
@@ -253,8 +269,21 @@ par(mar = rep(0, 4), oma = c(4, 6.5, 1, 5), xaxs = "i", yaxs = "i", mfrow = c(3,
 for(i in seq(ncol(output))){
   
   xlim <- range(allMarks)
-  ylim1 <- axisPlot$ylim_p3[[paste0("axis2_", i)]]
-  ylim2 <- axisPlot$ylim_p3[[paste0("axis4_", i)]]
+  if(i == 2){
+    y1 <- output[,i]
+    y2 <- output[,i]*x$a*x$allMarks^x$b
+  }else{
+    y1 <- c(output[,1], output[,ncol(output)])
+    y2 <- c(output[,1]*x$a*x$allMarks^x$b, output[,ncol(output)]*x$a*x$allMarks^x$b)
+  }
+  pretty_y1 <- pretty(c(0, 1.01 * y1))
+  pretty_y2 <- pretty(c(0, 1.01 * y2))
+  by_y1 <- (range(pretty_y1)[2]-range(pretty_y1)[1])/(length(pretty_y1)-1)
+  by_y2 <- (range(pretty_y2)[2]-range(pretty_y2)[1])/(length(pretty_y2)-1)
+  # ylim1 <- axisPlot$ylim_p3[[paste0("axis2_", i)]]
+  # ylim2 <- axisPlot$ylim_p3[[paste0("axis4_", i)]]
+  ylim1 <- c(range(pretty_y1), by_y1)
+  ylim2 <- c(range(pretty_y2), by_y2)
   
   plot(1, 1, pch = NA, axes = FALSE, xlim = xlim, ylim = ylim1[1:2], xlab = NA, ylab = NA)
   

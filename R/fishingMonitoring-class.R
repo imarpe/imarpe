@@ -18,7 +18,8 @@ report.fishingMonitoring <- function(x, format = "latex", tangle = FALSE, output
                                                                     axis4_2 = c(0, 05e5, 1e5),
                                                                     axis2_3 = c(0, 03e5, 5e4),
                                                                     axis4_3 = c(0, 01e6, 2e5))),
-                                                     juvLimits = list(number = c(37.7, 4.1), weight = c(21.5, 3))){
+                                     cuota = 1.5e6,
+                                     juvLimits = list(number = c(37.7, 4.1), weight = c(21.5, 3))){
   if(is.null(output)) output = getwd()
   
   outputName <- deparse(substitute(object))
