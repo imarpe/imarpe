@@ -376,7 +376,7 @@ plotEffort = function(effort1, effort2, ...) {
 #' @return A object of fishingMonitoring class. It is saved on the working directory.
 #' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 #' @export
-getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCruise, officialBiomass, 
+getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCruise, dataCruiseCsv, officialBiomass = NULL, 
                            addEnmalle = TRUE, enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.20*0.05),
                            savePorcentas = FALSE, 
                            urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
@@ -436,7 +436,20 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
   datosPonderacion <- leerData(muestreo = simpleFreqSizes, desembarque = porcentasArchivo)
   
   # Hacer ponderaciones
-  surveyData <- get(load(dataCruise))
+  if(!is.null(dataCruise))
+    surveyData <- get(load(dataCruise))
+  else {
+    dataCruise <- read.csv(dataCruiseCsv, na.strings = c("", " ", NA, "NA"), check.names = FALSE, stringsAsFactors = FALSE)
+    surveyData <- NULL
+    if("Abundancia" %in% names(dataCruise) | "Biomasa" %in% names(dataCruise)){
+      if("Biomasa" %in% names(dataCruise)){
+        surveyData$results$nc$biomass$total <- sum(dataCruise$Biomasa)
+        surveyData$results$nc$biomass$length <- dataCruise$Biomasa
+      }else{
+        #
+      }
+    }
+  }
   
   # Si el objeto proviene de TBE, obtener valores de a y b
   if(is.null(a) | is.null(b)){
