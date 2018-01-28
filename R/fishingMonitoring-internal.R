@@ -458,12 +458,12 @@ convertImarsisData <- function(imarsisData){
                               EMBARCACION_COD = imarsisData$matricula,
                               EMBARCACION_BOD = imarsisData$cb,
                               ESPECIE_NOM_COMUN = "ANCHOVETA",
-                              ESPECIE_CAPTURA = imarsisData$captura*1e3,
+                              ESPECIE_CAPTURA = imarsisData$captura,
                               stringsAsFactors = FALSE)
   
   imarsisData_2 <- NULL
   for(i in seq(nrow(imarsisData_1))){
-    tempData <- imarsisData[i, 14:43]
+    tempData <- imarsisData[i, 17:47]
     
     tempData <- data.frame(LONGITUD = as.numeric(colnames(tempData)), 
                            FRECUENCIA_SIMPLE = as.numeric(tempData),
@@ -472,12 +472,15 @@ convertImarsisData <- function(imarsisData){
     tempData_1 <- tempData[!is.na(tempData$FRECUENCIA_SIMPLE),]
     
     tempData_2 <- NULL
-    for(j in seq(nrow(tempData_1))){
-      tempData_2 <- rbind(tempData_2, imarsisData_1[i,])
-    }
     
-    tempData_2$LONGITUD <- tempData_1$LONGITUD
-    tempData_2$FRECUENCIA_SIMPLE <- tempData_1$FRECUENCIA_SIMPLE
+    if (nrow(tempData_1) > 0){
+      for(j in seq(nrow(tempData_1))){
+        tempData_2 <- rbind(tempData_2, imarsisData_1[i,])
+      }
+      
+      tempData_2$LONGITUD <- tempData_1$LONGITUD
+      tempData_2$FRECUENCIA_SIMPLE <- tempData_1$FRECUENCIA_SIMPLE
+    }
     
     imarsisData_2 <- rbind(imarsisData_2, tempData_2)
   }
@@ -485,7 +488,35 @@ convertImarsisData <- function(imarsisData){
   return(imarsisData_2)
 }
 
-getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
+pdoubleNormal <- function(x, peak, top, asc_width, dsc_width, init, final, min_x = 2, max_x = 20){
+  minP1 <- exp(-((min_x-peak)^2)/asc_width)
+  maxP1 <- 1
+  maxP2 <- 1
+  minP2 <- exp(-((max_x-top)^2)/dsc_width)
+  C11 <- -log((1/init)-1)
+  C12 <- -log((1/final)-1)
+  H24 <- 700
+  I24 <- 700
+  H15 <- ifelse(C11<-1000, -1000-C11, -1)
+  asc <- exp(-((x-peak)^2/asc_width))
+  if(C11>-999){
+    asc_scaled <- (init+(1-init)*(asc-minP1)/(maxP1-minP1))
+  } else {
+    asc_scaled <- asc
+  }
+  desc <- exp(-((x-top)^2/dsc_width))
+  if(C12>-999){
+    desc_scaled <- (1+(final-1)*(desc-maxP2)/(minP2-maxP2))
+  } else {
+    desc_scaled <- desc
+  }
+  join1 <- 1/(1+exp(-(H24*(x-peak)/(1+abs(x-peak)))))
+  join2 <- 1/(1+exp(-(I24*(x-top)/(1+abs(x-top)))))
+  y <- ifelse(x>H15, (asc_scaled*(1-join1)+join1*(1*(1-join2)+desc_scaled*join2)), 1e-6)
+  return(y)
+}
+
+getEnmallamiento <- function(imarsisData, enmalleParams, prop_enmalleParams, a, b){
   # cargar datos de IMARSIS
   imarsisData <- convertImarsisData(imarsisData = imarsisData)
   
@@ -499,7 +530,7 @@ getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
   imarsisData <- imarsisData[index,]
   
   # Corregir valores raros de tallas
-  imarsisData$LONGITUD <- anc(cut(x = imarsisData$LONGITUD, breaks = seq(1, 25, 0.5), labels = seq(1, 24.5, 0.5)))
+  imarsisData$LONGITUD <- anc(cut(x = imarsisData$LONGITUD, breaks = seq(1, 25, 0.5), labels = seq(1.5, 25, 0.5)))
   
   # Obtener valores de fecha y ordenar la base segun esos valores
   imarsisData$date <- as.Date(imarsisData$FECHA, format = "%d/%m/%Y")
@@ -508,7 +539,7 @@ getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
   # Obtener una variable indicadora de viaje
   imarsisData$cod_viaje <- paste0(format(imarsisData$date, format = "%Y%m%d"), "-", imarsisData$EMBARCACION_COD)
   
-  # Crear una tabla de valores de fecha y capacidad de bodega según código de viaje
+  # Crear una tabla de valores de fecha y capacidad de bodega segun codigo de viaje
   indexSamples <- !duplicated(imarsisData$cod_viaje)
   indexSamples <- imarsisData[indexSamples, c("cod_viaje", "date", "EMBARCACION_BOD")]
   
@@ -519,15 +550,15 @@ getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
   index <- match(rownames(lengthData), indexSamples$cod_viaje)
   simpleSamples <- data.frame(date = indexSamples$date[index], 
                               hold_capacity = indexSamples$EMBARCACION_BOD[index],
-                              catch = tapply(imarsisData$ESPECIE_CAPTURA, imarsisData$cod_viaje, sum, na.rm = TRUE),
+                              catch = tapply(imarsisData$ESPECIE_CAPTURA, imarsisData$cod_viaje, mean, na.rm = TRUE),
                               lengthData, stringsAsFactors = FALSE)
   
-  # Quitar filas que NO hayan tenido individuos entre tallas 9 y 13 cm
-  index <- an(colnames(lengthData)) > 9 & an(colnames(lengthData)) < 13
-  index <- rowSums(lengthData[index,], na.rm = TRUE) > 0
+  # Quitar filas que NO hayan tenido individuos de tallas menores o iguales a 11 cm
+  index <- an(colnames(lengthData)) <= 11
+  index <- rowSums(lengthData[,index], na.rm = TRUE) > 0
   simpleSamples <- simpleSamples[index,]
   
-  # # Quitar filas con outliers en capturas (Método de Tukey)
+  # # Quitar filas con outliers en capturas (Metodo de Tukey)
   # k <- 1.5
   # qValues <- quantile(x = simpleSamples$catch, probs = c(0.25, 0.5, 0.75), na.rm = TRUE)
   # qRange <- c(qValues[1] - k*(qValues[3] - qValues[1]), qValues[3] + k*(qValues[3] - qValues[1]))
@@ -541,9 +572,9 @@ getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
   lengthDataW <- sweep(x = lengthData, MARGIN = 2, STATS = a*allMarks^b, FUN = "*")
   lengthDataW <- t(apply(X = lengthDataW, MARGIN = 1, FUN = function(x) x/sum(x, na.rm = TRUE)))
   
-  # Hacer las ponderaciones y reconvertir a valores en número
+  # Hacer las ponderaciones y reconvertir a valores en numero
   lengthData <- sweep(x = lengthDataW, MARGIN = 1, STATS = simpleSamples$catch, FUN = "*")
-  lengthData <- floor(sweep(x = lengthData*10e6, MARGIN = 2, STATS = a*allMarks^b, FUN = "/"))
+  lengthData <- floor(sweep(x = lengthData*1e6, MARGIN = 2, STATS = a*allMarks^b, FUN = "/"))
   colnames(lengthData) <- gsub(x = colnames(lengthData), pattern = "^[[:alpha:]]+", replacement = "", perl = TRUE)
   
   meanValues <- apply(lengthData, 1, function(x, ...) sum(x*allMarks, ...)/sum(x, ...), na.rm = TRUE)
@@ -555,23 +586,27 @@ getEnmallamiento <- function(imarsisData, enmalleParams, a, b){
                               mean = round(meanValues, 3),
                               lengthData, stringsAsFactors = FALSE, check.names = FALSE)
   
-  # Definir distribución de tallas de individuos que se enmallan
-  simpleSamples$enmalleFactor <- pnorm(q = enmalleParams$mean - abs(simpleSamples$mean - enmalleParams$mean),
-                                       mean = enmalleParams$mean, sd = enmalleParams$sd)*2*enmalleParams$maxProportion
+  # Definir distribucion de tallas de individuos que se enmallan
+  simpleSamples$enmalleFactor <- pdoubleNormal(simpleSamples$mean, prop_enmalleParams$peak,
+                                               prop_enmalleParams$top, prop_enmalleParams$asc_width,
+                                               prop_enmalleParams$dsc_width, prop_enmalleParams$init,
+                                               prop_enmalleParams$final, min_x = 2,
+                                               max_x = 20)*enmalleParams$maxProportion
   
-  # Obtener valores estimados de área de red en base a capacidad de bodega
+  # Obtener valores estimados de area de red en base a capacidad de bodega
   simpleSamples$netArea <- predict(object = areaHC_model, 
                                    newdata = data.frame(capacidad_bodega_registrada = simpleSamples$hold_capacity),  
                                    type = "response")*128^2
   
-  # Obtener número de mallas con anchoveta (enmallada) por viaje
+  # Obtener numero de mallas con anchoveta (enmallada) por viaje
   enmalladas <- floor(simpleSamples$netArea*simpleSamples$enmalleFactor)
   
   # Obtener tallas de anchoveta presentes en simpleSamples
   lengthMarks <- an(colnames(simpleSamples)[grepl(x = colnames(simpleSamples), pattern = "[([:digit:].[:digit:])^]")])
   
-  # Multiplicar número de anchovetas enmalladas por distribución de anchovetas que se enmallan
-  enmalleMatrix <- t(sapply(enmalladas, "*", dnorm(x = lengthMarks, mean = enmalleParams$mean, sd = enmalleParams$sd)))
+  # Multiplicar numero de anchovetas enmalladas por distribucion de anchovetas que se enmallan
+  dist_enmalle <- dnorm(x = lengthMarks, mean = enmalleParams$mean, sd = enmalleParams$sd)
+  enmalleMatrix <- t(sapply(enmalladas, "*", dist_enmalle/sum(dist_enmalle)))
   dimnames(enmalleMatrix) <- list(ac(simpleSamples$date), lengthMarks)
   enmalleMatrix <- enmalleMatrix[order(simpleSamples$date),]
   

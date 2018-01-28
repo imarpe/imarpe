@@ -378,6 +378,8 @@ plotEffort = function(effort1, effort2, ...) {
 #' @export
 getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCruise, dataCruiseCsv, officialBiomass = NULL, 
                            addEnmalle = TRUE, enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.20*0.05),
+                           prop_enmalleParams = list(peak = 7, top = 11, asc_width = exp(1),
+                                                     dsc_width = exp(1), init = 0, final = 0),
                            savePorcentas = FALSE, 
                            urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
                            threshold = 30, species = "Anchoveta",
@@ -499,6 +501,7 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
   if(isTRUE(addEnmalle)){
     # Get enmalle info
     enmalleInfo <- getEnmallamiento(imarsisData = datosPonderacion$baseMuestreo, enmalleParams = enmalleParams, 
+                                    prop_enmalleParams = prop_enmalleParams, 
                                     a = a, b = b)
     
     # Add enmalle info to catchData
@@ -506,13 +509,15 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
                              FUN = sum, na.rm = TRUE)
     enmalleNames <- enmalleInfo[,1]
     
-    # Get Factoor by day
-    index <- which(grepl(x = colnames(datosPonderacion$baseMuestreo), pattern = "[[:digit:]^]", perl = TRUE))
-    catchMuestreo <- aggregate(x = datosPonderacion$baseMuestreo[,index], 
+    # Get Factor by day
+    catchMuestreo <- aggregate(x = datosPonderacion$baseMuestreo$captura..t., 
                                by = list(datosPonderacion$baseMuestreo$date), sum, na.rm = TRUE)
     
+    index <- match(enmalleInfo[,1], as.character(catchMuestreo[,1]))
+    catchMuestreo <- catchMuestreo[index,]
+    
     index <- match(enmalleInfo[,1], colnames(catchData))
-    weightFactor <- colSums(catchData[,index])/rowSums(as.matrix(catchMuestreo[,-1]), na.rm = TRUE)
+    weightFactor <- colSums(catchData[,index]*a*allMarks^b)/rowSums(as.matrix(catchMuestreo[,-1]), na.rm = TRUE)
     weightFactor[is.infinite(weightFactor)] <- 0
     
     # Weighting values of catch
