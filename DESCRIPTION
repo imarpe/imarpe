@@ -1,8 +1,8 @@
 Package: imarpe
 Type: Package
 Title: Tools for graphics and summary reports for IMARPE
-Version: 0.1.2
-Date: 2017-08-25
+Version: 0.1.4
+Date: 2018-05-15
 Authors@R: c(person("Criscely", "Lujan-Paredes", role = c("aut"), email = "criscelylujan@gmail.com"),
              person("Ricardo", "Oliveros-Ramos", role = c("aut"), email = "ricardo.oliveros@gmail.com"),
              person("Wencheng", "Lau-Medrano", role = c("aut", "cre"), email = "llau@imarpe.gob.pe"),
@@ -13,6 +13,6 @@ Authors@R: c(person("Criscely", "Lujan-Paredes", role = c("aut"), email = "crisc
 Description: Tools for graphics and summary reports for IMARPE.
 License: GPL-2
 LazyData: true
-Depends: reshape2, plyr, rmarkdown, maps, fields, plotrix, sp, rJava, Hmisc, RCurl, XLConnect, lubridate
+Depends: reshape2, plyr, rmarkdown, maps, fields, plotrix, sp, Hmisc, RCurl, openxlsx, lubridate
 Imports: Hmisc
 RoxygenNote: 6.0.1

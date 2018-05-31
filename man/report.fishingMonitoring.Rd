@@ -5,10 +5,13 @@
 \title{Report method for fishingMonitoring objects}
 \usage{
 \method{report}{fishingMonitoring}(x, format = "latex", tangle = FALSE,
-  output = NULL, open = TRUE, axisPlot = list(plot1Lab2 = c(0, 3e+06,
-  5e+05), plot3Lab1 = list(c(0, 3e+05, 50000), c(0, 20000, 5000), c(0, 3e+05,
-  50000)), plot3Lab2 = list(c(0, 1e+06, 2e+05), c(0, 5e+05, 1e+05), c(0, 1e+06,
-  2e+05))))
+  output = NULL, open = FALSE, axisPlot = list(ylim_p1 = list(axis2_1 =
+  c(0, 7e+06, 1e+06), axis4_1 = c(0, 3e+06, 1e+05), axis4_2 = c(0, 100, 20),
+  axis2_3 = c(0, 100, 20)), ylim_p2 = list(axis2 = c(0, 1, 0.25), axis4 = c(0,
+  20, 5)), ylim_p3 = list(axis2_1 = c(0, 3e+05, 50000), axis4_1 = c(0, 1e+06,
+  2e+05), axis2_2 = c(0, 20000, 5000), axis4_2 = c(0, 5e+05, 1e+05), axis2_3 =
+  c(0, 3e+05, 50000), axis4_3 = c(0, 1e+06, 2e+05))), cuota = 1500000,
+  juvLimits = list(number = c(37.7, 4.1), weight = c(21.5, 3)))
 }
 \arguments{
 \item{x}{Object of \code{fishingMonitoring} class.}

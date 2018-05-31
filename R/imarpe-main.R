@@ -350,8 +350,6 @@ plotEffort = function(effort1, effort2, ...) {
 #'   \item sd: the SD for 'enmallados' length.
 #'   \item maxProportion: factor of 'enmallados'.
 #' }
-#' @param savePorcentas If \code{TRUE}, save download and save porcentas on a directory called '/porcentas_xls_files'. 
-#' By default (\code{FALSE}) the function saves porcentas as tempory files.
 #' @param urlFishingMonitoring The web address (url - Uniform Resource Locator) for downloading
 #' the landings. By default it is \url{http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal}.
 #' @param threshold Threshold for considering the number of individuals. By default \code{threshold = 30}.
@@ -377,10 +375,10 @@ plotEffort = function(effort1, effort2, ...) {
 #' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}, Josymar Torrejon and Pablo Marin.
 #' @export
 getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCruise, dataCruiseCsv, officialBiomass = NULL, 
+                           readLocalPorcentas = FALSE, dirPorcentas = NULL, porcentaPrefix = "/imarpe_rpelag_porfinal",
                            addEnmalle = TRUE, enmalleParams = list(mean = 11, sd = 5.5, maxProportion = 0.20*0.05),
                            prop_enmalleParams = list(peak = 7, top = 11, asc_width = exp(1),
                                                      dsc_width = exp(1), init = 0, final = 0),
-                           savePorcentas = FALSE, 
                            urlFishingMonitoring = "http://www.imarpe.pe/imarpe/archivos/reportes/imarpe_rpelag_porfinal",
                            threshold = 30, species = "Anchoveta",
                            a = NULL, b = NULL, 
@@ -410,17 +408,21 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
   growthParameters$catchFactor <- catchFactor
   
   # Downloading daily reports
-  # descarga los porcenta
-  if(isTRUE(savePorcentas)){
-    dirPorcentas <- paste0(directory, "/porcentas_xls_files")
+  # Descargar porcentas (si se requiere)
+  if(isTRUE(readLocalPorcentas)){
+    if(!is.character(dirPorcentas) || length(dirPorcentas) != 1 || !dir.exists(dirPorcentas)){
+      stop("Missing or incorrect value fo 'dirPorcentas'.")
+    }
   }else{
-    dirPorcentas <- tempdir()
+    if(!is.null(dirPorcentas)){
+      dirPorcentas <- tempdir()
+      
+      dir.create(path = dirPorcentas, showWarnings = FALSE)
+    }
+    
+    DownloadPorcenta(directorio = dirPorcentas, dirUrl = urlFishingMonitoring, 
+                     inicio = datesList$startDate, fin = datesList$endDate)
   }
-  
-  dir.create(path = dirPorcentas, showWarnings = FALSE)
-  
-  DownloadPorcenta(directorio = dirPorcentas, dirUrl = urlFishingMonitoring, 
-                   inicio = datesList$startDate, fin = datesList$endDate)
   
   # Leer porcentaes
   porcentasSalida <- ReadPorcenta(directorio = dirPorcentas, inicio = datesList$startDate, fin = datesList$endDate)
@@ -438,26 +440,26 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
   datosPonderacion <- leerData(muestreo = simpleFreqSizes, desembarque = porcentasArchivo)
   
   # Hacer ponderaciones
-  if(!is.null(dataCruise))
+  if(is.character(dataCruise) & length(dataCruise) == 1){
     surveyData <- get(load(dataCruise))
-  else {
-    dataCruise <- read.csv(dataCruiseCsv, na.strings = c("", " ", NA, "NA"), check.names = FALSE, stringsAsFactors = FALSE)
-    surveyData <- NULL
-    if("Abundancia" %in% names(dataCruise) | "Biomasa" %in% names(dataCruise)){
-      if("Biomasa" %in% names(dataCruise)){
-        surveyData$results$nc$biomass$total <- sum(dataCruise$Biomasa)
-        surveyData$results$nc$biomass$length <- dataCruise$Biomasa
-      }else{
-        #
-      }
-    }
+  }else if(is.list(dataCruise)){
+    # Read survey info
+    dataCruise <- read.csv(file = dataCruise, na.strings = c("", " ", NA, "NA"), 
+                           check.names = FALSE, stringsAsFactors = FALSE)
+    
+    # Build surveyData object
+    surveyData <- list()
+    surveyData$results$nc$biomass$total <- sum(dataCruise$Biomasa)
+    surveyData$results$nc$biomass$length <- dataCruise$Biomasa
+  }else{
+    stop("'dataCruise' must be a string indicating whether the path of a survey RData file or a list with survey info. See Details.")
   }
   
   # Si el objeto proviene de TBE, obtener valores de a y b
   if(is.null(a) | is.null(b)){
-    if(!is.null(object$info$a_b)){
-      a <- object$info$a_b$a
-      b <- object$info$a_b$b
+    if(!is.null(surveyData$info$a_b)){
+      a <- surveyData$info$a_b$a
+      b <- surveyData$info$a_b$b
     }else{
       stop("'a' and 'b' are missing.")
     }

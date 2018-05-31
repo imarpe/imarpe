@@ -7,7 +7,7 @@ DownloadPorcenta <- function(directorio, dirUrl, inicio, fin, ...){
   for (i in 1:length(tiempo2)){
     
     tempUrl <- paste0(dirUrl, tiempo2[i], ".xlsx")
-    tempUrl <- ifelse(url.exists(tempUrl), tempUrl, paste0(dirUrl, tiempo2[i], "_.xlsx"))
+    tempUrl <- ifelse(url.exists(tempUrl), tempUrl, paste0(dirUrl, tiempo2[i], ".xlsx"))
     
     try(download.file(url = tempUrl,
                       destfile = paste0(directorio,"/imarpe_rpelag_porfinal",tiempo2[i],".xlsx"),
@@ -30,17 +30,14 @@ ReadPorcenta <- function(directorio, inicio, fin,...){
   
   for(i in 1:length(tiempo2))
   {
-    file_name <- paste(directorio, paste("/imarpe_rpelag_porfinal",tiempo2[i],".xlsx",sep=""),sep="")
-    wb <- NULL
-    wb <- tryCatch(expr = loadWorkbook(file_name), 
-                   error = function(e) message("Not Found", file_name))
+    file_name <- paste0(directorio, "/imarpe_rpelag_porfinal", tiempo2[i], ".xlsx")
     
-    if(!is.null(wb)){
-      desemb  <- readWorksheet(object = wb, sheet = "reporte", startRow = 11, endRow = 12, startCol = 3, endCol = 40)
-      n.embar <- readWorksheet(object = wb, sheet = "reporte", startRow = 12, endRow = 13, startCol = 3, endCol = 40)
-      e.muest <- readWorksheet(object = wb, sheet = "reporte", startRow = 13, endRow = 14, startCol = 3, endCol = 40)
-      p.juv   <- readWorksheet(object = wb, sheet = "reporte", startRow = 14, endRow = 15, startCol = 3, endCol = 40)
-      mod     <- readWorksheet(object = wb, sheet = "reporte", startRow = 15, endRow = 16, startCol = 3, endCol = 40)
+    if(file.exists(file_name)){
+      desemb  <- read.xlsx(xlsxFile = file_name, sheet = "reporte", rows = 11:12, cols = 3:40)
+      n.embar <- read.xlsx(xlsxFile = file_name, sheet = "reporte", rows = 12:13, cols = 3:40)
+      e.muest <- read.xlsx(xlsxFile = file_name, sheet = "reporte", rows = 13:14, cols = 3:40)
+      p.juv   <- read.xlsx(xlsxFile = file_name, sheet = "reporte", rows = 14:15, cols = 3:40)
+      mod     <- read.xlsx(xlsxFile = file_name, sheet = "reporte", rows = 15:16, cols = 3:40)
     }else{
       desemb  <- rep(NA, 38)
       n.embar <- rep(NA, 38)
