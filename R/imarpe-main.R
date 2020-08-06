@@ -442,18 +442,18 @@ getDailyReport <- function(directory = NULL, datesList, simpleFreqSizes, dataCru
   # Hacer ponderaciones
   if(is.character(dataCruise) & length(dataCruise) == 1){
     surveyData <- get(load(dataCruise))
-  }else if(is.list(dataCruise)){
+  }else{#} if(is.list(dataCruise)){
     # Read survey info
-    dataCruise <- read.csv(file = dataCruise, na.strings = c("", " ", NA, "NA"), 
+    dataCruise <- read.csv(file = dataCruiseCsv, na.strings = c("", " ", NA, "NA"), 
                            check.names = FALSE, stringsAsFactors = FALSE)
     
     # Build surveyData object
     surveyData <- list()
     surveyData$results$nc$biomass$total <- sum(dataCruise$Biomasa)
     surveyData$results$nc$biomass$length <- dataCruise$Biomasa
-  }else{
-    stop("'dataCruise' must be a string indicating whether the path of a survey RData file or a list with survey info. See Details.")
-  }
+  }#else{
+    #stop("'dataCruise' must be a string indicating whether the path of a survey RData file or a list with survey info. See Details.")
+  #}
   
   # Si el objeto proviene de TBE, obtener valores de a y b
   if(is.null(a) | is.null(b)){
